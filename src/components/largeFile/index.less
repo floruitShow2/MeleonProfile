@@ -1,0 +1,102 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-large-file {
+  position: relative;
+  #flex(column, center, flex-start);
+  // 原生上传组件
+  .file-input__inner {
+    input {
+      display: none;
+    }
+  }
+  // 文件上传触发器
+  .file-input__button {
+    padding: 10px 15px;
+    border-radius: 2px;
+    font-size: 12px;
+    color: #FFFFFF;
+    cursor: pointer;
+    #color(background-color, --primary-blue-color);
+    &:hover {
+      #color(background-color, --heavy-blue-color);
+    }
+  }
+
+  .file-input__trigger {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    padding: 10px;
+    border: dashed 1px;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    cursor: pointer;
+    #flex(column, center, center);
+    #color(color, --primary-text-color);
+    #color(border-color, --primary-text-color);
+    #color(background-color, --module-bg-color);
+    i {
+      font-size: 36px;
+    }
+    &-text {
+      font-size: 14px;
+      .default-text {
+        span {
+          #color(color, --primary-blue-color);
+        }
+      }
+    }
+    &-status {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      #flex(column, flex-end, flex-start);
+      .status-label {
+        padding: 2px 5px;
+        margin-bottom: 2px;
+        border-radius: 2px;
+        font-size: 12px;
+        animation: StatusLabelEnter 0.2s ease forwards;
+        #color(color, --primary-blue-color);
+        #color(background-color, --gray-blue-color);
+      }
+      .status-label:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  .file-input-drag-active {
+    #color(background-color, --primary-bg-color);
+  }
+  .file-input__trigger:hover {
+    // #color(border-color, --heavy-blue-color);
+    #color(background-color, --primary-bg-color);
+  }
+  // 文件列表
+  .file-input__buffer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: translateY(110%);
+    width: 100%;
+    #flex(column, center, flex-start);
+    .ws-file-card {
+      width: 100%;
+      margin: 0;
+      margin-bottom: 5px;
+      #shadow-color(0, 0, 4px, 1px, --primary-shadow-color);
+    }
+  }
+}
+
+@keyframes StatusLabelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,75 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.ws-warehouses {
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding: 20px;
+  &-wrapper {
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    #flex(row, flex-start, space-between);
+    #color(background-color, --module-bg-color);
+    .warehouses-main {
+      height: 100%;
+      width: calc(100% - 330px - 20px);
+      margin-right: 20px;
+      &-header {
+        width: 100%;
+        height: 60px;
+        #flex(row, center, space-between);
+        #color(background-color, --module-bg-color);
+        .title {
+          #flex(column, flex-start, center);
+          h4 {
+            margin-bottom: 5px;
+            font-size: 16px;
+          }
+          span {
+            font-size: 12px;
+            #color(color, --primary-text-color);
+          }
+        }
+        .tool {
+          // .arco-btn:first-child {
+          //   margin-right: 8px;
+          // }
+        }
+      }
+      &-content {
+        height: calc(100% - 60px);
+        padding: 20px;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        overflow: auto;
+        #color(background-color, --primary-bg-color);
+        .container {
+          #flex(column, flex-start, flex-start);
+          &-header {
+            margin-bottom: 20px;
+            #flex(row, center, space-between);
+          }
+          &-body {
+            flex-wrap: wrap;
+            align-content: flex-start;
+            #flex(row, flex-start, flex-start);
+            .ws-folder-card {
+              margin: 0 20px 20px 0;
+              box-shadow: unset;
+              &:hover {
+                #shadow-color(0, 8px, 18px, 0, --primary-shadow-color);
+              }
+            }
+            .ws-file-card {
+              margin: 0 20px 20px 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  .ws-folder-details {
+    width: 330px;
+  }
+}

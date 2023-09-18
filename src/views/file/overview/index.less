@@ -1,0 +1,126 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+#module-title() {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 5px;
+  #flex(row, center, space-between);
+  .view-all-button {
+    padding: 4px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    #flex(row, center, center);
+    #color(background-color, --heavy-bg-color);
+    span, i {
+      font-size: 14px;
+      #color(color, --primary-text-color);
+    }
+    &:hover {
+      span, i {
+        #color(color, --primary-blue-color);
+      }
+    }
+  }
+}
+
+.ws-file-management {
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding: 20px;
+  flex-wrap: wrap;
+  #flex(row, flex-start, space-between);
+  .file {
+    width: calc(100% - 350px - 20px);
+    height: 100%;
+    overflow: auto;
+    #flex(column, flex-start, flex-start);
+    &-banner {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      #flex(row, center, space-between);
+      #color(background-color, --module-bg-color);
+      &-message {
+        width: 70%;
+        height: 100%;
+        overflow: auto;
+        #flex(column, flex-start, space-between);
+        h1 {
+          margin: 20px 0;
+          #color(color, --primary-text-color);
+        }
+        p {
+          margin-bottom: 10px;
+          font-size: 14px;
+          #color(color, --primary-text-color);
+        }
+      }
+      &-image {
+        position: absolute;
+        top: 0;
+        right: 20px;
+        width: 300px;
+        pointer-events: none;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    &-warehouses {
+      width: 100%;
+      margin-bottom: 10px;
+      #flex(column, center, flex-start);
+      &-title {
+        #module-title();
+      }
+      &-list {
+        width: 100%;
+        overflow: auto;
+        #flex(row, center, flex-start);
+        .ws-folder-card {
+          flex: 1;
+          min-width: 200px;
+          max-width: 250px;
+          margin-right: 20px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+    &-recent {
+      width: 100%;
+      #flex(column, center, flex-start);
+      &-title {
+        #module-title();
+      }
+      &-list {
+        width: 100%;
+        .arco-table-td-content {
+          padding: 5px 0;
+        }
+        .ws-file-card {
+          width: fit-content;
+          #shadow-color(0, 4px, 4px, 0, --primary-shadow-color);
+        }
+      }
+    }
+  }
+  .detail {
+    width: 350px;
+    height: 100%;
+    padding: 10px;
+    #color(background-color, --module-bg-color);
+  }
+}
+@media screen and (max-width: 998px) {
+  .ws-file-management {
+    .file {
+      width: 100%;
+    }
+  }
+}

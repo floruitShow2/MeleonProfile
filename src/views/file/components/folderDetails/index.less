@@ -1,0 +1,83 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.ws-folder-details {
+  height: 100%;
+  .base-detail {
+    height: 150px;
+    margin-bottom: 10px;
+    &-header {
+      height: 25px;
+      margin-bottom: 5px;
+      #flex(row, center, space-between);
+      span {
+        font-weight: bold;
+        #color(color, --primary-text-color);
+      }
+    }
+    &-content {
+      width: 100%;
+      height: calc(100% - 30px);
+      flex-wrap: wrap;
+      #flex(row, flex-start, flex-start);
+      .detail-card {
+        width: 50%;
+        height: 50%;
+        padding: 0 10px;
+        #flex(row, center, space-between);
+        #color(background-color, --module-bg-color);
+        &-message {
+          #flex(column, flex-start, center);
+          span {
+            #color(color, --primary-text-color);
+            &:first-child {
+              font-size: 16px;
+              margin-bottom: 8px;
+            }
+            &:last-child {
+              font-size: 12px;
+            }
+            i {
+              padding: 5px 3px;
+              margin-right: 5px;
+              border-radius: 5px;
+              font-size: 16px;
+              #color(color, --lighter-yellow-color);
+              #color(background-color, --gray-yellow-color);
+            }
+            .ws-doc {
+              #color(color, --lighter-blue-color);
+              #color(background-color, --gray-blue-color);
+            }
+            .ws-pdf {
+              #color(color, --lighter-red-color);
+              #color(background-color, --gray-red-color);
+            }
+            .ws-xlsx {
+              #color(color, --lighter-green-color);
+              #color(background-color, --gray-green-color);
+            }
+          }
+        }
+        // &:hover {
+        //   #color(background-color, --primary-bg-color);
+        // }
+      }
+    }
+  }
+  .upload-trigger {
+    height: 150px;
+    margin-bottom: 10px;
+    .ws-large-file {
+      width: 100%;
+      height: 100%;
+      .file-input__trigger {
+        width: 100%;
+      }
+    }
+  }
+  .ws-operate-logs {
+    height: calc(100% - 320px);
+    overflow: auto;
+  }
+}

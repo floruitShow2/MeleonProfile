@@ -1,0 +1,104 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-flow-toolbar {
+  position: relative;
+  flex-wrap: wrap;
+  width: 300px;
+  #flex(row, flex-start, flex-start);
+  &-menu {
+    padding: 20px 5px;
+    height: 100%;
+    width: 50px;
+    border-right: solid 1px;
+    #flex(column, center, flex-start);
+    #color(border-color, --primary-border-color);
+    .item {
+      margin-bottom: 10px;
+      #flex(column, center, center);
+      i {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        margin-bottom: 5px;
+        border-radius: 2px;
+        font-size: 22px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        #color(color, --primary-text-color);
+      }
+      i:hover {
+        #color(background-color, --gray-blue-color);
+      }
+      span {
+        font-size: 12px;
+        #color(color, --primary-text-color);
+      }
+    }
+    .is-active {
+      #color(background-color, --module-bg-color);
+      i {
+        #color(color, --heavy-blue-color);
+        #color(background-color, --gray-blue-color);
+      }
+      i:hover {
+        #color(background-color, --gray-blue-hover-color);
+      }
+    }
+  }
+  &-component {
+    width: calc(100% - 50px);
+    height: 100%;
+    overflow: hidden;
+  }
+  &-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    z-index: 2;
+    transform: translate(50%, -50%);
+    cursor: pointer;
+    #flex(row, center, center);
+    #color(background-color, --module-bg-color);
+  }
+  &-btn:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -17px;
+    right: -2px;
+    border-radius: 0 0 0 10px;
+    background-color: transparent;
+    #shadow-color(-9px, 5px, 0, 0, --module-bg-color);
+  }
+  &-btn:after {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: calc(100% - 2px);
+    right: -2px;
+    border-radius: 12px 0 0 0;
+    background-color: transparent;
+    #shadow-color(-9px, -5px, 0, 0, --module-bg-color);
+  }
+  // .node:hover {
+  //   color: #ffffff;
+  //   #color(background-color, --primary-blue-color);
+  // }
+}
+.is-fold {
+  width: 50px;
+  .ws-flow-toolbar-btn > i {
+    transform: rotate(180deg);
+    transition: rotate 0.8s ease;
+  }
+}

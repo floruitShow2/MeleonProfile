@@ -1,0 +1,33 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.ws-room-list {
+  width: 100%;
+  height: 100%;
+  #flex(column, center, flex-start);
+  &_header {
+    width: 100%;
+    height: 50px;
+    padding: 8px 16px;
+    border-bottom: solid 1px;
+    #flex(row, center, space-between);
+    #color(border-color, --primary-border-color);
+    span {
+      font-size: 16px;
+      #color(color, --primary-text-color);
+    }
+    .header-tools {
+      #flex(row, center, flex-end);
+      i {
+        margin-left: 8px;
+      }
+    }
+  }
+  &_content {
+    width: 100%;
+    height: calc(100vh - 50px);
+    #color(background-color, --module-bg-color);
+    .is-active {
+      #color(background-color, --primary-bg-color);
+    }
+  }
+}

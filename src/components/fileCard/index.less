@@ -1,0 +1,71 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-file-card {
+  position: relative;
+  // min-width: 250px;
+  padding: 10px;
+  // padding-left: 50px;
+  border-radius: 5px;
+  font-size: 14px;
+  #flex(row, center, space-between);
+  #color(background-color, --module-bg-color);
+  .arco-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .card-icon {
+    margin-right: 10px;
+    i {
+      padding: 5px 3px;
+      border-radius: 5px;
+      font-size: 22px;
+      #color(color, --lighter-yellow-color);
+      #color(background-color, --gray-yellow-color);
+    }
+    .ws-doc {
+      #color(color, --lighter-blue-color);
+      #color(background-color, --gray-blue-color);
+    }
+    .ws-pdf {
+      #color(color, --lighter-red-color);
+      #color(background-color, --gray-red-color);
+    }
+    .ws-xlsx {
+      #color(color, --lighter-green-color);
+      #color(background-color, --gray-green-color);
+    }
+  }
+  .card-message {
+    &-name {
+      width: 120px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: inherit;
+      #color(color, --primary-text-color);
+    }
+    &-details {
+      font-size: 12px;
+      #color(color, --lighter-text-color);
+    }
+  }
+  .card-tools {
+    margin-left: 5px;
+    #flex(row, center, flex-end);
+    i {
+      font-size: 18px;
+      margin-left: 5px;
+      transition: all 0.2s ease;
+      #color(color, --primary-text-color);
+    }
+    i:hover {
+      #color(color, --primary-blue-color);
+    }
+  }
+}
+.is-mini {
+  padding: 8px;
+  font-size: 12px;
+}

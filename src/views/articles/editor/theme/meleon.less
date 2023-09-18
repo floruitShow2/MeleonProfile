@@ -1,0 +1,165 @@
+@import '@/styles/theme.less';
+
+@text-color: #664900;
+
+.markdown-editor-meleon {
+  :deep(.markdown-body) {
+    background-image: linear-gradient(90deg,rgba(50,0,0,.07) 3%,transparent 0),linear-gradient(1turn,rgba(50,0,0,.07) 3%,transparent 0);
+    background-size: 20px 20px;
+    background-position: 50%;
+    h1, h2, h3, h4, h5, h6 {
+      position: relative;
+      display: flex;
+      margin-bottom: 20px;
+      padding-bottom: 5px;
+      padding-left: 25px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+      color: @text-color;
+      text-shadow: 1px 1px 1px #8a6200;
+      &:before {
+        content: "";
+        display: flex;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        margin: auto;
+        width: 20px;
+        height: 20px;
+        background-size: 20px 20px;
+        background-image: url('@/assets/images/article-mark.png');
+      }
+    }
+    h1 {
+      font-size: 26px;
+      border-bottom: 5px solid #6d4e00;
+    }
+    h2 {
+      font-size: 24px;
+      border-bottom: 3px solid #6d4e00;
+    }
+    h3 {
+      font-size: 22px;
+      border-bottom: 1px solid #6d4e00;
+    }
+    h4 {
+      font-size: 20px;
+    }
+    h5 {
+      font-size: 18px;
+    }
+    h6 {
+      font-size: 16px;
+    }
+    blockquote {
+      position: relative;
+      box-sizing: inherit;
+      border-left: none;
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ffd87a;
+      line-height: 25px;
+      font-weight: 400;
+      border-radius: 10px;
+      font-style: normal;
+      text-align: left;
+      text-size-adjust: 100%;
+      background-color: rgba(189, 134, 0, .5);
+      &:before, &:after {
+        position: absolute;
+        font-size: 34px;
+        font-weight: 700;
+        color: #cc9100;
+      }
+      &:before {
+        content: "❝";
+        top: 8px;
+        left: 5px;
+      }
+      &:after {
+        content: "❞";
+        right: 5px;
+        bottom: -5px;
+      }
+    }
+    strong {
+      color: #c28a00;
+      font-weight: bolder;
+      &:before {
+        content: '「';
+      }
+      &:after {
+        content: '」';
+      }
+    }
+
+    // 列表
+    blockquote,
+    details,
+    dl,
+    ol,
+    p,
+    pre,
+    table,
+    ul {
+      margin-bottom: 4px;
+    }
+    ol {
+      list-style: decimal;
+    }
+    
+    ul {
+      list-style: disc;
+    }
+    
+    ol, ul {
+      padding-left: 2em;
+    }
+
+    // 代码块
+    code, a {
+      color: #996d00;
+    }
+    a {
+      text-decoration: none;
+      font-weight: bolder;
+      color: #755300;
+      border-bottom: 1px solid #755300;
+    }
+    code {
+      background-color: rgba(130,98,0,.3);
+    }
+    pre {
+      border-radius: 6px;
+      box-shadow: 2px 4px 7px #999;
+      margin: 14px 0;
+      padding: 0 !important;
+    }
+    .language-js {
+      display: block;
+      position: relative;
+      overflow-x: auto;
+      color: #abb2bf;
+      background: #282c34;
+      padding: 4px 12px;
+      padding-top: 24px;
+      font-weight: 500;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .language-js::before {
+      content: '';
+      display: inline-block;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow: 15px 0 0 0 rgb(var(--yellow-6)),
+                  30px 0 0 0 rgb(var(--green-6));
+      #color(background-color, --primary-red-color);
+    }
+  }
+}

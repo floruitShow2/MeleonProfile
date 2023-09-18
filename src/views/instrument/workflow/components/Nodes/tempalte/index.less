@@ -1,0 +1,31 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-node-template {
+  width: 250px;
+  height: 120px;
+  padding: 10px;
+  border: solid 1px;
+  border-radius: 2px;
+  #color(border-color, --primary-text-color);
+  #color(background-color, --module-bg-color);
+  .ws-node-header {
+    width: 100%;
+    margin-bottom: 10px;
+    #flex(row, center, space-between);
+    span {
+      display: inline-block;
+      max-width: 120px;
+      font-size: 18px;
+      font-weight: 800;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      #color(color, --primary-text-color);
+    }
+  }
+  .ws-node-content {
+    width: 100%;
+    height: calc(100% - 20px - 10px);
+  }
+}
