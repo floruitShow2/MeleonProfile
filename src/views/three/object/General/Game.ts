@@ -73,7 +73,6 @@ class Game {
         x: '',
         z: '',
         y: '-=30',
-        ease: Power1.easeIn,
         onComplete: () => {
           this.choppedBlocks.remove(newBlocks.chopped)
         }

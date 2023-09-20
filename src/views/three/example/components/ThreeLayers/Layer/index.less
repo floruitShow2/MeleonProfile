@@ -27,12 +27,6 @@
       transform: rotate(180deg);
     }
   }
-  .is-not-visible {
-    span,
-    i {
-      #color(color, --lighter-text-color);
-    }
-  }
   .toolList {
     position: absolute;
     right: 10px;
@@ -61,4 +55,10 @@
 
 .is-selected {
   #color(background-color, --gray-blue-color);
+}
+.is-unvisible {
+  span,
+  i {
+    #color(color, --lighter-text-color);
+  }
 }

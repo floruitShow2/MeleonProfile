@@ -1,11 +1,12 @@
 import { defineComponent, nextTick, onMounted, ref } from 'vue'
+import { useBus } from '@/utils/global'
 import WsSearch, {
   ConvertToTree,
   ConvertToSearchFuzzyList,
   RestrictType,
   FuzzyResultType
 } from '@/components/search'
-import { Skeleton, SkeletonLine, SkeletonShape, Space } from '@arco-design/web-vue'
+import { Skeleton, SkeletonLine, SkeletonShape } from '@arco-design/web-vue'
 import LayersGroup from './LayerGroup'
 import Experience from '../../General/Experience'
 import './index.less'
@@ -17,7 +18,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup() {
+  emits: ['visibleChange', 'detailClick', 'mouseEnter', 'mouseLeave'],
+  setup(props, { emit }) {
     let experience: null | Experience = null
     const tabs = [
       {
@@ -58,6 +60,36 @@ export default defineComponent({
       return ConvertToSearchFuzzyList(layers.value, query)
     }
 
+    const hiddenLayers = ref<Array<string | number | symbol>>([])
+
+    const $bus = useBus()
+    const EventMap: Record<string, (e: unknown) => void> = {
+      visibleChange: (e: unknown) => {
+        const { uuid } = e as { uuid: string | number | symbol }
+        const idx = hiddenLayers.value.findIndex((item) => item === uuid)
+        if (idx !== -1) {
+          hiddenLayers.value.splice(idx, 1)
+        } else {
+          hiddenLayers.value.push(uuid)
+        }
+
+        // 发射事件响应
+        emit('visibleChange', e)
+      },
+      detailClick: (e: unknown) => {
+        emit('detailClick', e)
+      },
+      mouseEnter: (e: unknown) => {
+        emit('mouseEnter', e)
+      },
+      mouseLeave: (e: unknown) => {
+        emit('mouseLeave', e)
+      }
+    }
+    Object.keys(EventMap).forEach((key) => {
+      $bus.on(key, EventMap[key])
+    })
+
     return () => (
       <div class="three-layers">
         <div class="three-layers-tools">
@@ -77,7 +109,11 @@ export default defineComponent({
         </div>
         <div class="three-layers-group">
           {layers.value.length ? (
-            <LayersGroup totalLayers={layers.value} layers={layers.value} />
+            <LayersGroup
+              totalLayers={layers.value}
+              layers={layers.value}
+              hiddenLayers={hiddenLayers.value}
+            />
           ) : (
             <Skeleton animation>
               {new Array(5).fill(0).map(() => (

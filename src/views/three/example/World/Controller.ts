@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
 import GSAP from 'gsap'
 import Experience from '../General/Experience'
 import Camera from '../General/Camera'
@@ -36,6 +37,9 @@ export default class Controller {
     ease: number
   }
 
+  // transformController
+  transformControls!: TransformControls
+
   constructor() {
     this.experience = new Experience()
     const { scene, camera } = this.experience
@@ -59,6 +63,7 @@ export default class Controller {
     }
 
     this.setPath()
+    this.setTransformControls(this.experience.world.room.actualRoom)
     // this.onWheel()
   }
 
@@ -94,6 +99,26 @@ export default class Controller {
         this.direction = 'backward'
       }
     })
+  }
+
+  setTransformControls(target: THREE.Object3D) {
+    this.transformControls = new TransformControls(
+      this.camera.perspectiveCamera,
+      this.experience.canvas
+    )
+    this.transformControls.size = 0.75
+    this.transformControls.showX = false
+    this.transformControls.space = 'world'
+    this.transformControls.attach(target)
+
+    // 当使用 transformControls 时，需要禁用其他的 Controls
+    this.transformControls.addEventListener('mouseDown', () => {
+      this.camera.controls.enabled = false
+    })
+    this.transformControls.addEventListener('mouseUp', () => {
+      this.camera.controls.enabled = true
+    })
+    this.scene.add(this.transformControls)
   }
 
   // resize() {}

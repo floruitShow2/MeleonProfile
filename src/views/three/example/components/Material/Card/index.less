@@ -1,17 +1,17 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
 .material-card {
-  width: 70px;
+  width: 60px;
   height: 80px;
   border: solid 1px;
   cursor: pointer;
   #flex(column, center, space-between);
   #color(border-color, --primary-border-color);
-//   #color(background-color, --primary-bg-color);
+  //  #color(background-color, --primary-bg-color);
   .preview {
     width: 100%;
     height: 50px;
-    padding: 2px;
+    // padding: 2px;
   }
   .label {
     width: 100%;
@@ -23,7 +23,8 @@
       display: inline-block;
       width: 100%;
       overflow: hidden;
-      font-size: 14px;
+      font-size: 12px;
+      text-align: center;
       white-space: nowrap;
       text-overflow: ellipsis;
     }

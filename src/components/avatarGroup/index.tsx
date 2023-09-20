@@ -1,7 +1,7 @@
 import { createVNode, defineComponent, provide, ref, reactive } from 'vue'
 import { Popover } from '@arco-design/web-vue'
 import { getAllElements } from '@/utils/slots'
-import { avatarGroupInjectionKey } from '~/src/components/avatar/context'
+import { avatarGroupInjectionKey } from '@/components/avatar/context'
 import './index.less'
 
 export default defineComponent({

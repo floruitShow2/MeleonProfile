@@ -105,6 +105,7 @@ class Block {
   }
 
   tick() {
+    // 未放置 block 的动画效果
     if (this.state === this.STATES.ACTIVE) {
       const value = this.position[this.workingPlane]
       if (value > this.MOVE_AMOUNT || value < -this.MOVE_AMOUNT) this.reverseDirection()
@@ -170,7 +171,7 @@ class Block {
         )
       )
       const choppedMesh = new THREE.Mesh(choppedGeometry, this.material)
-      choppedMesh.scale.set(0.1, 0.1, 0.1)
+      // choppedMesh.scale.set(0.1, 0.1, 0.1)
 
       const choppedPosition = {
         x: this.position.x,

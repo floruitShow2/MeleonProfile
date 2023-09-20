@@ -29,6 +29,12 @@ export default class Camera {
   // controls
   controls!: OrbitControls
 
+  // frontViewCameraControl!: OrbitControls
+
+  // leftViewCameraControl!: OrbitControls
+
+  // TopViewCameraControl!: OrbitControls
+
   cameraHelper!: THREE.CameraHelper
 
   constructor() {
@@ -43,9 +49,9 @@ export default class Camera {
     this.frontViewCamera = this.createPerspectiveCamera(0, 0, 10)
     this.leftViewCamera = this.createPerspectiveCamera(15, 0, 0)
     this.TopViewCamera = this.createPerspectiveCamera(0, 15, 0)
-    this.setViewOrbitControls(this.frontViewCamera)
-    this.setViewOrbitControls(this.leftViewCamera)
-    this.setViewOrbitControls(this.TopViewCamera)
+    // this.setViewOrbitControls(this.frontViewCamera, this.frontViewCameraControl)
+    // this.setViewOrbitControls(this.leftViewCamera, this.leftViewCameraControl)
+    // this.setViewOrbitControls(this.TopViewCamera, this.TopViewCameraControl)
 
     this.createOrthographicCamera()
     // create OrbitControls
@@ -91,13 +97,13 @@ export default class Camera {
     this.controls.enableZoom = true
   }
 
-  setViewOrbitControls(camera: THREE.Camera) {
-    this.controls = new OrbitControls(camera, this.canvas)
-    this.controls.enableDamping = false
-    this.controls.enablePan = false
-    this.controls.enableRotate = false
-    this.controls.enableZoom = true
-  }
+  // setViewOrbitControls(camera: THREE.Camera, controls: OrbitControls) {
+  //   controls = new OrbitControls(camera, this.canvas)
+  //   controls.enableDamping = false
+  //   controls.enablePan = false
+  //   controls.enableRotate = false
+  //   controls.enableZoom = true
+  // }
 
   resize() {
     const { aspect } = this.sizes

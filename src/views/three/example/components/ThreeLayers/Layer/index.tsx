@@ -1,9 +1,15 @@
 import { computed, defineComponent, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
+import { useBus } from '@/utils/global'
+import { cs } from '@/utils/property'
 import './index.less'
 
 export default defineComponent({
   props: {
+    uuid: {
+      type: [String, Number, Symbol],
+      required: true
+    },
     label: {
       type: String,
       default: ''
@@ -27,7 +33,9 @@ export default defineComponent({
   },
   emits: ['mouseEnter', 'mouseLeave', 'click', 'detailClick', 'visibleChange'],
   setup(props, { emit }) {
-    const { label, type, level, isFold, parentLayerVisible } = toRefs(props)
+    const { uuid, label, type, level, isFold, parentLayerVisible } = toRefs(props)
+
+    const $bus = useBus()
 
     const isVisible = ref(true)
     const isSelected = ref(false)
@@ -37,39 +45,46 @@ export default defineComponent({
       return 10
     })
 
-    const onMouseEnter = () => {
-      emit('mouseEnter', {
-        label: label.value,
-        type: type.value
+    const className = computed(() =>
+      cs('ml-layer-container', [`is-${type.value}`], {
+        'is-selected': isSelected.value,
+        'is-unvisible': !isVisible.value || !parentLayerVisible.value
       })
+    )
+
+    const emitParams = computed(() => {
+      return {
+        uuid: uuid.value,
+        label: label.value,
+        type: type.value,
+        isVisible: isVisible.value
+      }
+    })
+
+    const onMouseEnter = () => {
+      $bus.emit('mouseEnter', emitParams.value)
     }
     const onMouseLeave = () => {
-      emit('mouseLeave', {
-        label: label.value,
-        type: type.value
-      })
+      $bus.emit('mouseLeave', emitParams.value)
     }
     const onDetailsClick = (e: MouseEvent) => {
       e.stopPropagation()
-      emit('detailClick', {
-        label: label.value,
-        type: type.value
-      })
+      $bus.emit('detailClick', emitParams.value)
     }
     const onVisibleClick = (e: MouseEvent) => {
       e.stopPropagation()
-      emit('visibleChange', {
-        label: label.value,
-        type: type.value
-      })
+      isVisible.value = !isVisible.value
+      emit('visibleChange')
+      $bus.emit('visibleChange', emitParams.value)
     }
     const onLayerClick = () => {
-      emit('click', { label: label.value, type: type.value })
+      emit('click', emitParams.value)
+      $bus.emit('click', emitParams.value)
     }
 
     return () => (
       <div
-        class={['ml-layer-container', `is-${type.value}`, isSelected.value && 'is-selected']}
+        class={className.value}
         style={{
           paddingLeft: `${LayerOffsetLeft.value}px`
         }}
@@ -77,7 +92,7 @@ export default defineComponent({
         onMouseleave={onMouseLeave}
         onClick={onLayerClick}
       >
-        <div class={['main', isVisible.value && parentLayerVisible.value ? '' : 'is-not-visible']}>
+        <div class="main">
           {type.value === 'folder' ? (
             <i class={['iconfont ws-arrow-up', isFold.value ? 'is-folded' : '']} />
           ) : (
