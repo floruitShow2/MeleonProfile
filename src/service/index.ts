@@ -1,7 +1,7 @@
 import { getServiceEnvConfig } from '@/utils/envConfig'
 import { createRequest } from './request'
 
-const { url, proxyPattern } = getServiceEnvConfig(import.meta.env as ServiceEnvSpace.ImportMetaEnv)
+const { url, proxyPattern } = getServiceEnvConfig(import.meta.env)
 
 const isHttpProxy = import.meta.env.VITE_HTTP_PROXY === 'Y'
 

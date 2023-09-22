@@ -20,7 +20,7 @@ const serviceEnv: ServiceEnv = {
  * @param env 环境
  */
 export function getServiceEnvConfig(
-  env: ServiceEnvSpace.ImportMetaEnv
+  env: ImportMetaEnv
 ): ServiceEnvSpace.ServiceEnvConfigWithProxyPattern {
   const { VITE_SERVICE_ENV = 'dev' } = env
 
