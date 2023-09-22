@@ -1,12 +1,12 @@
 import { defineComponent } from 'vue'
 import { Button } from '@arco-design/web-vue'
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 import WsNodeTemplate from '../tempalte/index'
 import './index.less'
 
 export default defineComponent({
   setup() {
-    const { t } = useI18n()
+    // const { t } = useI18n()
     return () => (
       <div class="ws-code-node">
         <WsNodeTemplate

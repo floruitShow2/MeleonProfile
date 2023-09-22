@@ -19,7 +19,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { id, data } = toRefs(props)
+    const { id } = toRefs(props)
     const workflow = inject(workflowInjectionKey)
     const { t } = useI18n()
 

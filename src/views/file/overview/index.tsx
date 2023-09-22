@@ -125,6 +125,7 @@ export default defineComponent({
                   ref={(el) => {
                     if (el) warehousesRefs.value[index] = '$el' in el ? el.$el : el
                   }}
+                  activeId={warehouse.id}
                   active={activeWarehouse.value === warehouse.id}
                   disabled={warehouse.disabled}
                   image={warehouse.image}

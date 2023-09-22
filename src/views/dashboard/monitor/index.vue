@@ -23,18 +23,18 @@
 </template>
 
 <script lang="ts" setup>
-  import ChatPanel from './components/chat-panel.vue';
-  import Studio from './components/studio.vue';
-  import DataStatistic from './components/data-statistic.vue';
-  import StudioStatus from './components/studio-status.vue';
-  import QuickOperation from './components/quick-operation.vue';
-  import StudioInformation from './components/studio-information.vue';
+  import ChatPanel from './components/chat-panel.vue'
+  import Studio from './components/studio.vue'
+  import DataStatistic from './components/data-statistic.vue'
+  import StudioStatus from './components/studio-status.vue'
+  import QuickOperation from './components/quick-operation.vue'
+  import StudioInformation from './components/studio-information.vue'
 </script>
 
 <script lang="ts">
   export default {
-    name: 'Monitor',
-  };
+    name: 'Monitor'
+  }
 </script>
 
 <style scoped lang="less">

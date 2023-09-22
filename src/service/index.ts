@@ -1,4 +1,4 @@
-import { getServiceEnvConfig } from '~/.env-config'
+import { getServiceEnvConfig } from '@/utils/envConfig'
 import { createRequest } from './request'
 
 const { url, proxyPattern } = getServiceEnvConfig(import.meta.env)
