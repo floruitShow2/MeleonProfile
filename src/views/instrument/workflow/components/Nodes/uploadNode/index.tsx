@@ -1,38 +1,34 @@
 import { PropType, defineComponent, inject, ref, toRefs } from 'vue'
 import { Upload } from '@arco-design/web-vue'
 import { useI18n } from 'vue-i18n'
+import type { NodeProps } from '@vue-flow/core'
 import { workflowInjectionKey, WorkFlowEvents } from '../../../core/output'
 import WsNodeTemplate from '../tempalte/index'
 import './index.less'
 
 export default defineComponent({
   props: {
-    id: {
-      type: String,
+    node: {
+      type: Object as PropType<NodeProps>,
       required: true
-    },
-    data: {
-      type: Object as PropType<Record<string, any>>,
-      default: () => ({
-        title: '文件上传'
-      })
     }
   },
   setup(props) {
-    const { id } = toRefs(props)
+    const { node } = toRefs(props)
+    const { id, data } = node.value
     const workflow = inject(workflowInjectionKey)
     const { t } = useI18n()
 
-    const nodeId = ref(id.value)
+    const nodeId = ref(id)
     const nodeSettings = ref({
-      title: props.data.title
+      title: data.title || ''
     })
 
     if (workflow) {
       workflow.on(WorkFlowEvents.onAIDC, (activeId: string) => {
         if (nodeId.value && nodeId.value !== activeId) return
-        const node = workflow.getActiveNode(activeId)
-        if (node) nodeSettings.value = node.data
+        const activeNode = workflow.getActiveNode(activeId)
+        if (activeNode) nodeSettings.value = activeNode.data
       })
     }
 

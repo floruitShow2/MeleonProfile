@@ -75,9 +75,9 @@ declare namespace ServiceEnvSpace {
     readonly VITE_VERCEL?: 'Y' | 'N'
   }
 
-  interface ImportMeta {
-    readonly env: ImportMetaEnv
-  }
+  // interface ImportMeta {
+  //   readonly env: ImportMetaEnv
+  // }
 }
 
 // export { ServiceEnvType }

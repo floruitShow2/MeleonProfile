@@ -1,15 +1,19 @@
-import { defineComponent, toRefs } from 'vue'
+import { PropType, defineComponent, toRefs } from 'vue'
+import type { NodeProps } from '@vue-flow/core'
 import WsNodeTemplate from '../tempalte/index'
 import './index.less'
 
 export default defineComponent({
   props: {
-    class: String
+    node: {
+      type: Object as PropType<NodeProps>
+    }
   },
   setup(props) {
-    const { class: className } = toRefs(props)
+    const { node } = toRefs(props)
+    console.log(node)
     return () => (
-      <div class={['ws-nest-node', className.value]}>
+      <div class={['ws-nest-node']}>
         <WsNodeTemplate title="嵌套节点"></WsNodeTemplate>
       </div>
     )

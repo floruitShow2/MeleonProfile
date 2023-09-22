@@ -19,8 +19,8 @@ export default defineComponent({
 
     const vueFlowSlots = {
       'node-code': () => <WsCodeNode />,
-      'node-nest': (props: NodeProps) => <WsNestNode {...props} />,
-      'node-upload': (props: NodeProps) => <WsUploadNode {...props} />,
+      'node-nest': (props: NodeProps) => <WsNestNode node={props} />,
+      'node-upload': (props: NodeProps) => <WsUploadNode node={props} />,
       'edge-edInput': (props: EdgeProps) => <WsEdgeInput {...props} />
     }
 
