@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import ArcoVue from '@arco-design/web-vue'
 import ArcoVueIcon from '@arco-design/web-vue/es/icon'
-import globalComponents from '@/components'
+import globalComponents from '@/components/index'
 import VueGridLayout from 'vue-grid-layout'
 import mitt from 'mitt'
 import router from './router'
