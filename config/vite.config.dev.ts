@@ -5,6 +5,7 @@ import baseConfig from './vite.config.base'
 export default mergeConfig(
   {
     mode: 'development',
+    target: 'es2020',
     server: {
       open: true,
       cors: true,

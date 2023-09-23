@@ -6,7 +6,7 @@
       row-key="id"
       :row-selection="{
         type: 'checkbox',
-        showCheckedAll: true,
+        showCheckedAll: true
       }"
       :border="false"
       :pagination="false"
@@ -19,21 +19,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, h, compile } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import type {
-    TableColumnData,
-    TableData,
-  } from '@arco-design/web-vue/es/table/interface.d';
+  import { computed, h, compile } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import type { TableColumnData, TableData } from '@arco-design/web-vue/es/table/interface.d'
 
   interface PreviewRecord {
-    cover: string;
-    name: string;
-    duration: string;
-    id: string;
-    status: number;
+    cover: string
+    name: string
+    duration: string
+    id: string
+    status: number
   }
-  const { t } = useI18n();
+  const { t } = useI18n()
   const data: PreviewRecord[] = [
     {
       cover:
@@ -41,17 +38,17 @@
       name: '视频直播',
       duration: '00:05:19',
       id: '54e23ade',
-      status: -1,
-    },
-  ];
+      status: -1
+    }
+  ]
   const renderTag = (status: number) => {
     if (status === -1) {
       return `<a-tag  color="red" class='data-statistic-list-cover-tag'>
             ${t('monitor.list.tag.auditFailed')}
-        </a-tag>`;
+        </a-tag>`
     }
-    return '';
-  };
+    return ''
+  }
   // Using the Render function is more flexible than using templates.
   // But, cannot bind context and local scopes are also lost
 
@@ -59,47 +56,35 @@
     return [
       {
         title: t('monitor.list.title.order'),
-        render({
-          rowIndex,
-        }: {
-          record: TableData;
-          column: TableColumnData;
-          rowIndex: number;
-        }) {
-          const tmp = `<span>${rowIndex + 1}</span>`;
-          return h(compile(tmp));
-        },
+        render({ rowIndex }: { record: TableData; column: TableColumnData; rowIndex: number }) {
+          const tmp = `<span>${rowIndex + 1}</span>`
+          return h(compile(tmp))
+        }
       },
       {
         title: t('monitor.list.title.cover'),
-        render({
-          record,
-        }: {
-          record: TableData;
-          column: TableColumnData;
-          rowIndex: number;
-        }) {
+        render({ record }: { record: TableData; column: TableColumnData; rowIndex: number }) {
           const tmp = `<div class='data-statistic-list-cover-wrapper'>
               <img src=${record.cover} />
               ${renderTag(record.status)}
-            </div>`;
-          return h(compile(tmp));
-        },
+            </div>`
+          return h(compile(tmp))
+        }
       },
       {
         title: t('monitor.list.title.name'),
-        dataIndex: 'name',
+        dataIndex: 'name'
       },
       {
         dataIndex: 'duration',
-        title: t('monitor.list.title.duration'),
+        title: t('monitor.list.title.duration')
       },
       {
         dataIndex: 'id',
-        title: t('monitor.list.title.id'),
-      },
-    ];
-  });
+        title: t('monitor.list.title.id')
+      }
+    ]
+  })
 </script>
 
 <style lang="less">

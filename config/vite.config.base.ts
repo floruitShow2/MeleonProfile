@@ -3,14 +3,14 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import svgLoader from 'vite-svg-loader'
-import ConfigMock from './plugin/mock'
+import configMock from './plugin/mock'
 import configArcoStyleImportPlugin from './plugin/arcoStyleImport'
 
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    ConfigMock(),
+    configMock(),
     svgLoader({ svgoConfig: {} }),
     configArcoStyleImportPlugin()
   ],

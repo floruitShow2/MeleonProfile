@@ -28,9 +28,9 @@
 </template>
 
 <script lang="ts" setup>
-  import { useUserStore } from '@/store';
+  import { useUserStore } from '@/store'
 
-  const userInfo = useUserStore();
+  const userInfo = useUserStore()
 </script>
 
 <style scoped lang="less">

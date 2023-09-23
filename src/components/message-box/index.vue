@@ -60,6 +60,7 @@
     setLoading(true)
     try {
       const { data } = await queryMessageList()
+      if (!data) return
       messageData.messageList = data
     } catch (err) {
       // you can report use errorHandler or other

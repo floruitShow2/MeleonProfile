@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { login as userLogin, logout as userLogout, getUserInfo, LoginData } from '@/api/user'
+import { login as userLogin, logout as userLogout, getUserInfo, LoginData } from '@/api/auth'
 import { localStg } from '@/utils/storage'
 import { removeRouteListener } from '@/utils/route-listener'
 import { UserState } from './types'
@@ -54,7 +54,7 @@ const useUserStore = defineStore('user', {
     // Get user's information
     async info() {
       const res = await getUserInfo()
-
+      if (!res.data) return
       this.setInfo(res.data)
     },
 
@@ -62,6 +62,7 @@ const useUserStore = defineStore('user', {
     async login(loginForm: LoginData) {
       try {
         const res = await userLogin(loginForm)
+        if (!res.data) return
         localStg.set('token', res.data.token)
       } catch (err) {
         localStg.remove('token')

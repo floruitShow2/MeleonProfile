@@ -1,5 +1,4 @@
-import Mock from 'mockjs'
-import setupMock, { successResponseWrap } from '@/utils/setup-mock'
+import type { MockMethod } from 'vite-plugin-mock'
 
 const haveReadIds: number[] = []
 const getMessageList = () => {
@@ -70,16 +69,30 @@ const getMessageList = () => {
   }))
 }
 
-setupMock({
-  setup: () => {
-    Mock.mock(new RegExp('/api/message/list'), () => {
-      return successResponseWrap(getMessageList())
-    })
-
-    Mock.mock(new RegExp('/api/message/read'), (params: { body: string }) => {
-      const { ids } = JSON.parse(params.body)
+const apis: MockMethod[] = [
+  {
+    url: '/mock/api/message/list',
+    method: 'post',
+    response: () => {
+      return {
+        Code: 1,
+        Message: 'ok',
+        ReturnData: getMessageList()
+      }
+    }
+  },
+  {
+    url: '/mock/api/message/read',
+    method: 'post',
+    response: ({ body }) => {
+      const { ids } = body
       haveReadIds.push(...(ids || []))
-      return successResponseWrap(true)
-    })
+      return {
+        Code: 1,
+        Message: 'ok',
+        ReturnData: true
+      }
+    }
   }
-})
+]
+export default apis

@@ -8,7 +8,7 @@
       height: '100%',
       paddingTop: '16px',
       display: 'flex',
-      flexFlow: 'column',
+      flexFlow: 'column'
     }"
   >
     <a-space :size="8">
@@ -17,9 +17,7 @@
           {{ $t('monitor.chat.options.all') }}
         </a-option>
       </a-select>
-      <a-input-search
-        :placeholder="$t('monitor.chat.placeholder.searchCategory')"
-      />
+      <a-input-search :placeholder="$t('monitor.chat.placeholder.searchCategory')" />
       <a-button type="text">
         <icon-download />
       </a-button>
@@ -43,24 +41,25 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue';
-  import { queryChatList, ChatRecord } from '@/api/message';
-  import useLoading from '@/hooks/loading';
-  import ChatList from './chat-list.vue';
+  import { ref } from 'vue'
+  import { queryChatList, ChatRecord } from '@/api/message'
+  import useLoading from '@/hooks/loading'
+  import ChatList from './chat-list.vue'
 
-  const { loading, setLoading } = useLoading(true);
-  const chatData = ref<ChatRecord[]>([]);
+  const { loading, setLoading } = useLoading(true)
+  const chatData = ref<ChatRecord[]>([])
   const fetchData = async () => {
     try {
-      const { data } = await queryChatList();
-      chatData.value = data;
+      const { data } = await queryChatList()
+      if (!data) return
+      chatData.value = data
     } catch (err) {
       // you can report use errorHandler or other
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-  fetchData();
+  }
+  fetchData()
 </script>
 
 <style scoped lang="less">

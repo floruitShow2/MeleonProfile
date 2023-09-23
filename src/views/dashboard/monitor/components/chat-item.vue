@@ -25,17 +25,17 @@
 </template>
 
 <script lang="ts" setup>
-  import { PropType } from 'vue';
-  import { ChatRecord } from '@/api/message';
+  import { PropType } from 'vue'
+  import { ChatRecord } from '@/api/message'
 
   defineProps({
     itemData: {
       type: Object as PropType<ChatRecord>,
       default() {
-        return {};
-      },
-    },
-  });
+        return {}
+      }
+    }
+  })
 </script>
 
 <style scoped lang="less">

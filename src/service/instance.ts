@@ -53,6 +53,7 @@ export default class CustomAxiosInstance {
             handleConfig.headers.user_token = localStg.get('token') || ''
           }
         }
+        console.log(handleConfig)
         return handleConfig
       },
       (axiosError: AxiosError) => {
