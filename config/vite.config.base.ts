@@ -3,14 +3,14 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import svgLoader from 'vite-svg-loader'
-import configMock from './plugin/mock'
+import ConfigMock from './plugin/mock'
 import configArcoStyleImportPlugin from './plugin/arcoStyleImport'
 
 export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    configMock(),
+    ConfigMock(),
     svgLoader({ svgoConfig: {} }),
     configArcoStyleImportPlugin()
   ],
@@ -19,10 +19,6 @@ export default defineConfig({
       {
         find: '@',
         replacement: resolve(__dirname, '../src')
-      },
-      {
-        find: '~',
-        replacement: resolve(__dirname, '..')
       },
       {
         find: 'assets',
@@ -37,7 +33,7 @@ export default defineConfig({
         replacement: 'vue/dist/vue.esm-bundler.js' // compile template
       }
     ],
-    extensions: ['.ts', '.js', '.tsx', 'md']
+    extensions: ['.ts', '.js']
   },
   define: {
     'process.env': {}
