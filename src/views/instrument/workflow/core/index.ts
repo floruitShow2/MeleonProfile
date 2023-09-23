@@ -117,9 +117,6 @@ export default class WorkflowCore extends EventEmitter {
     let nodeData: Node | null = null
 
     switch (type) {
-      case 'code':
-        nodeData = { id, type, label: type, position: { x, y }, data: { delete: false } }
-        break
       case 'upload':
         nodeData = {
           id,

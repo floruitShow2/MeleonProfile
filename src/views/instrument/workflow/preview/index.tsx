@@ -10,7 +10,7 @@ import type {
 import { MiniMap } from '@vue-flow/minimap'
 import { WorkFlowEvents, workflowInjectionKey } from '../core/output'
 import WsEdgeInput from '../components/Edges/edInputEdge/index'
-import { WsCodeNode, WsUploadNode, WsNestNode } from '../components/Nodes'
+import { WsUploadNode, WsNestNode } from '../components/Nodes'
 import './index.less'
 
 export default defineComponent({
@@ -18,7 +18,6 @@ export default defineComponent({
     const workflow = inject(workflowInjectionKey)
 
     const vueFlowSlots = {
-      'node-code': () => <WsCodeNode />,
       'node-nest': (props: NodeProps) => <WsNestNode node={props} />,
       'node-upload': (props: NodeProps) => <WsUploadNode node={props} />,
       'edge-edInput': (props: EdgeProps) => <WsEdgeInput {...props} />

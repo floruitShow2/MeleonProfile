@@ -9,7 +9,7 @@ export default defineComponent({
     const { t } = useI18n()
 
     const toolNodes = ref<WorkFlow.NodeGroups>({
-      base: ['code', 'upload', 'nest']
+      base: ['upload', 'nest']
     })
 
     const handleAddNode = (nodeType: WorkFlow.NodeType) => {

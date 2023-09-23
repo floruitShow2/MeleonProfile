@@ -18,7 +18,7 @@ interface ImportMetaEnv {
   /** 项目描述 */
   readonly VITE_APP_DESC: string
   /** */
-  readonly VITE_SERVICE_ENV: 'dev' | 'prod' | 'test'
+  // readonly VITE_SERVICE_ENV: 'dev' | 'prod' | 'test'
   /**
    * 权限路由模式:
    * - static - 前端声明的静态
@@ -36,7 +36,7 @@ interface ImportMetaEnv {
    */
   readonly VITE_ICON_LOCAL_PREFFIX: string
   /** 后端服务的环境类型 */
-  readonly VITE_SERVICE_ENV?: ServiceEnvType
+  readonly VITE_SERVICE_ENV?: ServiceEnvSpace.ServiceEnvType
   /** 开启请求代理 */
   readonly VITE_HTTP_PROXY?: 'Y' | 'N'
   /** 是否开启打包文件大小结果分析 */

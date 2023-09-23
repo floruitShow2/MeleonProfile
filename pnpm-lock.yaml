@@ -55,9 +55,6 @@ dependencies:
   mitt:
     specifier: ^3.0.0
     version: 3.0.0
-  monaco-editor:
-    specifier: ^0.41.0
-    version: 0.41.0
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -6928,10 +6925,6 @@ packages:
     hasBin: true
     dependencies:
       commander: 10.0.0
-
-  /monaco-editor@0.41.0:
-    resolution: {integrity: sha512-1o4olnZJsiLmv5pwLEAmzHTE/5geLKQ07BrGxlF4Ri/AXAc2yyDGZwHjiTqD8D/ROKUZmwMA28A+yEowLNOEcA==}
-    dev: false
 
   /mozjpeg@7.1.1:
     resolution: {integrity: sha512-iIDxWvzhWvLC9mcRJ1uSkiKaj4drF58oCqK2bITm5c2Jt6cJ8qQjSSru2PCaysG+hLIinryj8mgz5ZJzOYTv1A==}
