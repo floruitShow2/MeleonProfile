@@ -56,14 +56,18 @@
       height: 28px;
       text-align: center;
       line-height: 28px;
+      border-radius: 50%;
     }
     .ws-navigator {
       display: none;
     }
+    .is-pinned {
+      color: #ffffff;
+      #color(background-color, --heavy-blue-color) !important;
+    }
   }
   .tools > i:not(.ws-navigator):hover {
-    border-radius: 50%;
-    #color(background-color, --heavy-blue-color) !important;
+    #color(background-color, --heavy-blue-color);
   }
 }
 .search-hit:last-child {

@@ -1,6 +1,13 @@
 import * as THREE from 'three'
 import Experience from '../General/Experience'
 
+const DEFAULT_GRID = {
+  isShow: true,
+  size: 20,
+  divisions: 20,
+  colorCenterLine: 0xffffff,
+  colorGrid: 0xffffff
+}
 export default class Helper {
   experience!: Experience
 
@@ -13,6 +20,7 @@ export default class Helper {
     this.experience = new Experience()
     const { scene } = this.experience
     this.scene = scene
+    this.createGridHelper(DEFAULT_GRID)
   }
 
   createGridHelper(options: {

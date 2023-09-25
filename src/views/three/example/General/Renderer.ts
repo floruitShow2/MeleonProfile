@@ -33,8 +33,8 @@ export default class Renderer {
       canvas: this.canvas,
       antialias: true
     })
-    this.renderer.useLegacyLights = true
-    this.renderer.outputEncoding = THREE.sRGBEncoding
+    // this.renderer.useLegacyLights = true
+    // this.renderer.outputEncoding = THREE.sRGBEncoding
     this.renderer.toneMapping = THREE.CineonToneMapping
     this.renderer.toneMappingExposure = 0.5
     this.renderer.shadowMap.enabled = true

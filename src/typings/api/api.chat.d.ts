@@ -21,6 +21,17 @@ declare namespace ApiChat {
   export interface TextBody {
     content: string
     replyId?: string
+    /**
+     * 消息链接映射
+     */
+    urlContentMap: Record<
+      string,
+      {
+        title: string
+        description: string
+        image: string
+      }
+    >
   }
 
   export interface FileBody {
@@ -58,6 +69,8 @@ declare namespace ApiChat {
     roomName: string
     roomAvatar: string
     roomCreateTime: Date
+    // 是否置顶
+    isPinned: boolean
     relativeUserId: string[]
     // message list
     unreadCount: number

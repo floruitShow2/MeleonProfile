@@ -8,8 +8,8 @@ node_modules
 dist
 dist-ssr
 *.local
-public/draco
-public/models
-public/textures
+# public/draco
+# public/models
+# public/textures
 
 .vercel

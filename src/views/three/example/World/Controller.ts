@@ -62,7 +62,7 @@ export default class Controller {
       ease: 0.1
     }
 
-    this.setPath()
+    // this.setPath()
     this.setTransformControls(this.experience.world.room.actualRoom)
     // this.onWheel()
   }
@@ -126,22 +126,22 @@ export default class Controller {
     // console.log(this.camera)
     this.lerp.current = GSAP.utils.interpolate(this.lerp.current, this.lerp.target, this.lerp.ease)
     // 自动播放
-    if (this.direction === 'backward') {
-      this.lerp.target -= 0.001
-    } else {
-      this.lerp.target += 0.001
-    }
+    // if (this.direction === 'backward') {
+    //   this.lerp.target -= 0.001
+    // } else {
+    //   this.lerp.target += 0.001
+    // }
     // 将范围限制在[0, 1]之间，避免边界情况造成的错误
-    this.lerp.current = GSAP.utils.clamp(0, 1, this.lerp.current)
-    this.lerp.target = GSAP.utils.clamp(0, 1, this.lerp.target)
+    // this.lerp.current = GSAP.utils.clamp(0, 1, this.lerp.current)
+    // this.lerp.target = GSAP.utils.clamp(0, 1, this.lerp.target)
     // 更新两个 point 的位置信息
-    this.curve.getPointAt(this.lerp.current % 1, this.position)
-    this.camera.orthographicCamera.position.copy(this.position)
-    this.curve.getPointAt(this.lerp.current, this.lookAtPosition)
-    this.directionalVector.subVectors(this.curve.getPointAt(this.lerp.current % 1), this.position)
-    this.directionalVector.normalize()
-    this.crossVector.crossVectors(this.directionalVector, this.staticVector)
-    this.crossVector.multiplyScalar(100000)
-    this.camera.orthographicCamera.lookAt(this.crossVector)
+    // this.curve.getPointAt(this.lerp.current % 1, this.position)
+    // this.camera.orthographicCamera.position.copy(this.position)
+    // this.curve.getPointAt(this.lerp.current, this.lookAtPosition)
+    // this.directionalVector.subVectors(this.curve.getPointAt(this.lerp.current % 1), this.position)
+    // this.directionalVector.normalize()
+    // this.crossVector.crossVectors(this.directionalVector, this.staticVector)
+    // this.crossVector.multiplyScalar(100000)
+    // this.camera.orthographicCamera.lookAt(this.crossVector)
   }
 }

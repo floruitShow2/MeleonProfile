@@ -1,4 +1,4 @@
-import { defineComponent, onBeforeMount, ref, computed } from 'vue'
+import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
 import { GetRooms } from '@/api/instrument/chat'
 import { useAppStore } from '@/store'
 import { Drawer } from '@arco-design/web-vue'
@@ -25,6 +25,14 @@ export default defineComponent({
       return findRoom || null
     }
 
+    const handleRoomPinned = (roomId: string) => {
+      const findIdx = rooms.value.findIndex((room) => room.roomId === roomId)
+      if (findIdx !== -1) {
+        const findRoom = rooms.value[findIdx]
+        rooms.value.splice(findIdx, 1, { ...findRoom, isPinned: !findRoom.isPinned })
+      }
+    }
+
     onBeforeMount(updateRooms)
 
     const rooomsVisible = ref<boolean>(false)
@@ -34,7 +42,11 @@ export default defineComponent({
       <div class="ws-contact">
         {!hideMenu.value ? (
           <div class="ws-contact-module ws-contact-left">
-            <WsRoomList v-model:modelValue={activeRoomId.value} rooms={rooms.value} />
+            <WsRoomList
+              v-model:modelValue={activeRoomId.value}
+              rooms={rooms.value}
+              onRoomPinned={handleRoomPinned}
+            />
           </div>
         ) : (
           <Drawer
@@ -49,7 +61,11 @@ export default defineComponent({
             }}
           >
             <div class="ws-contact-module ws-contact-left">
-              <WsRoomList v-model:modelValue={activeRoomId.value} rooms={rooms.value} />
+              <WsRoomList
+                v-model:modelValue={activeRoomId.value}
+                rooms={rooms.value}
+                onRoomPinned={handleRoomPinned}
+              />
             </div>
           </Drawer>
         )}

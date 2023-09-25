@@ -45,7 +45,6 @@ export default class Camera {
     this.canvas = canvas
     // create threejs camera: 分别创建 透视相机 和 正交相机
     this.perspectiveCamera = this.createPerspectiveCamera(10, 14, 10)
-    this.setOrbitControls(this.perspectiveCamera)
     this.frontViewCamera = this.createPerspectiveCamera(0, 0, 10)
     this.leftViewCamera = this.createPerspectiveCamera(15, 0, 0)
     this.TopViewCamera = this.createPerspectiveCamera(0, 15, 0)
@@ -54,7 +53,7 @@ export default class Camera {
     // this.setViewOrbitControls(this.TopViewCamera, this.TopViewCameraControl)
 
     this.createOrthographicCamera()
-    // create OrbitControls
+    this.setOrbitControls(this.perspectiveCamera)
   }
 
   createPerspectiveCamera(x: number, y: number, z: number) {

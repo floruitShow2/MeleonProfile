@@ -3,7 +3,7 @@
     <header class="container-header">
       <h4 class="container-header_title">{{ $t('dept.title') }}</h4>
       <div class="container-header_tool">
-        <WsSearch id="dept" :fetch-fuzzy-list="FetchFuzzyList" @on-select="onDeptSelect" />
+        <WsSearch id="dept" :fetch-fuzzy-list="FetchFuzzyList" @select="onDeptSelect" />
         <a-button type="primary" size="small" @click="handleCreateDept">
           {{ $t('dept.create') }}
         </a-button>

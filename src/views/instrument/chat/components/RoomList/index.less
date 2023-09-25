@@ -23,11 +23,27 @@
     }
   }
   &_content {
+    position: relative;
     width: 100%;
     height: calc(100vh - 50px);
+    overflow: auto;
     #color(background-color, --module-bg-color);
-    .is-active {
-      #color(background-color, --primary-bg-color);
+    .group-title {
+      position: sticky;
+      top: 0;
+      padding: 5px 20px;
+      font-size: 14px;
+      line-height: 23px;
+      #flex(row, center, flex-start);
+      #color(color, --lighter-text-color);
+      #color(background-color, --module-bg-color);
+      i {
+        font-size: 20px;
+        margin-right: 5px;
+      }
+      span {
+        line-height: 23px;
+      }
     }
   }
 }

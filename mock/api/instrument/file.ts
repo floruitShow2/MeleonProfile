@@ -56,7 +56,6 @@ const createFakeOperationLogs = (): ApiFile.OperationLogType[] => {
 const apis: MockMethod[] = [
   {
     url: '/mock/api/file/GetRecentFiles',
-    timeout: 200,
     method: 'get',
     response: ({ query }): Service.MockServiceResult<ApiFile.RecentFileType[]> => {
       const { recent } = query
@@ -69,7 +68,6 @@ const apis: MockMethod[] = [
   },
   {
     url: '/mock/api/file/GetOperationLogs',
-    timeout: 200,
     method: 'get',
     response: ({ query }): Service.MockServiceResult<ApiFile.OperationLogType[]> => {
       const { warehouse } = query

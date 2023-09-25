@@ -14,6 +14,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const { active } = toRefs(props)
 
+    console.log(active.value)
+
     const appStore = useAppStore()
     const hideMenu = computed(() => appStore.hideMenu)
 

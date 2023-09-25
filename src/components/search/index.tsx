@@ -1,12 +1,12 @@
 import { defineComponent, ref } from 'vue'
 import { Modal, Input } from '@arco-design/web-vue'
 import { useDebounceFn } from '@vueuse/core'
-import { localStg } from '@/utils/storage'
-import { ConvertToTree, ConvertToSearchFuzzyList } from './type'
-import type { FuzzyResultType, FuzzyItemType, RestrictType } from './type'
+import { ConvertToTree, ConvertToSearchFuzzyList, ConvertToRestrictList } from './type'
+import type { FuzzyResultType, FuzzyItemType, RestrictType, StoreRecordType } from './type'
 import './index.less'
 
-export { ConvertToTree, ConvertToSearchFuzzyList, FuzzyItemType, FuzzyResultType, RestrictType }
+export { ConvertToTree, ConvertToRestrictList, ConvertToSearchFuzzyList }
+export type { FuzzyItemType, FuzzyResultType, RestrictType, StoreRecordType }
 export default defineComponent({
   props: {
     id: {
@@ -23,7 +23,7 @@ export default defineComponent({
       }
     }
   },
-  emits: ['onSelect'],
+  emits: ['select'],
   setup(props, { emit }) {
     const STORAGE_KEY = `--iot-${props.id}-records` as StorageInterface.SearchRecords
 
@@ -31,12 +31,19 @@ export default defineComponent({
     const isSearchPanelShow = ref(false)
 
     // 点击搜索结果后更新本地存储
-    const storageList = ref<string[]>([])
+    const storageList = ref<StoreRecordType[]>([])
+    const handleStoreList = (list?: StoreRecordType[]) => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list || storageList.value))
+    }
+    const handleSortList = () => {
+      storageList.value.sort((a, b) => Number(a.isPinned) - Number(b.isPinned))
+      // handleStoreList()
+    }
 
     const handleSearchPanel = () => {
-      const storedRecords = localStg.get(STORAGE_KEY)
-      if (!storedRecords) localStg.set(STORAGE_KEY, [])
-      else storageList.value = storedRecords
+      const storedRecords = localStorage.getItem(STORAGE_KEY)
+      if (!storedRecords) handleStoreList([])
+      else storageList.value = JSON.parse(storedRecords)
       isSearchPanelShow.value = !isSearchPanelShow.value
     }
 
@@ -58,13 +65,44 @@ export default defineComponent({
       hitsCount.value = nbHits
     })
 
-    const handleResultClick = (id: string | number | symbol) => {
+    const handleResultClick = (hit: FuzzyItemType) => {
+      const { objectId, type, hierarchy } = hit
+      // 关闭弹窗
       isSearchPanelShow.value = false
-      const storedRecords = localStg.get(STORAGE_KEY)
-      if (storedRecords) {
-        localStg.set(STORAGE_KEY, [...new Set([...storedRecords, searchQuery.value])])
-      } else localStg.set(STORAGE_KEY, [searchQuery.value])
-      emit('onSelect', { id })
+      searchQuery.value = ''
+      // 存储搜索记录
+      const storeObject: StoreRecordType = {
+        value: hierarchy[type],
+        isPinned: false
+      }
+      const storedRecords = localStorage.getItem(STORAGE_KEY)
+      const parsedRecords: StoreRecordType[] = storedRecords ? JSON.parse(storedRecords) : []
+      const findRecord = parsedRecords.find((record) => record.value === storeObject.value)
+      if (!findRecord) parsedRecords.push(storeObject)
+      handleStoreList(parsedRecords)
+      emit('select', { id: objectId })
+    }
+
+    const pinHistoryRecord = (e: MouseEvent, item: StoreRecordType) => {
+      e.stopPropagation()
+      const findIdx = storageList.value.findIndex((li) => li.value === item.value)
+      if (findIdx !== -1) {
+        storageList.value.splice(findIdx, 1, { value: item.value, isPinned: !item.isPinned })
+      }
+      handleSortList()
+      handleStoreList()
+    }
+    const closeHistoryRecord = (e: MouseEvent, item: StoreRecordType) => {
+      e.stopPropagation()
+      const findIdx = storageList.value.findIndex((li) => li.value === item.value)
+      if (findIdx !== -1) {
+        storageList.value.splice(findIdx, 1)
+      }
+      handleStoreList()
+    }
+    const handleRecordItemClick = (item: StoreRecordType) => {
+      searchQuery.value = item.value
+      startSearchFuzzyList(searchQuery.value)
     }
 
     return () => (
@@ -98,17 +136,14 @@ export default defineComponent({
                           <ul>
                             {mapHits.value[group].map((hit) => {
                               return (
-                                <li
-                                  class="search-hit"
-                                  onClick={() => handleResultClick(hit.objectId)}
-                                >
+                                <li class="search-hit" onClick={() => handleResultClick(hit)}>
                                   <i class="iconfont ws-clock"></i>
                                   <span
                                     innerHTML={hit.hierarchy[hit.type].replace(
                                       searchQuery.value,
                                       `<mark>${searchQuery.value}</mark>`
                                     )}
-                                  ></span>
+                                  />
                                   <div class="tools">
                                     <i class="iconfont ws-navigator"></i>
                                   </div>
@@ -125,23 +160,31 @@ export default defineComponent({
               // 历史搜索记录
               if (storageList.value.length > 0) {
                 return (
-                  <>
+                  <div class="search-hit-wrapper">
                     <span class="search-hit-source">搜索历史</span>
                     <ul>
                       {storageList.value.map((item) => {
                         return (
-                          <li class="search-hit">
+                          <li class="search-hit" onClick={() => handleRecordItemClick(item)}>
                             <i class="iconfont ws-clock"></i>
-                            <span>{item}</span>
+                            <span>{item.value}</span>
                             <div class="tools">
-                              <i class="iconfont ws-nail"></i>
-                              <i class="iconfont ws-close"></i>
+                              <i
+                                class={['iconfont ws-nail', item.isPinned && 'is-pinned']}
+                                onClick={(e) => pinHistoryRecord(e, item)}
+                              ></i>
+                              {!item.isPinned && (
+                                <i
+                                  class="iconfont ws-close"
+                                  onClick={(e) => closeHistoryRecord(e, item)}
+                                ></i>
+                              )}
                             </div>
                           </li>
                         )
                       })}
                     </ul>
-                  </>
+                  </div>
                 )
               }
               // 空状态
@@ -155,7 +198,7 @@ export default defineComponent({
           top={100}
           closable={false}
           align-center={false}
-        ></Modal>
+        />
       </div>
     )
   }

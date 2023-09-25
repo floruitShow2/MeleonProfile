@@ -37,7 +37,7 @@ export default defineComponent({
       const maskName = 'maskObject'
       const vector3 = new THREE.Vector3()
       const maskMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffba00,
+        color: 0xff0000,
         transparent: true, // 设置为true，opacity才会生效
         side: THREE.DoubleSide,
         opacity: 0.6,
@@ -48,7 +48,7 @@ export default defineComponent({
         const worldVector3 = objectsGroup.getWorldPosition(vector3)
         const maskObject = objectsGroup.clone()
         maskObject.name = maskName
-        maskObject.scale.set(0.11, 0.11, 0.11)
+        maskObject.scale.set(0.1, 0.1, 0.1)
         maskObject.position.copy(worldVector3)
         maskObject.rotation.copy(objectsGroup.rotation)
         maskObject.children.forEach((object) => {
@@ -61,7 +61,7 @@ export default defineComponent({
         const worldVector3 = objectMesh.getWorldPosition(vector3)
         const maskObject = objectMesh.clone()
         maskObject.name = maskName
-        maskObject.scale.set(0.11, 0.11, 0.11)
+        maskObject.scale.set(0.1, 0.1, 0.1)
         maskObject.position.copy(worldVector3)
         if (objectMesh.parent && objectMesh.parent.name !== 'Scene') {
           maskObject.rotation.copy(objectMesh.parent.rotation)

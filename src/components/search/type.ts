@@ -1,18 +1,6 @@
 import { useDeepClone } from '@/utils/format/object'
 
-export type Level = `lvl${number}`
-
-export interface FuzzyItemType {
-  objectId: string | number | symbol
-  type: Level
-  hierarchy: Record<Level, string>
-}
-
-export interface FuzzyResultType {
-  nbHits: number
-  hits: FuzzyItemType[]
-}
-
+// 转换
 export interface RestrictType {
   // 节点id
   id: string | number | symbol
@@ -49,6 +37,36 @@ export const ConvertToTree = <T extends RestrictType>(data: T[]): T[] => {
   return res
 }
 
+// 查找
+export type Level = `lvl${number}`
+
+export interface FuzzyItemType {
+  objectId: string | number | symbol
+  type: Level
+  hierarchy: Record<Level, string>
+}
+
+export interface FuzzyResultType {
+  nbHits: number
+  hits: FuzzyItemType[]
+}
+
+export const ConvertToRestrictList = <T extends Record<string, any>>(
+  arr: T[],
+  map: Record<string, keyof RestrictType>
+): RestrictType[] => {
+  return arr.map((item) => {
+    const obj: any = {}
+    Object.keys(item).forEach((k) => {
+      if (Object.prototype.hasOwnProperty.call(map, k)) {
+        obj[map[k]] = item[k]
+      } else {
+        obj[k] = item[k]
+      }
+    })
+    return obj as RestrictType
+  })
+}
 /**
  *
  * @param target 目标数组中的元素必须有 id label children 属性
@@ -68,6 +86,7 @@ export const ConvertToSearchFuzzyList = <T extends RestrictType>(
     for (let i = 0; i < target.length; i++) {
       const v = deptList[i]
       if (!v) return
+      // 添加新的层级
       const backupItem: FuzzyItemType = item
         ? useDeepClone(item)
         : {
@@ -76,6 +95,7 @@ export const ConvertToSearchFuzzyList = <T extends RestrictType>(
             hierarchy: {}
           }
       backupItem.hierarchy[`lvl${depth}`] = v.label
+      // 每当找到符合条件的对象，将 objectId 和 type 替换为当前对象中的值
       if (v.label.indexOf(query) !== -1) {
         backupItem.type = `lvl${depth}`
         backupItem.objectId = v.id
@@ -100,4 +120,10 @@ export const ConvertToSearchFuzzyList = <T extends RestrictType>(
     nbHits: hits.length,
     hits
   }
+}
+
+// 存储
+export interface StoreRecordType {
+  value: string
+  isPinned: boolean
 }

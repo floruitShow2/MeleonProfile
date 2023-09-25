@@ -162,7 +162,6 @@ export default defineComponent({
             }
           })
         }
-        console.log(nodeList, editorChildNodes)
         const { pureString, mentionList } = transformNodeListToMentionData(nodeList)
         // 文本末尾换行出现两个换行符处理
         if (pureString.length > 0 && pureString.charAt(pureString.length - 1) === '\n') {

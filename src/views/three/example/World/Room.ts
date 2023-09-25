@@ -88,7 +88,7 @@ export default class Room {
         childMeshMaterial.transmission = 1
         childMeshMaterial.opacity = 1
         childMeshMaterial.depthWrite = false
-        childMeshMaterial.depthTest = false
+        childMeshMaterial.depthTest = true
       }
       if (child.name === 'Computer') {
         const childMesh = child.children[1] as THREE.Mesh

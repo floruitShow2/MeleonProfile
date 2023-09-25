@@ -3,7 +3,7 @@ const folderCover = new URL('@/assets/images/contact_bg.jpg', import.meta.url).h
 const MockMessageList: ApiChat.MessageEntity[] = [
   {
     id: '1',
-    publisher: '王立群',
+    publisher: 'Aliee',
     publishTime: '2023-8-30 11:28:30',
     message: {
       type: 'Text',

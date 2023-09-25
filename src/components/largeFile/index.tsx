@@ -1,9 +1,8 @@
 import { defineComponent, ref } from 'vue'
 import type { Component } from 'vue'
-import { useFileStore } from '@/store'
 import WsFileCard from '@/components/fileCard/index'
 import { formatBytes } from '@/utils/file'
-import LargeFileWorker from './worker?worker'
+import LargeFileInstance from './instance'
 import './index.less'
 
 export default defineComponent({
@@ -28,12 +27,10 @@ export default defineComponent({
     'success'
   ],
   setup(props, { slots, emit }) {
-    const fileStore = useFileStore()
-
     const inputRef = ref()
 
-    const worker = new LargeFileWorker()
-    fileStore.addWorker(worker)
+    const instance = new LargeFileInstance()
+    const worker = instance.getWorker()
 
     // 文件缓冲区：缓存从本地读取的文件，用户点击确认后再将数据发送到文件上传线程
     const filesBuffer = ref<File[]>([])

@@ -72,7 +72,7 @@ export default defineComponent({
         </div>
         {/* 文件上传 */}
         <div class="upload-trigger">
-          <WsLargeFile draggable />
+          <WsLargeFile draggable autoUpload={false} />
         </div>
         <WsOperationLogs activeId={activeId.value} />
       </div>

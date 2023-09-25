@@ -20,7 +20,7 @@ export default defineComponent({
 
     const menuState = reactive({
       collapsed: false,
-      selectedKeys: ['overview'],
+      selectedKeys: ['overviewMenu'],
       openKeys: []
     })
 
@@ -43,7 +43,7 @@ export default defineComponent({
                 mode="vertical"
               >
                 <MenuItem
-                  key="overview"
+                  key="overviewMenu"
                   v-slots={{
                     icon: () => <icon-common />
                   }}
@@ -51,13 +51,22 @@ export default defineComponent({
                   <span>首页</span>
                 </MenuItem>
                 <SubMenu
+                  key="content"
+                  v-slots={{
+                    icon: () => <icon-file />,
+                    title: () => <>内容管理</>
+                  }}
+                >
+                  <MenuItem key="articleMenu">文章管理</MenuItem>
+                </SubMenu>
+                <SubMenu
                   key="tool"
                   v-slots={{
                     icon: () => <icon-share-external />,
                     title: () => <>创作工具</>
                   }}
                 >
-                  <MenuItem key="import">文章导入发布</MenuItem>
+                  <MenuItem key="importMenu">文章导入发布</MenuItem>
                 </SubMenu>
               </Menu>
             </div>

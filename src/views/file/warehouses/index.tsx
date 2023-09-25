@@ -27,6 +27,15 @@ export default defineComponent({
       }
       return result
     }
+    const generateFileList = () => {
+      const result: JSX.Element[] = []
+      for (let i = 0; i < 2; i++) {
+        result.push(
+          <WsFileCard filename="filename.pdf" filesize={+(Math.random() * 10000000).toFixed()} />
+        )
+      }
+      return result
+    }
 
     return () => (
       <div class="ws-warehouses">
@@ -73,10 +82,7 @@ export default defineComponent({
               </div>
               <div class="container">
                 <div class="container-header">Files</div>
-                <div class="container-body">
-                  <WsFileCard filename="filename.pdf" filesize={123456345} />
-                  <WsFileCard filename="filename-word.doc" filesize={34566543} />
-                </div>
+                <div class="container-body">{generateFileList()}</div>
               </div>
             </div>
           </div>

@@ -21,6 +21,7 @@ export function createFakeComments(): ApiChat.RoomType {
     roomName: faker.person.jobDescriptor(),
     roomAvatar: faker.image.avatar(),
     roomCreateTime: faker.date.recent({ days: 30 }),
+    isPinned: faker.helpers.arrayElement([true, false]),
     relativeUserId: faker.helpers.arrayElements(['admin', 'meleon', 'visitor']),
     unreadCount: faker.number.int(15),
     messageList: Mock.mock({
@@ -56,19 +57,17 @@ export function createFakeFollowees(): ApiUserManagement.User[] {
 export default [
   {
     url: '/mock/api/contact/GetChatRooms',
-    timeout: 200,
     method: 'get',
     response: () => {
       return {
         Code: 1,
         Message: 'ok',
-        ReturnData: new Array(5).fill('').map(createFakeComments)
+        ReturnData: new Array(20).fill('').map(createFakeComments)
       }
     }
   },
   {
     url: '/mock/api/contact/GetNotes',
-    timeout: 200,
     method: 'get',
     response: () => {
       return {
