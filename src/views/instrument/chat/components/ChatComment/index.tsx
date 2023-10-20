@@ -112,7 +112,6 @@ export default defineComponent({
       return <></>
     }
 
-
     return () => (
       <div class="ws-chat-comment">
         <div class="ws-chat-comment_prefix">

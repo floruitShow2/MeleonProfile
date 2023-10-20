@@ -106,7 +106,7 @@ export default class Controller {
       this.camera.perspectiveCamera,
       this.experience.canvas
     )
-    this.transformControls.size = 0.75
+    this.transformControls.size = 1.25
     this.transformControls.showX = false
     this.transformControls.space = 'world'
     this.transformControls.attach(target)

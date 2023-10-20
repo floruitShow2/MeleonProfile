@@ -1,8 +1,9 @@
-import { mockRequest } from '@/service'
+import { mockRequest, request } from '@/service'
 
 const URLs = {
   recent: '/api/file/GetRecentFiles',
-  logs: '/api/file/GetOperationLogs'
+  logs: '/api/file/GetOperationLogs',
+  stream: '/api/blog/getStreamFile'
 }
 
 /**
@@ -21,4 +22,8 @@ export const FetchRecentFiles = (recent: number) => {
  */
 export const FetchOperationLogs = (warehouse: string) => {
   return mockRequest.get<ApiFile.OperationLogType[]>(URLs.logs, { params: { warehouse } })
+}
+
+export const FetchStreamFile = () => {
+  return request.get<Blob>(URLs.stream, { responseType: 'blob' })
 }

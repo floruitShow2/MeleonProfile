@@ -22,8 +22,6 @@ declare namespace ServiceEnvSpace {
      */
     proxyPattern: '/proxy-pattern'
   }
-
-  
 }
 
 // export { ServiceEnvType }

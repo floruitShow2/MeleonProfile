@@ -1,4 +1,4 @@
-import { mockRequest } from '@/service'
+import { mockRequest, request } from '@/service'
 import type { RouteRecordNormalized } from 'vue-router'
 import { UserState } from '@/store/modules/user/types'
 
@@ -7,11 +7,20 @@ export interface LoginData {
   password: string
 }
 
+const URL = {
+  register: '/api/user/signup',
+  login: '/api/user/login',
+  getUserInfo: '/api/user/getUserInfo'
+}
+
 export interface LoginRes {
-  token: string
+  accessToken: string
+}
+export function register(message: LoginData) {
+  return request.post(URL.register, message)
 }
 export function login(data: LoginData) {
-  return mockRequest.post<LoginRes>('/api/user/login', data)
+  return request.post<LoginRes>(URL.login, data)
 }
 
 export function logout() {
@@ -19,7 +28,7 @@ export function logout() {
 }
 
 export function getUserInfo() {
-  return mockRequest.post<UserState>('/api/user/info')
+  return request.get<UserState>(URL.getUserInfo)
 }
 
 export function getMenuList() {

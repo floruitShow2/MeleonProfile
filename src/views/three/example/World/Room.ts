@@ -116,7 +116,6 @@ export default class Room {
     rectLight.rotation.z = Math.PI / 4
     this.actualRoom.add(rectLight)
     this.scene.add(this.actualRoom)
-    this.actualRoom.scale.set(0.1, 0.1, 0.1)
   }
 
   setAnimations() {

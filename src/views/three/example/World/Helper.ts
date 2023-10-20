@@ -3,7 +3,7 @@ import Experience from '../General/Experience'
 
 const DEFAULT_GRID = {
   isShow: true,
-  size: 20,
+  size: 60,
   divisions: 20,
   colorCenterLine: 0xffffff,
   colorGrid: 0xffffff

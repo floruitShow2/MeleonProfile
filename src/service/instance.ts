@@ -9,6 +9,7 @@ import {
 } from '@/utils/service'
 import { localStg } from '@/utils/storage'
 import { REFRESH_TOKEN_CODE } from '@/config'
+import { Message } from '@arco-design/web-vue'
 import { handleRefreshToken } from './helpers'
 
 /**
@@ -31,7 +32,8 @@ export default class CustomAxiosInstance {
       codeKey: 'Code',
       dataKey: 'ReturnData',
       msgKey: 'Message',
-      successCode: 1
+      successCode: 1,
+      errorCode: -1
     }
   ) {
     this.backendConfig = backendConfig
@@ -65,12 +67,17 @@ export default class CustomAxiosInstance {
         const { status } = response
         if (status === 200 || status < 300 || status === 304) {
           const backend = response.data
-          const { codeKey, dataKey, successCode } = this.backendConfig
+          const { codeKey, msgKey, dataKey, successCode, errorCode } = this.backendConfig
           // 文件等不包含 codeKey 的响应格式
           if (!backend[codeKey]) return handleServiceResult(null, backend)
           // 请求成功
           if (backend[codeKey] === successCode) {
             return handleServiceResult(null, backend[dataKey])
+          }
+          if (backend[codeKey] === errorCode) {
+            Message.error({
+              content: backend[msgKey]
+            })
           }
 
           // token失效, 刷新token

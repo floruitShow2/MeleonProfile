@@ -64,7 +64,6 @@ export default class Raycaster {
       const worldVector3 = objectMesh.getWorldPosition(vector3)
       const maskObject = objectMesh.clone()
       maskObject.name = maskName
-      maskObject.scale.set(0.01, 0.01, 0.01)
       maskObject.position.copy(worldVector3)
       maskObject.material = maskMaterial
       this.experience.scene.add(maskObject)

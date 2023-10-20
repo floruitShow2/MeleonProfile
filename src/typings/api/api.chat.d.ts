@@ -24,7 +24,7 @@ declare namespace ApiChat {
     /**
      * 消息链接映射
      */
-    urlContentMap: Record<
+    urlContentMap?: Record<
       string,
       {
         title: string

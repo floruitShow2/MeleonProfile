@@ -35,7 +35,7 @@ const THREE: AppRouteRecordRaw = {
     {
       path: 'vector',
       name: 'three/vector',
-      component: () => import('@/views/three/vector'),
+      component: () => import('@/views/three/journey'),
       meta: {
         locale: 'menu.three.vector',
         requiresAuth: true,

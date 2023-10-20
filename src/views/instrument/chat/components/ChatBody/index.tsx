@@ -32,6 +32,8 @@ export default defineComponent({
     const userStore = useUserStore()
     const $bus = useBus()
 
+    const prefix = 'ws-chat-body'
+
     // const comments = ref<ApiChat.CommentType[]>([])
     const messageList = ref<ApiChat.MessageEntity[]>(MockMessageList)
 
@@ -132,8 +134,33 @@ export default defineComponent({
       $bus.all.clear()
     })
 
+    const isDragging = ref<boolean>(false)
+    const handleDragOver = (e: DragEvent) => {
+      e.preventDefault()
+      if (!isDragging.value) isDragging.value = true
+    }
+    const handleDragLeave = (e: DragEvent) => {
+      e.preventDefault()
+      if (isDragging.value) isDragging.value = false
+    }
+    const handleFileDrop = (e: DragEvent) => {
+      e.preventDefault()
+      isDragging.value = false
+      const files = Array.from(e.dataTransfer?.files || [])
+      console.log(files)
+      // files.forEach((file) => {
+      //   sendMsg<ApiChat.FileBody>('File', { filename: file.name, size: file.size, url: '' }, true)
+      //   $bus.emit('onCommentFileUploaded', { filename: file.name })
+      // })
+    }
+
     return () => (
-      <div class="ws-chat-body">
+      <div
+        class={prefix}
+        onDragover={handleDragOver}
+        onDragleave={handleDragLeave}
+        onDrop={handleFileDrop}
+      >
         <ul ref={chatListRef}>
           {/* <RenderMessage /> */}
           {messageList.value.map((item, idx) => (
@@ -170,6 +197,7 @@ export default defineComponent({
             </li>
           ))}
         </ul>
+        {isDragging.value && <div class={`${prefix}-mask`} />}
       </div>
     )
   }

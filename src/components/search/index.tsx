@@ -65,11 +65,13 @@ export default defineComponent({
       hitsCount.value = nbHits
     })
 
+    // 点击查询结果
     const handleResultClick = (hit: FuzzyItemType) => {
       const { objectId, type, hierarchy } = hit
       // 关闭弹窗
       isSearchPanelShow.value = false
       searchQuery.value = ''
+      startSearchFuzzyList(searchQuery.value)
       // 存储搜索记录
       const storeObject: StoreRecordType = {
         value: hierarchy[type],
@@ -80,6 +82,7 @@ export default defineComponent({
       const findRecord = parsedRecords.find((record) => record.value === storeObject.value)
       if (!findRecord) parsedRecords.push(storeObject)
       handleStoreList(parsedRecords)
+      // 发射 select 事件
       emit('select', { id: objectId })
     }
 

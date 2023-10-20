@@ -24,6 +24,11 @@ export default defineComponent({
       openKeys: []
     })
 
+    const handleMenuSkip = (key: string) => {
+      console.log(key)
+      menuState.selectedKeys = [key]
+    }
+
     const onWriteArticle = () => {
       router.push({
         name: 'articles/editor'
@@ -71,7 +76,7 @@ export default defineComponent({
               </Menu>
             </div>
             <div class="creator-center-main_main">
-              {h(resolveComponent(menuState.selectedKeys[0]))}
+              {h(resolveComponent(menuState.selectedKeys[0]), { onSkip: handleMenuSkip })}
             </div>
           </section>
         </div>

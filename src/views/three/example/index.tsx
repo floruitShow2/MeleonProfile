@@ -48,7 +48,6 @@ export default defineComponent({
         const worldVector3 = objectsGroup.getWorldPosition(vector3)
         const maskObject = objectsGroup.clone()
         maskObject.name = maskName
-        maskObject.scale.set(0.1, 0.1, 0.1)
         maskObject.position.copy(worldVector3)
         maskObject.rotation.copy(objectsGroup.rotation)
         maskObject.children.forEach((object) => {
@@ -61,7 +60,6 @@ export default defineComponent({
         const worldVector3 = objectMesh.getWorldPosition(vector3)
         const maskObject = objectMesh.clone()
         maskObject.name = maskName
-        maskObject.scale.set(0.1, 0.1, 0.1)
         maskObject.position.copy(worldVector3)
         if (objectMesh.parent && objectMesh.parent.name !== 'Scene') {
           maskObject.rotation.copy(objectMesh.parent.rotation)

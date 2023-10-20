@@ -22,7 +22,7 @@ export default class Camera {
   // 透视相机
   perspectiveCamera!: THREE.PerspectiveCamera
 
-  frustrum = 5
+  frustrum = 20
 
   orthographicCamera!: THREE.OrthographicCamera
 
@@ -44,7 +44,7 @@ export default class Camera {
     this.scene = scene
     this.canvas = canvas
     // create threejs camera: 分别创建 透视相机 和 正交相机
-    this.perspectiveCamera = this.createPerspectiveCamera(10, 14, 10)
+    this.perspectiveCamera = this.createPerspectiveCamera(60, 60, 100)
     this.frontViewCamera = this.createPerspectiveCamera(0, 0, 10)
     this.leftViewCamera = this.createPerspectiveCamera(15, 0, 0)
     this.TopViewCamera = this.createPerspectiveCamera(0, 15, 0)
@@ -52,7 +52,7 @@ export default class Camera {
     // this.setViewOrbitControls(this.leftViewCamera, this.leftViewCameraControl)
     // this.setViewOrbitControls(this.TopViewCamera, this.TopViewCameraControl)
 
-    this.createOrthographicCamera()
+    // this.createOrthographicCamera()
     this.setOrbitControls(this.perspectiveCamera)
   }
 

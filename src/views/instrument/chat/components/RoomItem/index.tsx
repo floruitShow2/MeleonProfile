@@ -45,7 +45,6 @@ export default defineComponent({
     return () => (
       <Dropdown
         trigger="contextMenu"
-        alignPoint
         v-slots={{
           content: () => (
             <>

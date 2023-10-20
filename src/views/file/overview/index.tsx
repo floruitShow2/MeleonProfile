@@ -1,7 +1,7 @@
 import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useAppStore } from '@/store'
 
-import { FetchRecentFiles } from '@/api/file'
+import { FetchRecentFiles, FetchStreamFile } from '@/api/file'
 import { formatToDateTime } from '@/utils/format'
 
 import { Button, Table, TableColumn, Drawer } from '@arco-design/web-vue'
@@ -88,6 +88,23 @@ export default defineComponent({
       })
     })
 
+    const getStreamFile = async () => {
+      const res = await FetchStreamFile()
+      console.log(res.data)
+      if (!res.data) return
+      try {
+        const url = window.URL.createObjectURL(new Blob([res.data]))
+        const a = document.createElement('a')
+        a.download = `${formatToDateTime(new Date())}.png`
+        a.href = url
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     return () => (
       <div class="ws-file-management">
         <section class="file">
@@ -103,7 +120,7 @@ export default defineComponent({
                 debitis quos ipsam. Rem magnam, dignissimos dicta voluptate accusamus neque porro
                 tempora deserunt architecto temporibus fugiat veniam quisquam nesciunt!
               </p>
-              <Button type="primary" size="large">
+              <Button type="primary" size="large" onClick={getStreamFile}>
                 View More
               </Button>
             </div>

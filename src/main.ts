@@ -15,7 +15,7 @@ import App from './App.vue'
 // https://arco.design/docs/designlab/use-theme-package
 import '@/assets/style/global.less'
 import '@/styles/button.mixin.less'
-// import '@/api/interceptor'
+import '@/styles/transition.less'
 
 const app = createApp(App)
 

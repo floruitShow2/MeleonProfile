@@ -1,0 +1,43 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.container {
+  display: flex;
+  height: 100vh;
+
+  .banner {
+    width: 550px;
+    #shadow-color(5px, 0, 8px, 0, --primary-shadow-color);
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 40px;
+  }
+
+  .footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+.logo {
+  position: fixed;
+  top: 24px;
+  left: 22px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+
+  &-text {
+    margin-right: 4px;
+    margin-left: 4px;
+    font-size: 20px;
+    #color(color, --primary-text-color);
+  }
+}

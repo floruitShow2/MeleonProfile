@@ -171,7 +171,6 @@ class Block {
         )
       )
       const choppedMesh = new THREE.Mesh(choppedGeometry, this.material)
-      // choppedMesh.scale.set(0.1, 0.1, 0.1)
 
       const choppedPosition = {
         x: this.position.x,
