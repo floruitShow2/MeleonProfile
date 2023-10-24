@@ -2,10 +2,11 @@ import { defineComponent, onBeforeMount, ref } from 'vue'
 import { FetchAllTasks } from '@/api/management/task'
 import Draggable from 'vuedraggable'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Select, Option, Dropdown, Doption } from '@arco-design/web-vue'
-import { IconPlusCircle } from '@arco-design/web-vue/es/icon'
+import { Drawer, Select, Option, Dropdown, Doption } from '@arco-design/web-vue'
+import { IconPlusCircle, IconMoreVertical } from '@arco-design/web-vue/es/icon'
 import WsAvatar from '@/components/avatar'
 import WsTaskCard from './components/taskCard'
+import WsTaskEditor from './components/taskEditor'
 import type { HiddenFields } from './components/taskCard/interface'
 import 'swiper/css'
 import './index.less'
@@ -66,62 +67,76 @@ export default defineComponent({
 
     // user manage
     //   swiper
-    const swiperRef = ref()
-    const swiperList = ref<string[]>(['slide1', 'slide2', 'slide3'])
-    const isNavigationShow = ref(false)
-    const status = ref('online')
-    const onSwiperPreClick = () => {
-      swiperRef.value.$el.swiper.slidePrev()
-    }
-    const onSwiperNextClick = () => {
-      swiperRef.value.$el.swiper.slideNext()
-    }
+    // const swiperRef = ref()
+    // const swiperList = ref<string[]>(['slide1', 'slide2', 'slide3'])
+    // const isNavigationShow = ref(false)
+    // const status = ref('online')
+    // const onSwiperPreClick = () => {
+    //   swiperRef.value.$el.swiper.slidePrev()
+    // }
+    // const onSwiperNextClick = () => {
+    //   swiperRef.value.$el.swiper.slideNext()
+    // }
 
     //   detail
-    const details = ref<Record<string, string>[]>([
-      {
-        label: 'Role',
-        value: 'Admin',
-        type: 'text',
-        icon: 'ws-user'
-      },
-      {
-        label: 'Company',
-        value: 'WEISI',
-        type: 'text',
-        icon: 'ws-home'
-      },
-      {
-        label: 'Career',
-        value: 'Front-End Programmer',
-        type: 'text',
-        icon: 'ws-career'
-      },
-      {
-        label: 'Phone',
-        value: '17856438069',
-        type: 'text',
-        icon: 'ws-call'
-      },
-      {
-        label: 'Website',
-        value: 'http://127.0.0.1:3000',
-        type: 'text',
-        icon: 'ws-link'
-      },
-      {
-        label: 'Mail',
-        value: '2320003602@qq.com',
-        type: 'text',
-        icon: 'ws-mail'
-      },
-      {
-        label: 'Location',
-        value: 'ShangHai Province',
-        type: 'text',
-        icon: 'ws-navigator'
-      }
-    ])
+    // const details = ref<Record<string, string>[]>([
+    //   {
+    //     label: 'Role',
+    //     value: 'Admin',
+    //     type: 'text',
+    //     icon: 'ws-user'
+    //   },
+    //   {
+    //     label: 'Company',
+    //     value: 'WEISI',
+    //     type: 'text',
+    //     icon: 'ws-home'
+    //   },
+    //   {
+    //     label: 'Career',
+    //     value: 'Front-End Programmer',
+    //     type: 'text',
+    //     icon: 'ws-career'
+    //   },
+    //   {
+    //     label: 'Phone',
+    //     value: '17856438069',
+    //     type: 'text',
+    //     icon: 'ws-call'
+    //   },
+    //   {
+    //     label: 'Website',
+    //     value: 'http://127.0.0.1:3000',
+    //     type: 'text',
+    //     icon: 'ws-link'
+    //   },
+    //   {
+    //     label: 'Mail',
+    //     value: '2320003602@qq.com',
+    //     type: 'text',
+    //     icon: 'ws-mail'
+    //   },
+    //   {
+    //     label: 'Location',
+    //     value: 'ShangHai Province',
+    //     type: 'text',
+    //     icon: 'ws-navigator'
+    //   }
+    // ])
+
+    const showEditDrawer = ref(false)
+    const curGroup = ref<string>('')
+    const handleCreate = (group: string) => {
+      showEditDrawer.value = true
+      curGroup.value = group
+    }
+
+    const editorRef = ref()
+    const handleConfirm = async () => {
+      const res = await editorRef.value.createTask()
+      console.log(res)
+      return false
+    }
 
     return () => (
       <div class="ws-management-task">
@@ -199,6 +214,13 @@ export default defineComponent({
               <div key={column.title} class="column">
                 <div class="column-header">
                   <p>{column.title}</p>
+                  <div class="tools">
+                    <i
+                      class="iconfont ws-plus ibtn_base ibtn_hover"
+                      onClick={() => handleCreate(column.title)}
+                    ></i>
+                    <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
+                  </div>
                 </div>
                 <Draggable
                   v-model={column.tasks}
@@ -214,15 +236,8 @@ export default defineComponent({
                   ghost-class="ghost-card"
                   {...draggableOptions}
                   v-slots={{
-                    header: () => (
-                      <div class="column-plus">
-                        <IconPlusCircle />
-                      </div>
-                    ),
                     item: ({ element }: any) => {
-                      return (
-                        <WsTaskCard key={element.id} data={element} hidden={contentSet.value} />
-                      )
+                      return <WsTaskCard key={element.id} data={element} />
                     }
                   }}
                 />
@@ -230,7 +245,17 @@ export default defineComponent({
             ))}
           </section>
         </div>
-        <div class="user-manage">
+        <Drawer
+          v-model:visible={showEditDrawer.value}
+          width={500}
+          v-slots={{
+            title: () => curGroup.value
+          }}
+          onBeforeOk={handleConfirm}
+        >
+          <WsTaskEditor ref={editorRef} group={curGroup.value} />
+        </Drawer>
+        {/* <div class="user-manage">
           <div class="user-manage-title">
             <h4>EMPLOYEE DETAIL</h4>
             <i class="iconfont ws-more ibtn_base ibtn_hover"></i>
@@ -287,7 +312,7 @@ export default defineComponent({
             </div>
             <div class="chat-content"></div>
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }

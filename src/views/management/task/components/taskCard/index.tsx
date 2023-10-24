@@ -2,58 +2,48 @@ import { defineComponent, toRefs } from 'vue'
 import type { PropType } from 'vue'
 import WsAvatarGroup from '@/components/avatarGroup'
 import WsAvatar from '@/components/avatar'
-import type { HiddenFields } from './interface'
 import './index.less'
+import { divide } from 'lodash'
 
 export default defineComponent({
   props: {
     data: {
       type: Object as PropType<TaskMangeUtil.TaskCard>,
       required: true
-    },
-    hidden: {
-      type: Array as PropType<HiddenFields[]>,
-      default: () => []
     }
   },
   setup(props) {
-    const { data, hidden } = toRefs(props)
-
-    const isPartDisplay = (key: HiddenFields) => {
-      return !hidden.value.includes(key)
-    }
+    const { data } = toRefs(props)
 
     return () => (
       <div class="ws-task-card">
         <div class="ws-task-card-header">
-          <div class="keyword-list">
-            {isPartDisplay('keywords') &&
-              data.value.keywords.map((k) => <span class={['keyword', k]}>{k}</span>)}
-          </div>
-          <div class="tool">
-            {isPartDisplay('tool') && (
-              <i class="iconfont ws-more-vertical ibtn_base ibtn_hover ibtn_mini"></i>
-            )}
-          </div>
+          <h4>{data.value.title}</h4>
         </div>
         <div class="ws-task-card-content">
-          <h4>{isPartDisplay('title') && data.value.title}</h4>
-          <p>{isPartDisplay('description') && data.value.description}</p>
+          <div class="keyword-list">
+            {data.value.keywords.map((k) => (
+              <span class={['keyword', k]}>{k}</span>
+            ))}
+          </div>
+          <p>{data.value.description}</p>
         </div>
         <div class="ws-task-card-footer">
-          {isPartDisplay('relatives') && (
-            <WsAvatarGroup maxCount={3}>
-              {data.value.relatives.map((user: string) => (
-                <WsAvatar size={28}>{user}</WsAvatar>
-              ))}
-            </WsAvatarGroup>
-          )}
-          {isPartDisplay('reports') && (
-            <div class="report-count">
-              <i class="iconfont ws-book"></i>
+          <div class="counts-container">
+            <div class="count-item">
+              <i class="iconfont ws-link"></i>
               <span>{data.value.reports}</span>
             </div>
-          )}
+            <div class="count-item">
+              <i class="iconfont ws-chat"></i>
+              <span>{data.value.reports}</span>
+            </div>
+          </div>
+          <WsAvatarGroup maxCount={3}>
+            {data.value.relatives.map((user: string) => (
+              <WsAvatar size={28}>{user}</WsAvatar>
+            ))}
+          </WsAvatarGroup>
         </div>
       </div>
     )

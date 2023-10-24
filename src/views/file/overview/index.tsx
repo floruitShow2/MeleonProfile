@@ -90,19 +90,18 @@ export default defineComponent({
 
     const getStreamFile = async () => {
       const res = await FetchStreamFile()
-      console.log(res.data)
-      if (!res.data) return
-      try {
-        const url = window.URL.createObjectURL(new Blob([res.data]))
-        const a = document.createElement('a')
-        a.download = `${formatToDateTime(new Date())}.png`
-        a.href = url
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-      } catch (err) {
-        console.log(err)
-      }
+      // if (!res.data) return
+      // try {
+      //   const url = window.URL.createObjectURL(new Blob([res.data]))
+      //   const a = document.createElement('a')
+      //   a.download = `${formatToDateTime(new Date())}.png`
+      //   a.href = url
+      //   document.body.appendChild(a)
+      //   a.click()
+      //   a.remove()
+      // } catch (err) {
+      //   console.log(err)
+      // }
     }
 
     return () => (

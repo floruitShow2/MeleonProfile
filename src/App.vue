@@ -27,4 +27,15 @@
         return enUS
     }
   })
+
+  // const socket = new WebSocket('ws://localhost:3001')
+  // socket.onopen = () => {
+  //   socket.send('message')
+  //   socket.onmessage = (data: unknown) => {
+  //     console.log(data)
+  //   }
+  // }
+  // socket.onerror = (error) => {
+  //   console.log(error)
+  // }
 </script>

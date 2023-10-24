@@ -7,7 +7,7 @@ import useAppStore from '../app'
 
 const useUserStore = defineStore('user', {
   state: (): UserState => ({
-    name: undefined,
+    username: undefined,
     avatar: undefined,
     job: undefined,
     organization: undefined,
@@ -30,7 +30,7 @@ const useUserStore = defineStore('user', {
       return { ...state }
     },
     getName(state: UserState): string {
-      return state.name || ''
+      return state.username || ''
     }
   },
 

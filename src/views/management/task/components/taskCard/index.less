@@ -1,17 +1,26 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
 .ws-task-card {
-  width: 300px;
-  // height: 200px;
-  padding: 10px;
-  border-radius: 5px;
-  // transition: all 0.2s ease;
+  width: 100%;
+  padding: 15px;
+  border-radius: 15px;
   cursor: move;
   #flex(column, center, flex-start);
   #color(background-color, --module-bg-color);
   &-header {
     width: 100%;
     #flex(row, center, space-between);
+    h4 {
+      font-size: 14px;
+      #color(color, --primary-text-color);
+    }
+  }
+  &-content {
+    margin: 8px 0;
+    padding-bottom: 5px;
+    border-bottom: solid 1px;
+    #flex(column, flex-start, flex-start);
+    #color(border-color, --primary-border-color);
     .keyword-list {
       #flex(row, center, flex-start);
       .keyword {
@@ -33,19 +42,8 @@
         #color(background-color, --gray-red-color);
       }
     }
-  }
-  &-content {
-    margin: 8px 0;
-    padding-bottom: 5px;
-    border-bottom: solid 1px;
-    #flex(column, flex-start, flex-start);
-    #color(border-color, --primary-border-color);
-    h4 {
-      font-size: 16px;
-      margin-bottom: 5px;
-      #color(color, --primary-text-color);
-    }
     p {
+      margin: 20px 0;
       font-size: 14px;
       #color(color, --lighter-text-color);
     }
@@ -53,16 +51,22 @@
   &-footer {
     width: 100%;
     #flex(row, center, space-between);
-    .report-count {
-      #flex(row, center, center);
-      #color(color, --primary-text-color);
-      i {
-        font-size: 20px;
-        line-height: 20px;
-      }
-      span {
-        font-size: 14px;
-        line-height: 20px;
+    .counts-container {
+      #flex(row, center, flex-start);
+      .count-item {
+        padding: 3px 8px;
+        margin-right: 5px;
+        border-radius: 5px;
+        #flex(row, center, center);
+        #color(color, --primary-text-color);
+        #color(background-color, --lighter-bg-color);
+        i {
+          margin-right: 3px;
+        }
+        span {
+          font-size: 12px;
+          line-height: 1px;
+        }
       }
     }
   }

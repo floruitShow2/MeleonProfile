@@ -17,12 +17,16 @@ export default defineComponent({
     shape: {
       type: String as PropType<'circle' | 'square'>,
       default: 'square'
+    },
+    background: {
+      type: String,
+      default: 'var(--primary-6)'
     }
   },
   setup(props, { slots }) {
     const prefixCls = 'ws-avatar'
 
-    const { size, shape, imgUrl } = toRefs(props)
+    const { size, shape, imgUrl, background } = toRefs(props)
 
     const itemRef = ref()
     const wrapperRef = ref()
@@ -32,7 +36,8 @@ export default defineComponent({
     const outerStyle = computed(() => {
       const style: Record<string, any> = {
         width: `${size.value}px`,
-        height: `${size.value}px`
+        height: `${size.value}px`,
+        background: background.value
       }
 
       if (groupCtx) {

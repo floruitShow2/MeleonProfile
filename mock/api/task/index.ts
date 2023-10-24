@@ -7,9 +7,9 @@ const createTaskList = (): TaskMangeUtil.TaskCard[] => {
     'items|10': [
       {
         id: () => faker.string.uuid(),
-        title: () => faker.word.words(5),
-        description: () => faker.lorem.sentence(20),
-        keywords: () => faker.helpers.arrayElements(['keyword1', 'keyword2', 'keyword3']),
+        title: () => faker.word.words(2),
+        description: () => faker.lorem.sentence(10),
+        keywords: () => faker.helpers.arrayElements(['tag1', 'tag2', 'tag3']),
         relatives: () => {
           const users: string[] = []
           for (let i = 0; i < 5; i++) {
@@ -35,19 +35,19 @@ const apis: MockMethod[] = [
         Message: 'OK',
         ReturnData: [
           {
-            title: 'NEW TASKS',
+            title: '要做的事',
             tasks: createTaskList()
           },
           {
-            title: 'IN PROGRESS',
+            title: '进展中',
             tasks: createTaskList()
           },
           {
-            title: 'COMPLETED',
+            title: '回顾中',
             tasks: createTaskList()
           },
           {
-            title: 'DELAY',
+            title: '排期中',
             tasks: createTaskList()
           }
         ]

@@ -3,7 +3,7 @@ import { mockRequest, request } from '@/service'
 const URLs = {
   recent: '/api/file/GetRecentFiles',
   logs: '/api/file/GetOperationLogs',
-  stream: '/api/blog/getStreamFile'
+  stream: '/api/user/hello'
 }
 
 /**
