@@ -20,7 +20,7 @@ export default defineComponent({
     },
     background: {
       type: String,
-      default: 'var(--primary-6)'
+      default: 'rgb(var(--primary-6))'
     }
   },
   setup(props, { slots }) {

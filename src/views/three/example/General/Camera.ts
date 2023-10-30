@@ -52,7 +52,7 @@ export default class Camera {
     // this.setViewOrbitControls(this.leftViewCamera, this.leftViewCameraControl)
     // this.setViewOrbitControls(this.TopViewCamera, this.TopViewCameraControl)
 
-    // this.createOrthographicCamera()
+    this.createOrthographicCamera()
     this.setOrbitControls(this.perspectiveCamera)
   }
 

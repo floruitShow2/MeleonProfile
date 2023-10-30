@@ -12,16 +12,6 @@ declare namespace Auth {
     | 'configmanager'
     | 'correctionmanager'
     | 'accoutmanager'
-
-  /** 用户信息 */
-  interface UserInfo {
-    /** 用户id */
-    // userId: string;
-    /** 用户名 */
-    UserName: string
-    /** 用户角色类型 */
-    Groups: RoleType[]
-  }
 }
 
 declare namespace UserManagement {

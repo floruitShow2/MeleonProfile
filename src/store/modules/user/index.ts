@@ -2,11 +2,10 @@ import { defineStore } from 'pinia'
 import { login as userLogin, logout as userLogout, getUserInfo, LoginData } from '@/api/auth'
 import { localStg } from '@/utils/storage'
 import { removeRouteListener } from '@/utils/route-listener'
-import { UserState } from './types'
 import useAppStore from '../app'
 
 const useUserStore = defineStore('user', {
-  state: (): UserState => ({
+  state: (): ApiAuth.UserInfo => ({
     username: undefined,
     avatar: undefined,
     job: undefined,
@@ -26,10 +25,10 @@ const useUserStore = defineStore('user', {
   }),
 
   getters: {
-    userInfo(state: UserState): UserState {
+    userInfo(state: ApiAuth.UserInfo): ApiAuth.UserInfo {
       return { ...state }
     },
-    getName(state: UserState): string {
+    getName(state: ApiAuth.UserInfo): string {
       return state.username || ''
     }
   },
@@ -42,7 +41,7 @@ const useUserStore = defineStore('user', {
       })
     },
     // Set user's information
-    setInfo(partial: Partial<UserState>) {
+    setInfo(partial: Partial<ApiAuth.UserInfo>) {
       this.$patch(partial)
     },
 

@@ -1,10 +1,8 @@
 import { defineComponent, onBeforeMount, ref } from 'vue'
-import { FetchAllTasks } from '@/api/management/task'
+import { FetchAllTasks } from '@/api/task'
 import Draggable from 'vuedraggable'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Drawer, Select, Option, Dropdown, Doption } from '@arco-design/web-vue'
-import { IconPlusCircle, IconMoreVertical } from '@arco-design/web-vue/es/icon'
-import WsAvatar from '@/components/avatar'
+import { Drawer, Select, Option, Dropdown, Doption, Message } from '@arco-design/web-vue'
+import WsComments from '@/components/comments'
 import WsTaskCard from './components/taskCard'
 import WsTaskEditor from './components/taskEditor'
 import type { HiddenFields } from './components/taskCard/interface'
@@ -40,16 +38,42 @@ export default defineComponent({
 
     const columns = ref<
       Array<{
-        title: string
-        tasks: TaskMangeUtil.TaskCard[]
+        group: string
+        list: ApiTask.TaskEntity[]
       }>
-    >([])
+    >([
+      {
+        group: '要做的事',
+        list: []
+      },
+      {
+        group: '进展中',
+        list: []
+      },
+      {
+        group: '回顾中',
+        list: []
+      },
+      {
+        group: '排期中',
+        list: []
+      }
+    ])
 
-    onBeforeMount(async () => {
+    const initTasks = async () => {
       const { data } = await FetchAllTasks()
       if (!data) return
-      columns.value = data
-    })
+      const obj: Record<string, ApiTask.TaskEntity[]> = {}
+      data.forEach((item) => {
+        obj[item.group] = item.list
+      })
+      columns.value = columns.value.map((item) => ({
+        group: item.group,
+        list: obj[item.group]
+      }))
+    }
+
+    onBeforeMount(initTasks)
 
     const displayMode = ref<Record<string, string>[]>([
       {
@@ -65,65 +89,6 @@ export default defineComponent({
     ])
     const activeMode = ref<'card' | 'table'>('card')
 
-    // user manage
-    //   swiper
-    // const swiperRef = ref()
-    // const swiperList = ref<string[]>(['slide1', 'slide2', 'slide3'])
-    // const isNavigationShow = ref(false)
-    // const status = ref('online')
-    // const onSwiperPreClick = () => {
-    //   swiperRef.value.$el.swiper.slidePrev()
-    // }
-    // const onSwiperNextClick = () => {
-    //   swiperRef.value.$el.swiper.slideNext()
-    // }
-
-    //   detail
-    // const details = ref<Record<string, string>[]>([
-    //   {
-    //     label: 'Role',
-    //     value: 'Admin',
-    //     type: 'text',
-    //     icon: 'ws-user'
-    //   },
-    //   {
-    //     label: 'Company',
-    //     value: 'WEISI',
-    //     type: 'text',
-    //     icon: 'ws-home'
-    //   },
-    //   {
-    //     label: 'Career',
-    //     value: 'Front-End Programmer',
-    //     type: 'text',
-    //     icon: 'ws-career'
-    //   },
-    //   {
-    //     label: 'Phone',
-    //     value: '17856438069',
-    //     type: 'text',
-    //     icon: 'ws-call'
-    //   },
-    //   {
-    //     label: 'Website',
-    //     value: 'http://127.0.0.1:3000',
-    //     type: 'text',
-    //     icon: 'ws-link'
-    //   },
-    //   {
-    //     label: 'Mail',
-    //     value: '2320003602@qq.com',
-    //     type: 'text',
-    //     icon: 'ws-mail'
-    //   },
-    //   {
-    //     label: 'Location',
-    //     value: 'ShangHai Province',
-    //     type: 'text',
-    //     icon: 'ws-navigator'
-    //   }
-    // ])
-
     const showEditDrawer = ref(false)
     const curGroup = ref<string>('')
     const handleCreate = (group: string) => {
@@ -133,9 +98,27 @@ export default defineComponent({
 
     const editorRef = ref()
     const handleConfirm = async () => {
-      const res = await editorRef.value.createTask()
-      console.log(res)
+      const { data } = await editorRef.value.createTask()
+      if (!data) {
+        Message.error('任务创建失败')
+        return false
+      }
+      showEditDrawer.value = false
+      Message.success('任务创建成功')
+      await initTasks()
       return false
+    }
+
+    // 点击卡片，编辑任务
+    const handleCardClick = () => {
+      console.log('a')
+    }
+
+    const showCommentsDrawer = ref<boolean>(false)
+    const curTask = ref<ApiTask.TaskEntity | null>()
+    const handleCommentClick = (task: ApiTask.TaskEntity) => {
+      showCommentsDrawer.value = true
+      curTask.value = task
     }
 
     return () => (
@@ -211,33 +194,36 @@ export default defineComponent({
           </header>
           <section class="task-manage-content">
             {columns.value.map((column) => (
-              <div key={column.title} class="column">
+              <div key={column.group} class="column">
                 <div class="column-header">
-                  <p>{column.title}</p>
+                  <p>{column.group}</p>
                   <div class="tools">
                     <i
                       class="iconfont ws-plus ibtn_base ibtn_hover"
-                      onClick={() => handleCreate(column.title)}
+                      onClick={() => handleCreate(column.group)}
                     ></i>
                     <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
                   </div>
                 </div>
                 <Draggable
-                  v-model={column.tasks}
+                  v-model={column.list}
                   // tag="transition-group"
-                  itemKey={column.title}
+                  itemKey={column.group}
                   componentData={{
                     class: 'column-content'
                   }}
-                  // componentData={{
-                  //   tag: 'ul',
-                  //   name: 'flip-list'
-                  // }}
                   ghost-class="ghost-card"
                   {...draggableOptions}
                   v-slots={{
-                    item: ({ element }: any) => {
-                      return <WsTaskCard key={element.id} data={element} />
+                    item: ({ element }: { element: ApiTask.TaskEntity }) => {
+                      return (
+                        <WsTaskCard
+                          key={element.taskId}
+                          data={element}
+                          onClick={handleCardClick}
+                          onCommentClick={() => handleCommentClick(element)}
+                        />
+                      )
                     }
                   }}
                 />
@@ -245,6 +231,7 @@ export default defineComponent({
             ))}
           </section>
         </div>
+        {/* 任务编辑器弹窗 */}
         <Drawer
           v-model:visible={showEditDrawer.value}
           width={500}
@@ -255,64 +242,16 @@ export default defineComponent({
         >
           <WsTaskEditor ref={editorRef} group={curGroup.value} />
         </Drawer>
-        {/* <div class="user-manage">
-          <div class="user-manage-title">
-            <h4>EMPLOYEE DETAIL</h4>
-            <i class="iconfont ws-more ibtn_base ibtn_hover"></i>
-          </div>
-          <div
-            class="user-manage-swiper"
-            onMouseenter={() => {
-              isNavigationShow.value = true
-            }}
-            onMouseleave={() => {
-              isNavigationShow.value = false
-            }}
-          >
-            <i
-              class={{
-                'iconfont ws-arrow-left': true,
-                'is-visiable': isNavigationShow.value
-              }}
-              onClick={onSwiperPreClick}
-            />
-            <Swiper ref={swiperRef} slides-per-view={1} space-between={50}>
-              {swiperList.value.map((slide) => (
-                <SwiperSlide>
-                  <div class="avatar-item">
-                    <WsAvatar size={72} shape="circle">
-                      {slide}
-                    </WsAvatar>
-                    <span class={`is-${status.value}`} />
-                  </div>
-                  <span class="name-item">Mr.Beast</span>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-            <i
-              class={{
-                'iconfont ws-arrow-right': true,
-                'is-visiable': isNavigationShow.value
-              }}
-              onClick={onSwiperNextClick}
-            />
-          </div>
-          <div class="user-manage-details">
-            {details.value.map((message) => (
-              <li key={message.label}>
-                <i class={['iconfont', message.icon]}></i>
-                <span>{message.label}</span>
-                <span>{message.value}</span>
-              </li>
-            ))}
-          </div>
-          <div class="user-manage-chat">
-            <div class="chat-marker">
-              <span>CHAT</span>
-            </div>
-            <div class="chat-content"></div>
-          </div>
-        </div> */}
+        {/* 任务留言弹窗 */}
+        <Drawer
+          v-model:visible={showCommentsDrawer.value}
+          width={500}
+          v-slots={{
+            title: () => curTask.value?.title || ''
+          }}
+        >
+          {curTask.value?.taskId && <WsComments target={curTask.value?.taskId} />}
+        </Drawer>
       </div>
     )
   }

@@ -9,14 +9,26 @@ declare namespace DevResTemplate {
 
 /** 后端返回的用户权益相关类型 */
 declare namespace ApiAuth {
-  /** 返回的token和刷新token */
-  // interface Token {
-  // 	token: string;
-  // 	refreshToken: string;
-  // }
-  type Token = string
+  export type RoleType = '' | '*' | 'admin' | 'user'
   /** 返回的用户信息 */
-  type UserInfo = Auth.UserInfo
+  export interface UserInfo {
+    username?: string
+    avatar?: string
+    job?: string
+    organization?: string
+    location?: string
+    email?: string
+    introduction?: string
+    personalWebsite?: string
+    jobName?: string
+    organizationName?: string
+    locationName?: string
+    phone?: string
+    registrationDate?: string
+    accountId?: string
+    certification?: number
+    role: RoleType
+  }
 }
 
 /** 后端返回的路由相关类型 */

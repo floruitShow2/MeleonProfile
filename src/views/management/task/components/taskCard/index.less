@@ -2,13 +2,20 @@
 @import '@/styles/theme.less';
 .ws-task-card {
   width: 100%;
-  padding: 15px;
-  border-radius: 15px;
+  padding: 8px 5px;
+  border-radius: 12px;
   cursor: move;
   #flex(column, center, flex-start);
   #color(background-color, --module-bg-color);
+  &-cover {
+    width: 100%;
+    img {
+      width: 100%;
+    }
+  }
   &-header {
     width: 100%;
+    padding: 5px;
     #flex(row, center, space-between);
     h4 {
       font-size: 14px;
@@ -16,40 +23,37 @@
     }
   }
   &-content {
-    margin: 8px 0;
-    padding-bottom: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    padding: 0 5px 0 5px;
     border-bottom: solid 1px;
     #flex(column, flex-start, flex-start);
     #color(border-color, --primary-border-color);
-    .keyword-list {
+    .tags {
+      margin-bottom: 15px;
       #flex(row, center, flex-start);
-      .keyword {
-        padding: 5px;
+      .arco-tag {
+        position: relative;
         margin-right: 5px;
-        border-radius: 2px;
-        font-size: 12px;
-      }
-      .keyword1 {
-        #color(color, --primary-blue-color);
-        #color(background-color, --gray-blue-color);
-      }
-      .keyword2 {
-        #color(color, --primary-green-color);
-        #color(background-color, --gray-green-color);
-      }
-      .keyword3 {
-        #color(color, --primary-red-color);
-        #color(background-color, --gray-red-color);
+        span:first-child {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          margin-right: 3px;
+          border-radius: 50%;
+        }
       }
     }
     p {
-      margin: 20px 0;
-      font-size: 14px;
+      margin-bottom: 15px;
+      font-size: 12px;
+      line-height: 18px;
       #color(color, --lighter-text-color);
     }
   }
   &-footer {
     width: 100%;
+    padding: 0 5px;
     #flex(row, center, space-between);
     .counts-container {
       #flex(row, center, flex-start);
@@ -57,9 +61,13 @@
         padding: 3px 8px;
         margin-right: 5px;
         border-radius: 5px;
+        cursor: pointer;
         #flex(row, center, center);
         #color(color, --primary-text-color);
         #color(background-color, --lighter-bg-color);
+        &:hover {
+          #color(color, --primary-blue-color);
+        }
         i {
           margin-right: 3px;
         }

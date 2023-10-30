@@ -59,20 +59,24 @@ export default defineComponent({
       taskDetails.tags = taskDetails.tags.filter((item) => item.label !== tag)
     }
 
+    const coverImageUrl = ref<string>('')
+    const uploadCoverage = ref<File>()
     const handleCoverChange = async (fileList: FileItem[]) => {
       const { file } = fileList[0]
       if (!file) return
-      const res = await readFileAsDataurl(file)
-      taskDetails.coverImage = res
+      uploadCoverage.value = file
+      coverImageUrl.value = await readFileAsDataurl(file)
+      taskDetails.coverImage = file.name
     }
 
-    const uploadFiles = ref<FileItem[]>([])
+    const uploadAttachments = ref<FileItem[]>([])
     const handleAttachmentsChange = (filesList: FileItem[]) => {
-      const newFile = filesList.at(-1)
-      if (!newFile) return
-      const findIdx = filesList.findIndex((file) => file.name === newFile.name)
-      if (findIdx !== -1) uploadFiles.value.splice(findIdx, 1, newFile)
-      else uploadFiles.value.push(newFile)
+      uploadAttachments.value = filesList
+      // const newFile = filesList.at(-1)
+      // if (!newFile) return
+      // const findIdx = filesList.findIndex((file) => file.name === newFile.name)
+      // if (findIdx !== -1) uploadAttachments.value.splice(findIdx, 1, newFile)
+      // else uploadAttachments.value.push(newFile)
     }
 
     const validateDetails = (details: ApiTask.TaskEntity) => {
@@ -119,11 +123,11 @@ export default defineComponent({
         if (!validateDetails(details)) return
 
         const fd = new FormData()
-        uploadFiles.value.forEach((item) => {
-          if (item.file) fd.append('files', item.file)
+        if (uploadCoverage.value) fd.append('cover', uploadCoverage.value)
+        uploadAttachments.value.forEach((item) => {
+          if (item.file) fd.append('attachments', item.file)
         })
 
-        console.log(details)
         fd.append('data', JSON.stringify(details))
         CreateTask(fd)
           .then((res) => {
@@ -150,7 +154,7 @@ export default defineComponent({
           <h4>关联成员</h4>
           <div class="module-content">
             <WsAvatarGroup maxCount={3}>
-              {taskDetails.relatives.map((user: string) => (
+              {taskDetails.relatives.map((user) => (
                 <WsAvatar size={28}>{user}</WsAvatar>
               ))}
             </WsAvatarGroup>
@@ -187,7 +191,7 @@ export default defineComponent({
                     }}
                   ></i>
                 </div>
-                <img src={taskDetails.coverImage} alt="" />
+                <img src={coverImageUrl.value} alt="" />
               </div>
             ) : (
               <Upload
@@ -286,6 +290,7 @@ export default defineComponent({
             <Upload
               autoUpload={false}
               show-file-list={false}
+              multiple
               v-slots={{
                 'upload-button': () => <i class="iconfont ws-link ibtn_base ibtn_hover"></i>
               }}
@@ -293,7 +298,7 @@ export default defineComponent({
             ></Upload>
           </div>
           <div class="module-content">
-            {uploadFiles.value.map((file) => (
+            {uploadAttachments.value.map((file) => (
               <WsFileCard
                 filename={file.name || ''}
                 filesize={file.file ? file.file.size : 0}

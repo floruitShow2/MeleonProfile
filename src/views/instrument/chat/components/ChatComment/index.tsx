@@ -3,8 +3,8 @@ import useUserStore from '@/store/modules/user'
 import { useBus } from '@/utils/global'
 import { formatToDateTime } from '@/utils/format'
 import WsLargeFile from '@/components/largeFile'
-import WsChatInput from '../ChatInput/index'
-import { IMention } from '../ChatInput/type'
+import WsChatInput from '@/components/chatInput/index'
+import type { IMention } from '@/components/chatInput/type'
 import './index.less'
 
 export default defineComponent({
@@ -42,7 +42,7 @@ export default defineComponent({
     function sendMsg<T>(type: ApiChat.MsgEnum, body: T, isLoading = false) {
       const commentMessage: ApiChat.MessageEntity = {
         id: Math.random().toFixed(10),
-        publisher: userStore.name || '',
+        publisher: userStore.username || '',
         publishTime: formatToDateTime(new Date()),
         message: {
           type,
