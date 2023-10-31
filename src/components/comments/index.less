@@ -7,13 +7,15 @@
     padding: 10px 10px 28px 10px;
     &-list {
         width: 100%;
+        height: 100%;
+        overflow: auto;
         #flex(column, flex-start, flex-start);
         .comment {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             #flex(column, flex-start, flex-start);
             &-header {
-                margin-bottom: 10px;
-                #flex(row, flex-start, flex-start);
+                margin-bottom: 5px;
+                #flex(row, center, flex-start);
                 .ws-avatar {
                     margin-right: 10px;
                 }
@@ -29,10 +31,16 @@
                 }
             }
             &-content {
-                padding-left: 46px;
+                padding-left: 42px;
+                margin-bottom: 8px;
                 p {
+                    margin-bottom: 5px;
                     font-size: 14px;
                     #color(color, --primary-text-color);
+                    .at-label {
+                        margin-right: 3px;
+                        #color(color, --primary-blue-color);
+                    }
                 }
                 &-tools {
                     #flex(row, center, flex-start);
@@ -59,6 +67,9 @@
                     }
                 }
             }
+            &-replies .is-reply {
+                padding-left: 32px;
+            }
         }
     }
     &-input {
@@ -67,8 +78,6 @@
         left: 0;
         width: 100%;
         #flex(row, center, space-between);
-        .arco-input-wrapper {
-            margin-right: 10px;
-        }
+        #color(background-color, --module-bg-color);
     }
 }

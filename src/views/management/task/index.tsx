@@ -121,6 +121,8 @@ export default defineComponent({
       curTask.value = task
     }
 
+    const handleReply = () => {}
+
     return () => (
       <div class="ws-management-task">
         <div class="task-manage">
@@ -246,6 +248,8 @@ export default defineComponent({
         <Drawer
           v-model:visible={showCommentsDrawer.value}
           width={500}
+          footer={false}
+          unmountOnClose
           v-slots={{
             title: () => curTask.value?.title || ''
           }}

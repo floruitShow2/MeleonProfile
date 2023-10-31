@@ -64,7 +64,7 @@ export default defineComponent({
             </div>
             <div class="count-item" onClick={handleCommentClick}>
               <i class="iconfont ws-message"></i>
-              <span>{(data.value.comments || []).length}</span>
+              {data.value.comments !== 0 && <span>{data.value.comments}</span>}
             </div>
           </div>
           <WsAvatarGroup maxCount={3}>

@@ -33,6 +33,8 @@ declare namespace ApiTask {
     relatives: Array<string | ApiAuth.UserInfo>
     // 附件
     attachments?: string[]
+    // 评论数量
+    comments: number
   }
 
   export interface TaskCommentEntity {
@@ -45,6 +47,8 @@ declare namespace ApiTask {
       avatar: string
       username: string
     }
+    replyId: string | null
+    replyUser: string | null
     replies: TaskCommentEntity[]
     targetId: string
   }
