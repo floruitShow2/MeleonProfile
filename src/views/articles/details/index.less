@@ -1,0 +1,39 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.details {
+    width: 100%;
+    height: 100%;
+    &-wrapper {
+        position: relative;
+        max-width: 1280px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+        #flex(row, flex-start, center);
+        &_main {
+            width: 820px;
+            max-width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            #color(background-color, --module-bg-color);
+            &-suspend {
+                position: absolute;
+                top: 20px;
+                left: -60px;
+                width: 60px;
+            }
+        }
+        &_sidebar {
+            width: 300px;
+            padding: 10px;
+            margin-top: 20px;
+            margin-left: 20px;
+            #color(background-color, --module-bg-color);
+        }
+        &_suspend {
+            top: 140px;
+            z-index: 2;
+        }
+    }
+}

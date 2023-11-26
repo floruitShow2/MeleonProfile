@@ -1,5 +1,14 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
+
+.group-title {
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+  #color(color, --primary-text-color);
+}
+
 .ws-management-task {
   width: 100%;
   height: calc(100vh - 60px);
@@ -60,11 +69,12 @@
         width: 350px;
         height: 100%;
         &-header {
-          height: 40px;
-          line-height: 40px;
-          font-size: 16px;
-          font-weight: bold;
-          #color(color, --primary-text-color);
+          // height: 40px;
+          // line-height: 40px;
+          // font-size: 16px;
+          // font-weight: bold;
+          // #color(color, --primary-text-color);
+          .group-title();
           #flex(row, center, space-between);
         }
         &-plus {
@@ -101,6 +111,16 @@
       }
       .column:last-child {
         margin-right: 0;
+      }
+    }
+    .table-mode {
+      flex-direction: column;
+      .task-manage-table {
+        width: 100%;
+        &--header {
+          .group-title();
+          #flex(row, center, space-between);
+        }
       }
     }
   }

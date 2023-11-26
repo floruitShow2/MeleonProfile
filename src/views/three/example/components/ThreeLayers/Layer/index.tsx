@@ -41,8 +41,7 @@ export default defineComponent({
     const isSelected = ref(false)
 
     const LayerOffsetLeft = computed(() => {
-      if (type.value === 'layer') return level.value === 0 ? 10 : level.value * 30
-      return 10
+      return level.value === 0 ? 10 : level.value * 20
     })
 
     const className = computed(() =>
@@ -92,7 +91,7 @@ export default defineComponent({
         onMouseleave={onMouseLeave}
         onClick={onLayerClick}
       >
-        <div class="main">
+        <div class="main" title={label.value}>
           {type.value === 'folder' ? (
             <i class={['iconfont ws-arrow-up', isFold.value ? 'is-folded' : '']} />
           ) : (

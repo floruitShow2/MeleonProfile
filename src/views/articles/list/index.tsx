@@ -90,7 +90,7 @@ export default defineComponent({
                       key={li.title}
                       details={li}
                       v-slots={{
-                        image: () => <img src={li.image} />
+                        image: () => <img src={li.cover} />
                       }}
                     />
                   ))}
@@ -125,7 +125,7 @@ export default defineComponent({
                       class="ws-art-card"
                       details={item}
                       v-slots={{
-                        image: () => <img src={item.image} />
+                        image: () => <img src={item.cover} />
                       }}
                     ></WsArtCard>
                   ))

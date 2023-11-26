@@ -8,7 +8,7 @@ const createFakeArticles = () => {
   const obj: Record<string, ApiArticle.ArticleEntity[]> = {}
   fakeCategory.forEach((cate) => {
     obj[cate] = Mock.mock({
-      'items|100': [
+      'items|10000': [
         {
           title: () => faker.lorem.sentence({ min: 5, max: 8 }),
           description: () => faker.lorem.sentence(),

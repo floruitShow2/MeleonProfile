@@ -1,18 +1,31 @@
 import { mockRequest, request } from '@/service'
-import { FileItemType } from '@/views/articles/center/components/importMenu/interface'
 
 // export const FetchStatistics = () => {}
 const URLs = {
-  articles: '/api/articles/list',
+  articles: '/api/blog/getBlogsList',
+  drafts: '/api/blog/getDraftsList',
   uploadBlogs: '/api/blog/uploadBlogs'
 }
-/**
- * 文章管理
- */
-export const FetchArticles = (category: string, searchQuery: string) => {
-  return mockRequest.get(URLs.articles, { params: { category, searchQuery } })
+
+export const FetchArticleById = (id: string) => {
+  return request.get<ApiArticle.ArticleEntity>(`/api/blog/${id}`)
 }
 
-export const UploadBlogs = (blogs: FileItemType[]) => {
+/**
+ * @description 文章管理-数据看板-文章管理
+ * @param searchQuery 查询参数
+ * @returns
+ */
+export const FetchArticlesList = (searchQuery: string) => {
+  return request.get<ApiArticle.ArticleEntity[]>(URLs.articles, {
+    params: { searchQuery }
+  })
+}
+
+export const FetchDraftsList = (searchQuery: string) => {
+  return request.get(URLs.drafts, { params: { searchQuery } })
+}
+
+export const UploadBlogs = (blogs: Partial<ApiArticle.ArticleEntity>[]) => {
   return request.post(URLs.uploadBlogs, { blogs })
 }

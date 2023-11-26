@@ -9,7 +9,7 @@ declare namespace DevResTemplate {
 
 /** 后端返回的用户权益相关类型 */
 declare namespace ApiAuth {
-  export type RoleType = '' | '*' | 'admin' | 'user'
+  export type Token = string
   /** 返回的用户信息 */
   export interface UserInfo {
     username?: string

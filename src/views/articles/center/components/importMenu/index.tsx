@@ -5,7 +5,6 @@ import { UploadBlogs } from '@/api/articles'
 import { getBlogTags } from '@/api/tag'
 import type { BlogTagType } from '@/api/tag'
 import { readFileAsText } from '@/utils/file/parse'
-import type { FileItemType } from './interface'
 import './index.less'
 
 export default defineComponent({
@@ -14,8 +13,7 @@ export default defineComponent({
     const uploadTip = '暂时仅支持上传 MD 文档。请在上传前检查文档图片路径，本地路径的图片会上传失败'
 
     const showFilesList = ref<boolean>(false)
-    // const isCheckAll = ref<boolean>(false)
-    const blogFileList = ref<FileItemType[]>([])
+    const blogFileList = ref<Partial<ApiArticle.ArticleEntity>[]>([])
     const blogTags = ref<BlogTagType[]>([])
     const handleFileListChange = async (fileList: FileItem[]) => {
       const { data } = await getBlogTags()
@@ -23,9 +21,12 @@ export default defineComponent({
       showFilesList.value = true
       blogFileList.value = []
       fileList.forEach(async (file, index) => {
+        const blogContent = file.file ? await readFileAsText(file.file) : ''
         blogFileList.value[index] = {
-          filename: file.name || '',
-          content: file.file ? await readFileAsText(file.file) : '',
+          title: file.name || '',
+          description: blogContent.slice(0, 100),
+          content: blogContent,
+          status: 'notPassed',
           tags: []
         }
       })
@@ -35,7 +36,7 @@ export default defineComponent({
       return blogFileList.value.map((blog) => {
         return (
           <div class="blog-list-item">
-            <span class="blog-name">{blog.filename}</span>
+            <span class="blog-name">{blog.title}</span>
             <Select v-model:modelValue={blog.tags} size="small" multiple allow-search={false}>
               {blogTags.value.map((tag) => {
                 return <Option label={tag.tagName} value={tag.tagName} />

@@ -9,6 +9,7 @@ export default mergeConfig(
     server: {
       open: true,
       cors: true,
+      port: 8080,
       fs: {
         strict: true
       }

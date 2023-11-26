@@ -44,7 +44,8 @@ export default defineComponent({
       startTime: '',
       endTime: '',
       tags: [],
-      relatives: []
+      relatives: [],
+      comments: 0
     })
     const timeRange = ref<string[]>([])
     const handleTagSelect = (value: unknown) => {

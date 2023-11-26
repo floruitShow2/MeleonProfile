@@ -49,7 +49,7 @@ export default class Room {
   }
 
   generateLayers<T extends RestrictType>(
-    group: THREE.Group,
+    group: THREE.Object3D,
     result: Array<T>,
     pid?: number | string | symbol
   ) {
@@ -57,7 +57,7 @@ export default class Room {
     group.children.forEach((child) => {
       child.castShadow = true
       child.receiveShadow = true
-      if (child instanceof THREE.Group) {
+      if (child.children && child.children.length) {
         const groupModel = {
           id: child.uuid,
           pid,

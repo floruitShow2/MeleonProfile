@@ -15,22 +15,22 @@ export function fetchSmsCode(phone: string) {
  * @param password - 密码
  */
 // /api/Admin/Login
-export function fetchLogin(userName: string, password: string) {
-  return request.post<ApiAuth.Token>('/api/Admin/Login', {
-    userName,
-    password
-  })
-}
+// export function fetchLogin(userName: string, password: string) {
+//   return request.post<ApiAuth.Token>('/api/Admin/Login', {
+//     userName,
+//     password
+//   })
+// }
 
 /** 获取用户信息 */
 // /api/Admin/GetUserInfo
-export function fetchUserInfo() {
-  return request.get<{ data: ApiAuth.UserInfo }>('/api/Admin/GetUserInfo')
-}
+// export function fetchUserInfo() {
+//   return request.get<{ data: ApiAuth.UserInfo }>('/api/Admin/GetUserInfo')
+// }
 
-export function Logout() {
-  return request.post('/api/Admin/Logout')
-}
+// export function Logout() {
+//   return request.post('/api/Admin/Logout')
+// }
 
 /**
  * 获取用户路由数据

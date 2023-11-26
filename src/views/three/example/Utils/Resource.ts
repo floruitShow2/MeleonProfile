@@ -59,11 +59,15 @@ export default class Resource extends EventEmitter {
 
   startLoading() {
     for (const asset of this.assets) {
-      // http://192.168.22.61:8008/api/MainInterface/Download3D
+      // asset.path
+      // 'http://localhost:3000/static/3DModels/turbine-01.glb',
       if (asset.type === 'glbModel') {
-        this.loaders.gltfLoader.load(asset.path, (file) => {
-          this.singleAssetLoaded(asset, file)
-        })
+        this.loaders.gltfLoader.load(
+          'http://localhost:3000/static/3DModels/turbine-01.glb',
+          (file) => {
+            this.singleAssetLoaded(asset, file)
+          }
+        )
       } else if (asset.type === 'videoTexture') {
         this.video = {}
         this.videoTexture = {}
@@ -87,6 +91,7 @@ export default class Resource extends EventEmitter {
   }
 
   singleAssetLoaded(asset: AssetsType, file: any) {
+    console.log(file)
     this.items[asset.name] = file
     this.loaded++
     if (this.loaded === this.queue) {

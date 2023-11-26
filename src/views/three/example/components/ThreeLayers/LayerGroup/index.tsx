@@ -142,6 +142,7 @@ const LayersGroup = defineComponent({
                 uuid={id}
                 label={label}
                 type="folder"
+                level={level.value}
                 isFold={activeFolders.value.includes(id)}
                 parentLayerVisible={computeParentVisible.value(id)}
                 onClick={(e) => handleFolder(e.uuid, e.type, index)}

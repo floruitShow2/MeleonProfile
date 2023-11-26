@@ -8,10 +8,10 @@ const serviceEnv: ServiceEnv = {
     url: 'http://localhost:3000'
   },
   test: {
-    url: 'http://localhost:8080'
+    url: 'http://localhost:3000'
   },
   prod: {
-    url: 'http://localhost:8080'
+    url: 'http://localhost:3000'
   }
 }
 

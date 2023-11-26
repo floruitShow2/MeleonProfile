@@ -71,14 +71,15 @@
       width: 100%;
       &-content {
         padding: 10px;
+        gap: 12px;
         flex-wrap: wrap;
         align-content: flex-start;
-        #flex(row, center, space-between);
+        #flex(row, center, center);
         &-item {
-          width: 30%;
+          width: 32%;
           height: 120px;
           padding: 10px;
-          margin-bottom: 10px;
+          // margin-bottom: 10px;
           #flex(column, flex-start, space-between);
           #color(color, --primary-text-color);
           #color(background-color, --primary-bg-color);

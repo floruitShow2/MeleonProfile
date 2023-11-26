@@ -13,9 +13,13 @@
   }
   .main {
     #flex(row, center, flex-start);
+    white-space: nowrap;
     span {
       margin-left: 5px;
       font-size: 14px;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .ws-arrow-up {
       font-size: 14px;

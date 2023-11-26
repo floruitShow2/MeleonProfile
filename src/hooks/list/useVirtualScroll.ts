@@ -1,4 +1,4 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import type { Ref, ComponentPublicInstance } from 'vue'
 
 // interface UseVirtualScrollOptions {
@@ -88,15 +88,18 @@ export default function useVirtualScroll<T>(list: Ref<T[]>, rootRef: Ref<HTMLEle
   watch(
     itemsRef,
     (newVal) => {
-      if (!newVal) return
-      const first = newVal[0]
-      const firstEl = getItemInstance(first)
-      const last = newVal[renderList.value.length - 1]
-      const lastEl = getItemInstance(last)
-      lastItem.value = last
-      firstItem.value = first
-      if (first && firstEl) observer.observe(firstEl)
-      if (last && lastEl) observer.observe(lastEl)
+      // 添加 nextTick，保证获取节点元素时已经是更新后的节点
+      nextTick(() => {
+        if (!newVal) return
+        const first = newVal[0]
+        const firstEl = getItemInstance(first)
+        const last = newVal[renderList.value.length - 1]
+        const lastEl = getItemInstance(last)
+        lastItem.value = last
+        firstItem.value = first
+        if (first && firstEl) observer.observe(firstEl)
+        if (last && lastEl) observer.observe(lastEl)
+      })
     },
     { deep: true }
   )

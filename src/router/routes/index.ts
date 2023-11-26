@@ -12,6 +12,7 @@ function formatModules(_modules: any, result: RouteRecordNormalized[]) {
     const moduleList = Array.isArray(defaultModule) ? [...defaultModule] : [defaultModule]
     result.push(...moduleList)
   })
+
   return result
 }
 

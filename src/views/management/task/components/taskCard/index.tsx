@@ -2,8 +2,8 @@ import { defineComponent, toRefs } from 'vue'
 import type { PropType } from 'vue'
 import { Tag } from '@arco-design/web-vue'
 import { TagColorMap, TypeColorMap } from '@/constants/tag'
-import WsAvatarGroup from '@/components/avatarGroup'
 import WsAvatar from '@/components/avatar'
+import WsAvatarGroup from '@/components/avatarGroup'
 import './index.less'
 
 export default defineComponent({
@@ -64,7 +64,7 @@ export default defineComponent({
             </div>
             <div class="count-item" onClick={handleCommentClick}>
               <i class="iconfont ws-message"></i>
-              {data.value.comments !== 0 && <span>{data.value.comments}</span>}
+              <span>{data.value.comments}</span>
             </div>
           </div>
           <WsAvatarGroup maxCount={3}>

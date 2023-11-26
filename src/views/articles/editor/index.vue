@@ -138,8 +138,8 @@
 <style lang="less" scoped>
   @import '@/styles/layout.less';
   @import '@/styles/theme.less';
-  @import './theme/default.less';
-  @import './theme/meleon.less';
+  @import '@/components/markdownView/theme/default.less';
+  @import '@/components/markdownView/theme/meleon.less';
   #base() {
     width: 100%;
     #color(background-color, --module-bg-color);

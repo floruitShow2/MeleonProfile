@@ -1,4 +1,4 @@
-import { defineComponent } from 'vue'
+import { PropType, defineComponent } from 'vue'
 import { formatToDateTime } from '@/utils/format'
 import './index.less'
 
@@ -9,7 +9,7 @@ export default defineComponent({
       default: 'vertical'
     },
     details: {
-      type: Object,
+      type: Object as PropType<ApiArticle.ArticleEntity>,
       default: () => {
         return {
           title: '',

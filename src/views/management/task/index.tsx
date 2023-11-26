@@ -1,8 +1,21 @@
 import { defineComponent, onBeforeMount, ref } from 'vue'
 import { FetchAllTasks } from '@/api/task'
 import Draggable from 'vuedraggable'
-import { Drawer, Select, Option, Dropdown, Doption, Message } from '@arco-design/web-vue'
+import {
+  Drawer,
+  Select,
+  Option,
+  Dropdown,
+  Doption,
+  Message,
+  Tag,
+  Table,
+  TableColumn
+} from '@arco-design/web-vue'
 import WsComments from '@/components/comments'
+import WsAvatar from '@/components/avatar'
+import WsAvatarGroup from '@/components/avatarGroup'
+import { TagColorMap, TypeColorMap } from '@/constants/tag'
 import WsTaskCard from './components/taskCard'
 import WsTaskEditor from './components/taskEditor'
 import type { HiddenFields } from './components/taskCard/interface'
@@ -36,7 +49,7 @@ export default defineComponent({
       group: 'task'
     }
 
-    const columns = ref<
+    const groups = ref<
       Array<{
         group: string
         list: ApiTask.TaskEntity[]
@@ -67,7 +80,7 @@ export default defineComponent({
       data.forEach((item) => {
         obj[item.group] = item.list
       })
-      columns.value = columns.value.map((item) => ({
+      groups.value = groups.value.map((item) => ({
         group: item.group,
         list: obj[item.group]
       }))
@@ -75,6 +88,7 @@ export default defineComponent({
 
     onBeforeMount(initTasks)
 
+    // 切换排布模式
     const displayMode = ref<Record<string, string>[]>([
       {
         type: 'table',
@@ -89,8 +103,10 @@ export default defineComponent({
     ])
     const activeMode = ref<'card' | 'table'>('card')
 
-    const showEditDrawer = ref(false)
     const curGroup = ref<string>('')
+
+    // 是否展示编辑器窗口
+    const showEditDrawer = ref(false)
     const handleCreate = (group: string) => {
       showEditDrawer.value = true
       curGroup.value = group
@@ -194,44 +210,135 @@ export default defineComponent({
               <span>搜索</span>
             </div>
           </header>
-          <section class="task-manage-content">
-            {columns.value.map((column) => (
-              <div key={column.group} class="column">
-                <div class="column-header">
-                  <p>{column.group}</p>
-                  <div class="tools">
-                    <i
-                      class="iconfont ws-plus ibtn_base ibtn_hover"
-                      onClick={() => handleCreate(column.group)}
-                    ></i>
-                    <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
+          {activeMode.value === 'card' ? (
+            <section class="task-manage-content card-mode">
+              {groups.value.map((column) => (
+                <div key={column.group} class="column">
+                  <div class="column-header">
+                    <p>{column.group}</p>
+                    <div class="tools">
+                      <i
+                        class="iconfont ws-plus ibtn_base ibtn_hover"
+                        onClick={() => handleCreate(column.group)}
+                      ></i>
+                      <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
+                    </div>
+                  </div>
+                  <Draggable
+                    v-model={column.list}
+                    // tag="transition-group"
+                    itemKey={column.group}
+                    componentData={{
+                      class: 'column-content'
+                    }}
+                    ghost-class="ghost-card"
+                    {...draggableOptions}
+                    v-slots={{
+                      item: ({ element }: { element: ApiTask.TaskEntity }) => {
+                        return (
+                          <WsTaskCard
+                            key={element.taskId}
+                            data={element}
+                            onClick={handleCardClick}
+                            onCommentClick={() => handleCommentClick(element)}
+                          />
+                        )
+                      }
+                    }}
+                  />
+                </div>
+              ))}
+            </section>
+          ) : (
+            <section class="task-manage-content table-mode">
+              {groups.value.map((column) => (
+                <div key={column.group} class="task-manage-table">
+                  <div class="task-manage-table--header">
+                    <span>{column.group}</span>
+                    <div class="tools">
+                      <i
+                        class="iconfont ws-plus ibtn_base ibtn_hover"
+                        onClick={() => handleCreate(column.group)}
+                      ></i>
+                      <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
+                    </div>
+                  </div>
+                  <div class="task-manage-table--container">
+                    <Table
+                      data={column.list}
+                      v-slots={{
+                        columns: () => (
+                          <>
+                            <TableColumn title="任务名" dataIndex="title" width={150}></TableColumn>
+                            <TableColumn
+                              title="任务描述"
+                              dataIndex="desc"
+                              width={150}
+                            ></TableColumn>
+                            <TableColumn
+                              title="标签"
+                              width={150}
+                              v-slots={{
+                                cell: ({ record }: { record: ApiTask.TaskEntity }) => {
+                                  return (
+                                    <>
+                                      {record.tags.map((tag) => (
+                                        <Tag size="small" color={TagColorMap[tag.type]}>
+                                          <span
+                                            style={{ backgroundColor: TypeColorMap[tag.type] }}
+                                          ></span>
+                                          <span>{tag.label}</span>
+                                        </Tag>
+                                      ))}
+                                    </>
+                                  )
+                                }
+                              }}
+                            ></TableColumn>
+                            <TableColumn
+                              title="创建人"
+                              dataIndex="creator"
+                              width={150}
+                            ></TableColumn>
+                            <TableColumn
+                              title="起始日期"
+                              dataIndex="startTime"
+                              width={150}
+                            ></TableColumn>
+                            <TableColumn
+                              title="结束日期"
+                              dataIndex="endTime"
+                              width={150}
+                            ></TableColumn>
+                            <TableColumn
+                              title="关联人"
+                              width={150}
+                              v-slots={{
+                                cell: ({ record }: { record: ApiTask.TaskEntity }) => (
+                                  <>
+                                    <WsAvatarGroup maxCount={3}>
+                                      {record.relatives.map((user) => (
+                                        <WsAvatar
+                                          imgUrl={(user as ApiAuth.UserInfo).avatar}
+                                          shape="circle"
+                                          size={28}
+                                          background="#FFFFFF"
+                                        ></WsAvatar>
+                                      ))}
+                                    </WsAvatarGroup>
+                                  </>
+                                )
+                              }}
+                            ></TableColumn>
+                          </>
+                        )
+                      }}
+                    ></Table>
                   </div>
                 </div>
-                <Draggable
-                  v-model={column.list}
-                  // tag="transition-group"
-                  itemKey={column.group}
-                  componentData={{
-                    class: 'column-content'
-                  }}
-                  ghost-class="ghost-card"
-                  {...draggableOptions}
-                  v-slots={{
-                    item: ({ element }: { element: ApiTask.TaskEntity }) => {
-                      return (
-                        <WsTaskCard
-                          key={element.taskId}
-                          data={element}
-                          onClick={handleCardClick}
-                          onCommentClick={() => handleCommentClick(element)}
-                        />
-                      )
-                    }
-                  }}
-                />
-              </div>
-            ))}
-          </section>
+              ))}
+            </section>
+          )}
         </div>
         {/* 任务编辑器弹窗 */}
         <Drawer

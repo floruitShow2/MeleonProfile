@@ -47,7 +47,7 @@
             </div>
           </div>
         </div>
-        <!-- <WsOrgTree /> -->
+        <a-upload :auto-upload="false" @change="handleFileChange"></a-upload>
       </div>
     </section>
 
@@ -60,7 +60,28 @@
   import WsSearch, { ConvertToSearchFuzzyList, FuzzyResultType } from '@/components/search/index'
   import { FetchAllDepts, BatchRemoveByIds } from '@/api/management/dept'
   import { formatToDateTime } from '@/utils/format/time'
+  import Excel from 'exceljs'
+  import { FileItem } from '@arco-design/web-vue'
   import { ConvertToTree } from './config/index'
+
+  const handleFileChange = (e: FileItem[]) => {
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const res = e.target?.result ?? ''
+      console.log(res)
+      const data = new Uint8Array(res as ArrayBuffer)
+      const workbook = new Excel.Workbook()
+      workbook.xlsx.load(data).then(() => {
+        const worksheet = workbook.getWorksheet(1)
+        if (!worksheet) return
+        worksheet.eachRow((row, rowNumber) => {
+          console.log(`Row ${rowNumber}: ${JSON.stringify(row.values)}`)
+        })
+      })
+    }
+    const targetFile = e[0].file
+    if (targetFile) reader.readAsArrayBuffer(targetFile)
+  }
 
   // header
   const selectedKeys = ref<Array<string | number>>([])
@@ -240,4 +261,3 @@
     }
   }
 </style>
-~/src/utils/format/time

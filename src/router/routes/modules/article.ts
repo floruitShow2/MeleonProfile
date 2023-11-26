@@ -33,6 +33,16 @@ const ARTICLES: AppRouteRecordRaw = {
       }
     },
     {
+      path: ':id',
+      name: 'articles/details',
+      component: () => import('@/views/articles/details/index'),
+      meta: {
+        hideInMenu: true,
+        requiresAuth: true,
+        roles: ['*']
+      }
+    },
+    {
       path: 'editor',
       name: 'articles/editor',
       component: () => import('@/views/articles/editor/index.vue'),
