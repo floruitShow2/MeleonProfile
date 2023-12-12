@@ -89,6 +89,7 @@ export default class Renderer {
 
   update() {
     const { width, height } = this.sizes
+
     if (this.showThreeViews) {
       // main screen
       this.renderer.setViewport(0, 0, width / 2, height / 2)

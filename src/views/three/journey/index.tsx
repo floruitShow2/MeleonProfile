@@ -1,23 +1,105 @@
 import { defineComponent, onMounted, ref } from 'vue'
-// import { Application } from './General/Application'
+import * as THREE from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
+import ThreeViewer, { type Experience, type AssetsType } from '@/components/threeViewer'
+import { createEffectComposer } from './utils'
 import './index.less'
 
 export default defineComponent({
   setup() {
-    const canvasRef = ref()
+    const viewerRef = ref()
+    const experience = ref<Experience | null>(null)
 
-    // const app = new Application({ $canvas: canvasRef.value })
+    const assets: AssetsType[] = [
+      {
+        name: 'model-01',
+        path: 'http://localhost:3000/static/3DModels/turbine-01.glb'
+      }
+    ]
 
-    onMounted(() => {
-      const $canvas = canvasRef.value as HTMLCanvasElement
-      const c1 = $canvas.getContext('2d')
-      if (!c1) return
-      c1.fillRect(100, 100, 100, 100)
+    const color = new THREE.Color('#0fb1fb')
+
+    const material = new THREE.LineBasicMaterial({
+      color: new THREE.Color(color),
+      depthTest: true,
+      transparent: true
+    })
+    const getLine = (object: THREE.Mesh, thresholdAngle = 1, opacity = 1): THREE.LineSegments => {
+      // 创建线条，参数为 几何体模型，相邻面的法线之间的角度，
+      const edges = new THREE.EdgesGeometry(object.geometry, thresholdAngle)
+      const line = new THREE.LineSegments(edges)
+      material.opacity = opacity
+      line.material = material
+      return line
+    }
+
+    const changeModelMaterial = (mesh: THREE.Object3D, lineGroup: THREE.Group) => {
+      if (mesh instanceof THREE.Mesh) {
+        const quaternion = new THREE.Quaternion()
+        const worldPos = new THREE.Vector3()
+        const worldScale = new THREE.Vector3()
+        // 获取四元数
+        mesh.getWorldQuaternion(quaternion)
+        // 获取位置信息
+        mesh.getWorldPosition(worldPos)
+        // 获取缩放比例
+        mesh.getWorldScale(worldScale)
+
+        mesh.material.transparent = true
+        mesh.material.opacity = 0.4
+        // 以模型顶点信息创建线条
+        const line = getLine(mesh, 30, 1)
+        // 给线段赋予模型相同的坐标信息
+        line.quaternion.copy(quaternion)
+        line.position.copy(worldPos)
+        line.scale.copy(worldScale)
+
+        lineGroup.add(line)
+      }
+    }
+
+    const initLineGroups = (instance: Experience) => {
+      const model: THREE.Object3D = instance.world.models.actualModel
+      const lineGroup = new THREE.Group()
+      model.traverse((mesh: THREE.Object3D) => changeModelMaterial(mesh, lineGroup))
+      instance.scene.add(lineGroup)
+    }
+
+    const initBloom = (instance: Experience) => {
+      const { scene, camera, renderer, sizes } = instance
+      const { glowComposer, effectComposer } = createEffectComposer(
+        scene,
+        camera.orthographicCamera,
+        renderer.renderer,
+        sizes.width,
+        sizes.height
+      )
+
+      instance.time.on('update', () => {
+        // 执行辉光效果器渲染
+        glowComposer.render()
+        // 在辉光渲染器执行完之后在恢复材质原效果
+        // 执行场景效果器渲染
+        effectComposer.render()
+      })
+    }
+
+    onMounted(async () => {
+      if (viewerRef.value) {
+        experience.value = viewerRef.value.experience
+      }
+      if (experience.value) {
+        await experience.value.loadModel(assets)
+        initLineGroups(experience.value)
+        // initBloom(experience.value)
+      }
     })
 
     return () => (
       <div class="ws-journey">
-        <canvas ref={canvasRef.value} width={200} height={200} />
+        <ThreeViewer ref={viewerRef} />
       </div>
     )
   }

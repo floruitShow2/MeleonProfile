@@ -1,0 +1,21 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.markdown-author {
+    padding: 10px;
+    #flex(column, flex-start, flex-start);
+    &_header {
+        #flex(row, center, flex-start);
+        img {
+            width: 40px;
+            height: 40px;
+            margin-right: 8px;
+        }
+        .message {
+            &-username {
+                font-size: 16px;
+                #color(color, --primary-text-color);
+            }
+        }
+    }
+}

@@ -3,18 +3,26 @@
 
 .details {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 60px);
     &-wrapper {
         position: relative;
         max-width: 1280px;
         height: 100%;
         margin: 0 auto;
         padding: 0 30px;
+        overflow: auto;
+        scroll-padding-top: 100px;
+        scroll-behavior: smooth;
         #flex(row, flex-start, center);
+        &_tools {
+            position: sticky;
+            margin-top: 20px;
+            top: 20px;
+        }
         &_main {
             width: 820px;
             max-width: 100%;
-            margin-top: 20px;
+            margin: 20px 20px 0 20px;
             padding: 10px;
             #color(background-color, --module-bg-color);
             &-suspend {
@@ -25,15 +33,49 @@
             }
         }
         &_sidebar {
+            position: sticky;
+            top: 20px;
             width: 300px;
-            padding: 10px;
             margin-top: 20px;
-            margin-left: 20px;
-            #color(background-color, --module-bg-color);
-        }
-        &_suspend {
-            top: 140px;
-            z-index: 2;
+            #flex(column, center, flex-start);
+            &-author {
+                width: 100%;
+                margin-bottom: 20px;
+                #color(background-color, --module-bg-color);
+            }
+            &-menu {
+                width: 100%;
+                padding: 10px 0;
+                #flex(column, center, flex-start);
+                #color(background-color, --module-bg-color);
+                a {
+                    display: inline-block;
+                    width: 100%;
+                    text-align: left;
+                    color: inherit;
+                    display: inline-block;
+                    padding: 8px 0;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    text-decoration: none;
+                    #color(color, --primary-text-color);
+                }
+                .is-active {
+                    position: relative;
+                    #color(color, --primary-blue-color);
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 3px;
+                        height: 100%;
+                        #color(background-color, --primary-blue-color);
+                    }
+                }
+            }
         }
     }
 }
