@@ -30,6 +30,7 @@
     ]
   },
   "dependencies": {
+    "@amap/amap-jsapi-types": "^0.0.13",
     "@arco-design/web-vue": "^2.44.7",
     "@vue-flow/core": "^1.22.2",
     "@vueuse/core": "^9.3.0",

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Experience from '../General/Experience'
 import Resource from './Resource'
 import { DefaultSunLightOptions } from '../constants/Light'
-import { SunLightOptions } from '../interface/light'
+import type { SunLightOptions } from '../interface'
 
 export default class Environment {
   experience!: Experience

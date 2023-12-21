@@ -9,7 +9,7 @@ const DASHBOARD: AppRouteRecordRaw = {
     locale: 'menu.management',
     requiresAuth: true,
     icon: 'icon-calendar-clock',
-    order: 3
+    order: 9
   },
   children: [
     {
@@ -30,6 +30,7 @@ const DASHBOARD: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.management.dept',
         requiresAuth: true,
+        hideInMenu: true,
         roles: ['*']
       }
     },

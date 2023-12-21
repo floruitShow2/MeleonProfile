@@ -46,6 +46,9 @@ export default {
   'menu.file': '文件管理',
   'menu.file.overview': '文件中心',
   'menu.file.warehouses': '文件仓库',
+  // 地图管理
+  'menu.map': '地图应用',
+  'menu.map.autoNavi': '高德地图',
   // 系统管理
   'menu.management': '系统管理',
   'menu.management.task': '任务管理',

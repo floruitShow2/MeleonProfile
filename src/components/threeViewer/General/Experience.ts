@@ -68,13 +68,6 @@ export default class Experience {
     this.wrapper = wrapper
   }
 
-  loadModel(assets: AssetsType[]) {
-    return new Promise((resolve) => {
-      this.resource.startLoad(assets)
-      this.resource.on('ready', resolve)
-    })
-  }
-
   resize() {
     this.camera.resize()
     this.renderer.resize()
@@ -83,5 +76,21 @@ export default class Experience {
   update() {
     this.camera.update()
     this.renderer.update()
+  }
+
+  /**
+   * @description 提供 模型名称、模型url 等信息导入模型文件
+   * @param assets
+   * @returns
+   */
+  loadModel(assets: AssetsType[]) {
+    return new Promise((resolve) => {
+      this.resource.startLoad(assets)
+      this.resource.on('ready', resolve)
+    })
+  }
+
+  getActualModel() {
+    return this.world.models.actualModel
   }
 }

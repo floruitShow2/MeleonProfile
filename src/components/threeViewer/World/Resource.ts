@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import * as THREE from 'three'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import Experience from '../General/Experience'
 import Renderer from '../General/Renderer'
@@ -51,13 +51,14 @@ export default class Resource extends EventEmitter {
   startLoad(assets: AssetsType[]) {
     this.queue = assets.length
     for (const asset of assets) {
-      this.loaders.gltfLoader.load(asset.path, (file) => {
+      const { loader = 'gltf' } = asset
+      this.loaders[`${loader}Loader`].load(asset.path, (file) => {
         this.singleAssetLoaded(asset, file)
       })
     }
   }
 
-  singleAssetLoaded(asset: AssetsType, file: any) {
+  singleAssetLoaded(asset: AssetsType, file: unknown) {
     this.items[asset.name] = file
     this.loaded++
     if (this.loaded === this.queue) {

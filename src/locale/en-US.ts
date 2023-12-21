@@ -34,7 +34,7 @@ export default {
   'menu.articles.overview': 'Overview',
   'menu.articles.list': 'List',
   'menu.articles.editor': 'Editor',
-  // 三维模型
+  // threejs
   'menu.three': 'Three',
   'menu.three.object': 'Object',
   'menu.three.vector': 'Vector',
@@ -46,6 +46,9 @@ export default {
   'menu.file': 'File',
   'menu.file.overview': 'Overview',
   'menu.file.warehouses': 'Warehouses',
+  // Map
+  'menu.map': 'Map',
+  'menu.map.autoNavi': 'AutoNavi',
   // System
   'menu.management': 'Management',
   'menu.management.task': 'Task',

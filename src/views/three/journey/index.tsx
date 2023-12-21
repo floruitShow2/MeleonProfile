@@ -1,10 +1,6 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import * as THREE from 'three'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import ThreeViewer, { type Experience, type AssetsType } from '@/components/threeViewer'
-import { createEffectComposer } from './utils'
 import './index.less'
 
 export default defineComponent({
@@ -20,12 +16,12 @@ export default defineComponent({
     ]
 
     const color = new THREE.Color('#0fb1fb')
-
     const material = new THREE.LineBasicMaterial({
       color: new THREE.Color(color),
       depthTest: true,
       transparent: true
     })
+
     const getLine = (object: THREE.Mesh, thresholdAngle = 1, opacity = 1): THREE.LineSegments => {
       // 创建线条，参数为 几何体模型，相邻面的法线之间的角度，
       const edges = new THREE.EdgesGeometry(object.geometry, thresholdAngle)
@@ -61,29 +57,11 @@ export default defineComponent({
     }
 
     const initLineGroups = (instance: Experience) => {
-      const model: THREE.Object3D = instance.world.models.actualModel
+      // 拿到实际模型
+      const model = instance.getActualModel()
       const lineGroup = new THREE.Group()
       model.traverse((mesh: THREE.Object3D) => changeModelMaterial(mesh, lineGroup))
       instance.scene.add(lineGroup)
-    }
-
-    const initBloom = (instance: Experience) => {
-      const { scene, camera, renderer, sizes } = instance
-      const { glowComposer, effectComposer } = createEffectComposer(
-        scene,
-        camera.orthographicCamera,
-        renderer.renderer,
-        sizes.width,
-        sizes.height
-      )
-
-      instance.time.on('update', () => {
-        // 执行辉光效果器渲染
-        glowComposer.render()
-        // 在辉光渲染器执行完之后在恢复材质原效果
-        // 执行场景效果器渲染
-        effectComposer.render()
-      })
     }
 
     onMounted(async () => {
@@ -93,7 +71,6 @@ export default defineComponent({
       if (experience.value) {
         await experience.value.loadModel(assets)
         initLineGroups(experience.value)
-        // initBloom(experience.value)
       }
     })
 

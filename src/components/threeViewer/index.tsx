@@ -1,4 +1,4 @@
-import { defineComponent, nextTick, onMounted, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import Experience from './General/Experience'
 import './index.less'
 

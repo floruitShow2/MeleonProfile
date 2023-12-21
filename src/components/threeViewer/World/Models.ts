@@ -41,8 +41,9 @@ export default class model {
     this.scene = scene
     this.camera = camera
     this.resource = resource
-    // 所有导入模型中 name 为 model 的模型
-    this.model = this.resource.items['model-01']
+    // 选择默认渲染的模型
+    const defaultModel = Object.keys(this.resource.items)[0]
+    this.model = this.resource.items[defaultModel]
     this.actualModel = this.model.scene
     this.setModel()
     // this.setAnimations()
@@ -75,30 +76,6 @@ export default class model {
           hasChildren: false
         } as unknown as T
         result.push(objectModel)
-      }
-
-      if (child.name === 'Aquarium') {
-        // 为水缸模型添加玻璃材质
-        const childMesh = child.children[0] as THREE.Mesh
-        childMesh.material = new THREE.MeshPhysicalMaterial()
-        const childMeshMaterial = childMesh.material as THREE.MeshPhysicalMaterial
-        childMeshMaterial.roughness = 0
-        childMeshMaterial.color.set(0x549dd2)
-        childMeshMaterial.ior = 3
-        childMeshMaterial.transmission = 1
-        childMeshMaterial.opacity = 1
-        childMeshMaterial.depthWrite = false
-        childMeshMaterial.depthTest = true
-      }
-      if (child.name === 'Computer') {
-        const childMesh = child.children[1] as THREE.Mesh
-        childMesh.material = new THREE.MeshBasicMaterial({
-          map: this.resource.items.screen
-        })
-      }
-      if (child.name === 'Mini_Floor') {
-        // child.position.x = -0.289521
-        // child.position.z = 8.83572
       }
     })
   }

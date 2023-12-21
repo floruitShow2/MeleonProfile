@@ -1,1 +1,2 @@
-export * from './world'
+export * from './world.interface'
+export * from './light.interface'

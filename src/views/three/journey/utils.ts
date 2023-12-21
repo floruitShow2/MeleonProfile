@@ -45,27 +45,22 @@ export const createEffectComposer = (
           value: null
         }
       },
-      vertexShader:
-        '\t\t\tvarying vec2 vUv;\n' +
-        '\n' +
-        '\t\t\tvoid main() {\n' +
-        '\n' +
-        '\t\t\t\tvUv = uv;\n' +
-        '\n' +
-        '\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n' +
-        '\n' +
-        '\t\t\t}',
-      fragmentShader:
-        '\t\t\tuniform sampler2D baseTexture;\n' +
-        '\t\t\tuniform sampler2D bloomTexture;\n' +
-        '\n' +
-        '\t\t\tvarying vec2 vUv;\n' +
-        '\n' +
-        '\t\t\tvoid main() {\n' +
-        '\n' +
-        '\t\t\t\tgl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );\n' +
-        '\n' +
-        '\t\t\t}',
+      // 顶点着色器
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        }
+      `,
+      // 片元着色器
+      fragmentShader: `
+        uniform sampler2D baseTexture;
+        uniform sampler2D bloomTexture;
+        varying vec2 vUv;
+        void main() {
+          tgl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
+        }`,
       defines: {}
     }),
     'baseTexture'
