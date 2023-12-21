@@ -1,0 +1,40 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.ws-chat-header {
+  padding: 10px 20px;
+  border-bottom: solid 1px;
+  #flex(row, center, space-between);
+  #color(border-bottom-color, --primary-border-color);
+  &-message {
+    #flex(row, center, flex-start);
+    img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+    .img-list {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      flex-wrap: wrap;
+      #flex(row, center, center);
+      img {
+        width: 33%;
+        margin-right: 0;
+      }
+    }
+    &_content {
+      font-weight: 800;
+      #color(color, --primary-text-color);
+    }
+  }
+  &-tool {
+    .iconfont {
+      margin-left: 8px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+.ws-folder-card {
+  width: 250px;
+  height: 150px;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  #color(background-color, --module-bg-color);
+  #shadow-color(0, 2px, 12px, 0, --primary-shadow-color);
+  &-header {
+    height: 40px;
+    padding: 10px;
+    overflow: hidden;
+    #flex(row, center, space-between);
+    i {
+      font-size: 20px;
+    }
+  }
+  .has-cover {
+    position: relative;
+    padding: 0;
+    img {
+      width: 100%;
+      transition: transform 0.2s ease;
+    }
+    img:hover {
+      transform: scale(1.1);
+    }
+    i {
+      position: absolute;
+      right: 10px;
+      opacity: 0.8;
+      z-index: 1;
+    }
+  }
+  &-content {
+    width: 100%;
+    height: calc(100% - 40px - 50px);
+    padding: 10px;
+    .folder-name {
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 5px;
+      #color(color, --primary-text-color);
+    }
+    .folder-message {
+      width: 100%;
+      #flex(row, center, space-between);
+      span {
+        font-size: 12px;
+        #color(color, --lighter-text-color);
+      }
+    }
+  }
+  &-footer {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    #flex(row, center, flex-start);
+    #color(background-color, --lighter-bg-color);
+    .footer-item {
+      margin-right: 10px;
+      #flex(column, flex-start, flex-start);
+      span:first-child {
+        margin-bottom: 5px;
+        font-size: 10px;
+        #color(color, --lighter-text-color);
+      }
+      span:last-child {
+        font-size: 12px;
+        #color(color, --primary-text-color);
+      }
+    }
+    .ws-avatar-group {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+.is-active {
+  #color(background-color, --lighter-blue-color);
+  .folder-name,
+  .folder-message > span {
+    color: #ffffff;
+  }
+  .ws-folder-card-footer {
+    border-top: solid 1px #ffffff;
+    #color(background-color, --lighter-blue-color);
+    .footer-item > span {
+      color: #ffffff;
+    }
+  }
+}
+.is-disabled {
+  filter: grayscale(1) brightness(0.95);
+  cursor: not-allowed;
+}
+.ws-more-popover {
+  padding: 0;
+  width: 60px;
+  &-wrapper {
+    #flex(column, center, flex-start);
+    li {
+      width: 100%;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    li:hover {
+      color: #ffffff;
+      #color(background-color, --primary-blue-color);
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-edge-editor {
+  &_header {
+    padding: 10px;
+    border-bottom: solid 1px;
+    #flex(row, center, flex-start);
+    #color(color, --primary-text-color);
+    #color(border-color, --primary-border-color);
+    i {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 28px;
+      margin-right: 5px;
+    }
+    span {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 28px;
+    }
+  }
+  &_base {
+    padding: 10px;
+    border-bottom: solid 1px;
+    #flex(column, flex-start, flex-start);
+    #color(color, --primary-text-color);
+    #color(border-color, --primary-border-color);
+    .title {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 28px;
+      margin-bottom: 10px;
+      #color(color, --primary-text-color);
+    }
+    .content {
+      width: 100%;
+      #flex(column, flex-start, flex-start);
+      &-item {
+        width: 100%;
+        #flex(row, center, space-between);
+        &_title {
+          margin-right: 10px;
+          white-space: nowrap;
+        }
+        .arco-input {
+          flex: 1;
+        }
+      }
+    }
+  }
+}

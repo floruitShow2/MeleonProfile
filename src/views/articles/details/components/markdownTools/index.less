@@ -1,0 +1,43 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.article-tools {
+    #flex(column, center, flex-start);
+    &-item {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 12px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        #flex(row, center, center);
+        #color(background-color, --module-bg-color);
+        #shadow-color(0, 2px, 4px, 0, --primary-shadow-color);
+        i {
+            font-size: 20px;
+            #color(color, --lighter-text-color);
+            &:hover {
+                #color(color, --heavy-text-color);
+            }
+        }
+        span {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 17px;
+            line-height: 17px;
+            padding: 0 5px;
+            border-radius: 9px;
+            font-size: 10px;
+            text-align: center;
+            white-space: nowrap;
+            color: #FFFFFF;
+            background-color: #c4c6c9;
+            // #color(background-color, --lighter-text-color);
+        }
+    }
+    .is-active > i {
+        #color(color, --primary-blue-color);
+    }
+}

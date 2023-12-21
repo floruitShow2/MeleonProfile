@@ -1,0 +1,21 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+
+.ws-upload-node {
+  #color(color, --primary-text-color);
+  &_content {
+    .upload-button {
+      padding: 10px 15px;
+      border: dashed 1px;
+      border-radius: 2px;
+      #flex(column, center, center);
+      #color(background-color, --primary-bg-color);
+      i {
+        font-size: 24px;
+      }
+    }
+    .upload-button:hover {
+      #color(background-color, --heavy-bg-color);
+    }
+  }
+}

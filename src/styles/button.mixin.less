@@ -1,0 +1,50 @@
+@import './theme.less';
+@import './layout.less';
+
+#base() {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  height: 28px;
+  width: 28px;
+  text-align: center;
+  line-height: 28px;
+  border-radius: 2px;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ibtn_base {
+  #base();
+  // #flex(column, center, center);
+  #color(color, --primary-text-color);
+  #color(background-color, --primary-bg-color);
+}
+.ibtn_hover:hover {
+  #color(background-color, --heavy-bg-color);
+}
+
+.ibtn_mini {
+  #base();
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 16px;
+  #color(color, --primary-text-color);
+  #color(background-color, --primary-bg-color);
+}
+
+.ibtn_medium {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 18px;
+}
+
+.ibtn_disabled {
+  #base();
+  cursor: not-allowed;
+  #color(color, --lighter-text-color);
+  // #color(background-color, --lighter-bg-color);
+}

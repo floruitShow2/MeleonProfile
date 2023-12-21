@@ -1,0 +1,33 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.text-body {
+  #flex(column, flex-start, flex-start);
+  .reply-content {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 3px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    #color(background-color, --heavy-bg-color);
+    span {
+      margin-right: 5px;
+      #color(color, --primary-blue-color);
+    }
+    &:hover {
+      p {
+        #color(color, --primary-blue-color);
+      }
+      span {
+        #color(color, --heavy-blue-color);
+      }
+    }
+  }
+  button {
+    border: unset;
+    background: unset;
+    font-size: 14px;
+    cursor: pointer;
+    #color(color, --primary-blue-color);
+  }
+}

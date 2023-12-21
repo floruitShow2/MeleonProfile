@@ -1,0 +1,81 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.ws-operate-logs {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  #color(background-color, --primary-bg-color);
+  .ws-log-item {
+    // height: 200px;
+    #flex(row, flex-start, space-between);
+    .log-aside {
+      width: 30px;
+      height: 100%;
+      #flex(column, center, flex-start);
+      .dot {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        #color(background-color, --module-bg-color);
+        #shadow-color(2px, 2px, 6px, 0, --primary-shadow-color);
+      }
+      .line {
+        width: 1px;
+        border-radius: 2px;
+        #color(background-color, --heavy-bg-color);
+      }
+    }
+    .log-wrapper {
+      width: calc(100% - 30px - 5px);
+      height: 100%;
+      padding: 0 0 10px 5px;
+      &-title {
+        width: 100%;
+        height: 30px;
+        font-size: 14px;
+        #flex(row, center, space-between);
+        #color(color, --primary-text-color);
+        span:last-child {
+          white-space: nowrap;
+        }
+      }
+      &-content {
+        width: 100%;
+        height: calc(100% - 30px);
+        padding: 10px;
+        border-radius: 5px;
+        #flex(column, flex-start, flex-start);
+        #color(background-color, --module-bg-color);
+        .ws-file-card {
+          width: 100%;
+          margin-bottom: 8px;
+          #shadow-color(2px, 2px, 6px, 0, --primary-shadow-color);
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+        .keyword {
+          padding: 3px 5px;
+          margin-bottom: 5px;
+          font-size: 12px;
+          #flex(row, center, center);
+          i {
+            margin-right: 3px;
+          }
+        }
+        .is-view {
+          #color(color, --primary-blue-color);
+          #color(background-color, --gray-blue-color);
+        }
+        .is-upload {
+          #color(color, --primary-green-color);
+          #color(background-color, --gray-green-color);
+        }
+        .is-delete {
+          #color(color, --primary-red-color);
+          #color(background-color, --gray-red-color);
+        }
+      }
+    }
+  }
+}

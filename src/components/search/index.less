@@ -1,0 +1,99 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+@import '@/styles/button.mixin.less';
+
+.search-hit-wrapper {
+  .search-hit-source {
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding: 8px 20px 4px 20px;
+    z-index: 10;
+    #flex(row, center, flex-start);
+    #color(color, --primary-blue-color);
+    #color(background-color, --module-bg-color);
+  }
+  ul {
+    padding: 0 20px;
+  }
+}
+
+
+.search-hit {
+  position: relative;
+  padding: 12px 20px;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  border: solid 1px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  #flex(row, center, flex-start);
+  #color(color, --primary-text-color);
+  #color(border-color, --primary-bg-color);
+  #shadow-color(0, 1px, 2px, 1px, --primary-bg-color);
+  i {
+    font-size: 16px;
+    font-weight: 600;
+    #color(color, --primary-text-color);
+  }
+  mark {
+    background-color: unset;
+    text-decoration: underline;
+    #color(color, --primary-green-color);
+  }
+  .ws-clock {
+    margin-right: 5px;
+  }
+  .tools {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    #flex(row, center, flex-end);
+    i {
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      line-height: 28px;
+      border-radius: 50%;
+    }
+    .ws-navigator {
+      display: none;
+    }
+    .is-pinned {
+      color: #ffffff;
+      #color(background-color, --heavy-blue-color) !important;
+    }
+  }
+  .tools > i:not(.ws-navigator):hover {
+    #color(background-color, --heavy-blue-color);
+  }
+}
+.search-hit:last-child {
+  margin-bottom: 0;
+}
+.search-hit:hover {
+  color: #ffffff;
+  #color(background-color, --primary-blue-color);
+  i {
+    color: #ffffff;
+  }
+  .ws-navigator {
+    display: inline-block;
+  }
+}
+
+.search-empty-status {
+  width: 100%;
+  height: 190px;
+  #flex(row, center, center);
+  #color(color, --primary-text-color);
+}
+
+.arco-modal-body {
+  padding: 0;
+  padding-bottom: 10px;
+  max-height: 200px;
+  overflow: auto;
+}

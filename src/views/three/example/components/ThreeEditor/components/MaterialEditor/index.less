@@ -1,0 +1,41 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.material-editor {
+  width: 100%;
+  height: 100%;
+  padding: 10px 0;
+  #flex(row, flex-start, space-between);
+  &-category {
+    width: 80px;
+    height: 100%;
+    #flex(column, center, flex-start);
+    .material-card {
+      margin-bottom: 10px;
+    }
+    .category-item {
+      margin-bottom: 5px;
+      #flex(row, center, flex-start);
+      .arco-checkbox {
+        margin-right: 5px;
+      }
+      span {
+        font-size: 12px;
+        cursor: pointer;
+        #color(color, --primary-text-color);
+        &:hover {
+          #color(color, --heavy-text-color);
+        }
+      }
+      .is-active {
+        #color(color, --primary-blue-color);
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  &-content {
+    width: calc(100% - 80px);
+    height: 100%;
+  }
+}

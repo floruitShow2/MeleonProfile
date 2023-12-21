@@ -1,0 +1,64 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.three-layers {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  overflow: auto;
+  border-left: solid 1px;
+  border-bottom: solid 1px;
+  #flex(column, flex-start, flex-start);
+  #color(background-color, --module-bg-color);
+  #color(border-color, --primary-border-color);
+  &-tools {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 32px;
+    padding: 0 10px;
+    border-bottom: solid 1px;
+    #flex(row, center, space-between);
+    #color(border-color, --primary-border-color);
+    .tabs {
+      height: 24px;
+      #flex(row, center, flex-start);
+      .tab {
+        height: 100%;
+        padding: 0 12px;
+        border-radius: 2px;
+        font-size: 12px;
+        cursor: pointer;
+        #flex(row, center, center);
+        #color(color, --primary-text-color);
+        &:hover {
+          #color(background-color, --primary-bg-color);
+        }
+      }
+      .is-active {
+        color: #FFFFFF;
+        #color(background-color, --primary-blue-color);
+        &:hover {
+          #color(background-color, --heavy-blue-color);
+        }
+      }
+    }
+  }
+  &-group {
+    width: 100%;
+    height: calc((100% - 40px));
+    overflow: auto;
+    .skeleton-item {
+      width: 100%;
+      padding: 0 10px;
+      margin-top: 8px;
+      #flex(row, center, space-between);
+      .arco-skeleton-shape {
+        width: 24px;
+        height: 24px;
+      }
+      .arco-skeleton-line {
+        width: calc(100% - 32px);
+      }
+    }
+  }
+}

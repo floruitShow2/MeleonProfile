@@ -1,0 +1,51 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.ws-contact {
+  width: 100%;
+  padding: 20px;
+  height: calc(100vh - 60px);
+  #flex(row, center, space-between);
+  &-module {
+    height: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    #color(background-color, --module-bg-color);
+    #shadow-color(0, 2px, 12px, 0, --primary-shadow-color);
+  }
+  &-left {
+    max-width: 400px;
+    #flex(column, center, flex-start);
+  }
+  &-main {
+    flex: 1;
+    min-width: 350px;
+    height: 100%;
+    margin: 0 20px;
+    #flex(column, center, space-between);
+    #color(border-color, --primary-border-color);
+    .ws-chat-header {
+      height: 60px;
+      width: 100%;
+    }
+    .ws-chat-body {
+      flex: 1;
+      width: 100%;
+    }
+    .ws-chat-input {
+      width: 100%;
+    }
+    .chat-list {
+      flex: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .ws-contact {
+    padding: 0;
+    &-main {
+      width: 100%;
+      margin: 0;
+    }
+  }
+}

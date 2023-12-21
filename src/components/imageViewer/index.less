@@ -1,0 +1,99 @@
+@import '@/styles/theme.less';
+@import '@/styles/layout.less';
+.ws-image-viewer {
+  &-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    .image {
+      width: 100%;
+      height: 100%;
+      img {
+        width: 100%;
+      }
+    }
+    .dropdown-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.25);
+      transform: translateY(-100%);
+      transition: all 0.3s ease;
+      #flex(row, center, center);
+      i {
+        font-size: 18px;
+        color: #ffffff;
+        cursor: pointer;
+      }
+    }
+  }
+  &-wrapper:hover {
+    .dropdown-layer {
+        transform: translateY(0);
+    }
+  }
+}
+.viewer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1001;
+  #flex(row, center, center);
+  &-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+  &-wrapper {
+    width: 60%;
+    z-index: 1002;
+    transition: all 0.5s ease;
+    img {
+      width: 100%;
+    }
+  }
+  &-close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    color: #ffffff;
+    .arco-icon {
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+    }
+  }
+  &-tools {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 40px;
+    border-radius: 40px;
+    z-index: 1003;
+    overflow: hidden;
+    #flex(row, center, space-between);
+    #color(background-color, --module-bg-color);
+    .tool {
+      flex: 1;
+      height: 100%;
+      font-size: 20px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+      #color(color, --primary-text-color);
+    }
+    .tool:hover {
+      #color(background-color, --primary-bg-color);
+    }
+  }
+}

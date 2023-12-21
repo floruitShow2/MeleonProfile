@@ -1,0 +1,81 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.details {
+    width: 100%;
+    height: calc(100vh - 60px);
+    &-wrapper {
+        position: relative;
+        max-width: 1280px;
+        height: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+        overflow: auto;
+        scroll-padding-top: 100px;
+        scroll-behavior: smooth;
+        #flex(row, flex-start, center);
+        &_tools {
+            position: sticky;
+            margin-top: 20px;
+            top: 20px;
+        }
+        &_main {
+            width: 820px;
+            max-width: 100%;
+            margin: 20px 20px 0 20px;
+            padding: 10px;
+            #color(background-color, --module-bg-color);
+            &-suspend {
+                position: absolute;
+                top: 20px;
+                left: -60px;
+                width: 60px;
+            }
+        }
+        &_sidebar {
+            position: sticky;
+            top: 20px;
+            width: 300px;
+            margin-top: 20px;
+            #flex(column, center, flex-start);
+            &-author {
+                width: 100%;
+                margin-bottom: 20px;
+                #color(background-color, --module-bg-color);
+            }
+            &-menu {
+                width: 100%;
+                padding: 10px 0;
+                #flex(column, center, flex-start);
+                #color(background-color, --module-bg-color);
+                a {
+                    display: inline-block;
+                    width: 100%;
+                    text-align: left;
+                    color: inherit;
+                    display: inline-block;
+                    padding: 8px 0;
+                    font-size: 12px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    text-decoration: none;
+                    #color(color, --primary-text-color);
+                }
+                .is-active {
+                    position: relative;
+                    #color(color, --primary-blue-color);
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 3px;
+                        height: 100%;
+                        #color(background-color, --primary-blue-color);
+                    }
+                }
+            }
+        }
+    }
+}

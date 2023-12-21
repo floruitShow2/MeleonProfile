@@ -1,0 +1,35 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.material-card {
+  width: 60px;
+  height: 80px;
+  border: solid 1px;
+  cursor: pointer;
+  #flex(column, center, space-between);
+  #color(border-color, --primary-border-color);
+  //  #color(background-color, --primary-bg-color);
+  .preview {
+    width: 100%;
+    height: 50px;
+    // padding: 2px;
+  }
+  .label {
+    width: 100%;
+    height: 30px;
+    #flex(row, center, center);
+    #color(color, --primary-text-color);
+    #color(background-color, --primary-bg-color);
+    span {
+      display: inline-block;
+      width: 100%;
+      overflow: hidden;
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &:hover {
+    #color(border-color, --primary-border-color);
+  }
+}
