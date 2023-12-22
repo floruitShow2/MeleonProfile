@@ -11,9 +11,12 @@
         overflow: auto;
         #flex(column, flex-start, flex-start);
         .comment {
+            width: 100%;
             margin-bottom: 8px;
             #flex(column, flex-start, flex-start);
             &-header {
+                position: relative;
+                width: 100%;
                 margin-bottom: 5px;
                 #flex(row, center, flex-start);
                 .ws-avatar {
@@ -28,6 +31,12 @@
                     span:last-child {
                         font-size: 12px;
                     }
+                }
+                &-more {
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50% );
                 }
             }
             &-content {
@@ -67,7 +76,8 @@
                     }
                 }
             }
-            &-replies .is-reply {
+            &-replies {
+                width: 100%;
                 padding-left: 32px;
             }
         }
@@ -81,3 +91,24 @@
         #color(background-color, --module-bg-color);
     }
 }
+
+.comment-popover-menu {
+    padding: 0;
+    .arco-popover-content {
+        margin-top: 0;
+    }
+    &-wrapper {
+      #flex(column, center, flex-start);
+      li {
+        width: 100%;
+        padding: 5px 10px;
+        border-radius: 4px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      li:hover {
+        color: #ffffff;
+        #color(background-color, --primary-blue-color);
+      }
+    }
+  }

@@ -12,7 +12,6 @@
 .ws-management-task {
   width: 100%;
   height: calc(100vh - 60px);
-  // padding: 20px;
   #flex(row, flex-start, space-between);
   .task-manage {
     height: 100%;
@@ -114,159 +113,33 @@
       }
     }
     .table-mode {
+      padding: 10px 20px;
       flex-direction: column;
       .task-manage-table {
         width: 100%;
+        padding: 10px 20px;
+        #color(background-color, --module-bg-color);
         &--header {
           .group-title();
           #flex(row, center, space-between);
         }
-      }
-    }
-  }
-  .user-manage {
-    width: 300px;
-    height: 100%;
-    padding: 10px;
-    margin-left: 20px;
-    border-radius: 2px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    #color(background-color, --module-bg-color);
-    &-title {
-      width: 100%;
-      height: 28px;
-      margin-bottom: 10px;
-      #flex(row, center, space-between);
-    }
-    &-swiper {
-      position: relative;
-      width: 100%;
-      height: 150px;
-      margin-bottom: 10px;
-      .swiper {
-        width: 100%;
-        height: 100%;
-        .swiper-slide {
-          width: 100%;
-          #flex(column, center, center);
-          #color(background-color, --primary-bg-color);
-          .avatar-item {
-            position: relative;
-            margin-bottom: 5px;
-            .ws-avatar {
-              position: relative;
-            }
-            .is-online {
-              position: absolute;
-              box-sizing: border-box;
-              width: 20px;
-              height: 20px;
-              border: solid 4px;
-              border-radius: 50%;
-              bottom: 0;
-              right: 0;
-              #color(border-color, --primary-bg-color);
-              #color(background-color, --primary-green-color);
-            }
+        .count-item {
+          margin-right: 5px;
+          border-radius: 5px;
+          cursor: pointer;
+          #flex(row, center, flex-start);
+          #color(color, --primary-text-color);
+          &:hover {
+            #color(color, --primary-blue-color);
           }
-          .name-item {
-            font-size: 16px;
-            font-weight: 800;
-            #color(color, --primary-text-color);
+          i {
+            height: 22px;
+            margin-right: 3px;
+          }
+          span {
+            font-size: 12px;
           }
         }
-      }
-      .iconfont {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        border-radius: 50%;
-        padding: 3px;
-        z-index: 2;
-        font-size: 14px;
-        color: #FFFFFF;
-        transition: all 0.2s ease;
-        cursor: pointer;
-        #color(background-color, --primary-blue-color);
-      }
-      .iconfont:hover {
-        #color(background-color, --heavy-blue-color);
-      }
-      .ws-arrow-left {
-        left: -100%;
-      }
-      .ws-arrow-right {
-        right: -100%;
-      }
-      .ws-arrow-left.is-visiable {
-        animation: slide-left 0.3s ease forwards;
-      }
-      .ws-arrow-right.is-visiable {
-        animation: slide-right 0.3s ease forwards;
-      }
-    }
-    &-details {
-      display: block;
-      width: 100%;
-      height: 300px;
-      margin-bottom: 10px;
-      #flex(column, center, space-between);
-      li {
-        position: relative;
-        width: 100%;
-        margin-bottom: 15px;
-        #flex(row, center, flex-start);
-        span,
-        i {
-          display: inline-block;
-          #color(color, --primary-text-color);
-        }
-        i {
-          font-size: 16px;
-          font-weight: 900;
-          width: 28px;
-          height: 28px;
-          margin-right: 10px;
-          text-align: center;
-          line-height: 28px;
-          border-radius: 20px;
-          #color(background-color, --lighter-bg-color);
-        }
-        span {
-          font-size: 14px;
-        }
-        span:last-child {
-          position: absolute;
-          right: 0;
-          font-weight: 600;
-        }
-      }
-      li:last-child {
-        margin-bottom: 0;
-      }
-    }
-    &-chat {
-      width: 100%;
-      height: calc(100% - 28px - 150px - 300px - 30px);
-      .chat-marker {
-        height: 1px;
-        margin: 10px 0;
-        border-bottom: solid 1px;
-        #flex(row, center, center);
-        #color(border-bottom-color, --heavy-border-color);
-        span {
-          display: inline-block;
-          height: 20px;
-          padding: 0 10px;
-          #color(color, --primary-text-color);
-          #color(background-color, --module-bg-color);
-        }
-      }
-      .chat-content {
-        width: 100%;
-        height: calc(100% - 10px);
-        #color(background-color, --primary-bg-color);
       }
     }
   }

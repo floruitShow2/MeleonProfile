@@ -1,7 +1,7 @@
 import { defineComponent, onMounted, ref, reactive, toRefs } from 'vue'
-import { Input, Message } from '@arco-design/web-vue'
+import { Input, Message, Popover } from '@arco-design/web-vue'
 import WsAvatar from '@/components/avatar/index'
-import { CreateComment, FetchCommentsById, HandleLikes } from '@/api/task'
+import { CreateComment, FetchCommentsById, HandleLikes, RemoveComment } from '@/api/task'
 import './index.less'
 import { formatTimeAgo } from '@/utils/format'
 
@@ -11,7 +11,7 @@ export default defineComponent({
       type: String
     }
   },
-  emits: ['reply'],
+  emits: ['update'],
   setup(props, { emit }) {
     const { target } = toRefs(props)
 
@@ -72,6 +72,18 @@ export default defineComponent({
       comment.replyId = null
       replyTarget.value = null
       await updateCommentsList()
+      emit('update')
+    }
+
+    const handleRemoveClick = async (commentId: string) => {
+      const { data } = await RemoveComment(commentId)
+      if (data) {
+        Message.info('删除成功')
+        await updateCommentsList()
+        emit('update')
+      } else {
+        Message.error('删除失败')
+      }
     }
 
     const genCommentItem = (item: ApiTask.TaskCommentEntity) => {
@@ -88,12 +100,30 @@ export default defineComponent({
               <span>{item.publisher.username}</span>
               <span>{formatTimeAgo(item.publishTime)}</span>
             </div>
+            <div class="comment-header-more">
+              <Popover
+                trigger="click"
+                position="right"
+                contentClass="comment-popover-menu"
+                v-slots={{
+                  content: () => (
+                    <ul class="comment-popover-menu-wrapper">
+                      <li onClick={() => handleRemoveClick(item.commentId)}>删除</li>
+                    </ul>
+                  )
+                }}
+              >
+                <i class="iconfont ws-more ibtn_base ibtn_hover"></i>
+              </Popover>
+            </div>
           </div>
           <div class="comment-content">
+            {/* 评论内容 */}
             <p>
               {item.replyUser && <span class="at-label">@{item.replyUser}</span>}
               {item.content}
             </p>
+            {/* 评论相关操作按钮 */}
             <div class="comment-content-tools">
               <div
                 class={['tool', item.alreadyLike && 'already-liked']}

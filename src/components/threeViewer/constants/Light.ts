@@ -1,5 +1,5 @@
 import * as Three from 'three'
-import type { SunLightOptions } from '../interface/light'
+import type { SunLightOptions } from '../interface/light.interface'
 
 export const DefaultSunLightOptions: SunLightOptions = {
   color: new Three.Color(255, 255, 255),

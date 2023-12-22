@@ -36,15 +36,35 @@ export default defineComponent({
       map.value.setFitView([circle])
     }
 
+    const addDrivingPath = () => {
+      // 构造路线导航类
+      AMap.plugin(['AMap.Driving'], () => {
+        const driving = new AMap.Driving({
+          map: map.value
+        })
+        driving.search(
+          new AMap.LngLat(116.379028, 39.865042),
+          new AMap.LngLat(116.427281, 39.903719),
+          function (status, result) {
+            if (status === 'complete') {
+              console.log('绘制驾车路线完成', result)
+            } else {
+              console.error(`获取驾车数据失败：${result}`)
+            }
+          }
+        )
+      })
+    }
+
     onMounted(() => {
       initMap()
       const infoWindow = new AMap.InfoWindow({
-        isCustom: true,
-        content: `
-          <div>
-            <div>aaa</div>
-          </div>
-        `,
+        content: [
+          '<div>',
+          '<div style="padding:0px 4px;"><b>高德软件有限公司</b>',
+          '电话 : 010-84107000   邮编 : 100102',
+          '地址 : 北京市望京阜通东大街方恒国际中心A座16层</div></div>'
+        ].join('<br>'),
         offset: new AMap.Pixel(16, -45)
       })
 
@@ -54,23 +74,26 @@ export default defineComponent({
       marker.on('click', (e) => {
         if (map.value) infoWindow.open(map.value, e.target.getPosition())
       })
+
       if (map.value) {
         map.value.add(marker)
-        map.value.plugin(['AMap.MouseTool'], () => {
+        AMap.plugin(['AMap.MouseTool'], () => {
           if (!map.value) return
           const mouseTool = new AMap.MouseTool(map.value)
-
           // 使用鼠标工具，在地图上画标记点
+          // 参数用来配置 绘制线条 的样式
           mouseTool.polyline({})
+          // mouseTool.rule({})
 
-          AMap.Event.addListener(mouseTool, 'draw', (e) => {
-            console.log('a', e.obj, e.obj.getPath())
+          mouseTool.on('draw', (e) => {
+            console.log('a', e)
           })
         })
       }
 
       setTimeout(() => {
         addCircle()
+        addDrivingPath()
       }, 3000)
     })
 

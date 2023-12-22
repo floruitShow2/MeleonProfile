@@ -5,6 +5,7 @@ enum URLs {
   'create' = '/api/task/createTask',
   // 任务评论
   'createComment' = '/api/comment/createComment',
+  'removeComment' = '/api/comment/removeComment',
   'getComments' = '/api/comment/getCommentsById',
   'addLikes' = '/api/comment/addLikes'
 }
@@ -27,6 +28,15 @@ export const CreateComment = (comment: {
   replyId: string | null
 }) => {
   return request.post(URLs.createComment, comment)
+}
+
+/**
+ * @description 删除用户发布的评论
+ * @param commentId 评论ID
+ * @returns
+ */
+export const RemoveComment = (commentId: string) => {
+  return request.post(URLs.removeComment, { commentId })
 }
 
 export const HandleLikes = (commentId: string, type: 'add' | 'sub') => {
