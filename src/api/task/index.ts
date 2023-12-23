@@ -10,8 +10,10 @@ enum URLs {
   'addLikes' = '/api/comment/addLikes'
 }
 
-export const FetchAllTasks = () => {
-  return request.get<Array<{ group: string; list: ApiTask.TaskEntity[] }>>(URLs.getAll)
+export const FetchAllTasks = (options: ApiTask.SearchOptions) => {
+  return request.get<Array<{ group: string; list: ApiTask.TaskEntity[] }>>(URLs.getAll, {
+    params: options
+  })
 }
 
 export const CreateTask = (data: FormData) => {

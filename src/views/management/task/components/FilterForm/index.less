@@ -1,2 +1,39 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
+.filter-panel {
+    width: 100%;
+    height: 100%;
+    #flex(column, flex-start, flex-start);
+}
+.filter-form {
+    width: 100%;
+    height: calc(100% - 50px);
+    #flex(column, flex-start, flex-start);
+    &-item {
+        width: 100%;
+        margin-bottom: 10px;
+        #flex(column, flex-start, flex-start);
+        &:last-child {
+            margin-bottom: 0;
+        }
+        &--title {
+            margin-bottom: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            #color(color, --primary-text-color);
+        }
+        .arco-input,
+        .arco-select,
+        .arco-picker {
+            width: 100%;
+        }
+    }
+}
+.filter-footer {
+    width: 100%;
+    height: 50px;
+    #flex(row, center, flex-end);
+    .arco-btn {
+        margin-left: 10px;
+    }
+}

@@ -1,6 +1,7 @@
 declare namespace ApiTask {
   export interface TagType {
     label: string
+    code: string
     type: 'primary' | 'danger' | 'success' | 'secondary' | 'warning'
     icon: string
   }
@@ -51,5 +52,12 @@ declare namespace ApiTask {
     replyUser: string | null
     replies: TaskCommentEntity[]
     targetId: string
+  }
+
+  export interface SearchOptions {
+    title: string
+    tags: Array<TagType['code']>
+    startDate: string
+    endDate: string
   }
 }

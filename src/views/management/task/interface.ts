@@ -1,3 +1,3 @@
-export interface TaskFilterOptions {
+export interface TaskConfigOptions {
   activeMode: 'card' | 'table'
 }

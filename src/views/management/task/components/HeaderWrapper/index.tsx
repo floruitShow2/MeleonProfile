@@ -1,15 +1,14 @@
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Select, Option, Dropdown, Doption, Drawer } from '@arco-design/web-vue'
 import FilterForm from '../FilterForm'
-import type { TaskFilterOptions } from '../../interface'
 import type { HiddenFields } from '../taskCard/interface'
+import type { TaskConfigOptions } from '../../interface'
 import './index.less'
 
 export default defineComponent({
-  emits: ['change'],
+  emits: ['configChange', 'searchChange'],
   setup(props, { emit }) {
     // 切换排布模式
-    type ModeType = 'card' | 'table'
     const displayMode = ref<Record<string, string>[]>([
       {
         type: 'table',
@@ -22,7 +21,16 @@ export default defineComponent({
         icon: 'ws-node'
       }
     ])
-    const activeMode = ref<ModeType>('card')
+    const configOptions = ref<TaskConfigOptions>({
+      activeMode: 'card'
+    })
+    watch(
+      configOptions,
+      (newVal) => {
+        emit('configChange', newVal)
+      },
+      { deep: true }
+    )
 
     // 卡片显示内容
     const mapContentFields = ref<Record<HiddenFields, string>>({
@@ -47,13 +55,9 @@ export default defineComponent({
     // 筛选功能
     const filterDrawerShow = ref(false)
 
-    const filterOptions = computed<TaskFilterOptions>(() => {
-      return {
-        activeMode: activeMode.value
-      }
-    })
-    const handleActiveModeChange = () => {
-      emit('change', filterOptions.value)
+    const handleSearchConfirm = (options: ApiTask.SearchOptions) => {
+      filterDrawerShow.value = false
+      emit('searchChange', options)
     }
 
     return () => (
@@ -61,9 +65,8 @@ export default defineComponent({
         <header class="task-manage-header">
           <div class="select-controller">
             <Select
-              v-model:modelValue={activeMode.value}
+              v-model:modelValue={configOptions.value.activeMode}
               size="mini"
-              onChange={handleActiveModeChange}
               v-slots={{
                 default: () =>
                   displayMode.value.map((mode) => (
@@ -133,8 +136,13 @@ export default defineComponent({
           </div>
         </header>
         {/* 筛选弹窗 */}
-        <Drawer v-model:visible={filterDrawerShow.value} width={500} footer={false} title="筛选">
-          <FilterForm />
+        <Drawer v-model:visible={filterDrawerShow.value} width={500} title="筛选" footer={false}>
+          <FilterForm
+            onConfirm={handleSearchConfirm}
+            onCancel={() => {
+              filterDrawerShow.value = false
+            }}
+          />
         </Drawer>
       </>
     )

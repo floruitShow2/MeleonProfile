@@ -9,7 +9,7 @@ import WsAvatarGroup from '@/components/avatarGroup'
 import WsTaskCard from './components/taskCard'
 import WsTaskEditor from './components/taskEditor'
 import HeaderWrapper from './components/HeaderWrapper'
-import type { TaskFilterOptions } from './interface'
+import type { TaskConfigOptions } from './interface'
 import 'swiper/css'
 import './index.less'
 
@@ -21,14 +21,14 @@ export default defineComponent({
       group: 'task'
     }
 
-    const filterOptions = ref<TaskFilterOptions>({
+    const configOptions = ref<TaskConfigOptions>({
       activeMode: 'card'
     })
-
-    const onHeaderChange = (val: TaskFilterOptions) => {
-      filterOptions.value = val
+    const onConfigOptionsChange = (val: TaskConfigOptions) => {
+      configOptions.value = val
     }
 
+    // 任务列表
     const groups = ref<
       Array<{
         group: string
@@ -53,8 +53,15 @@ export default defineComponent({
       }
     ])
 
+    const searchOptions = ref<ApiTask.SearchOptions>({
+      title: '',
+      tags: [],
+      startDate: '',
+      endDate: ''
+    })
+
     const initTasks = async () => {
-      const { data } = await FetchAllTasks()
+      const { data } = await FetchAllTasks(searchOptions.value)
       if (!data) return
       const obj: Record<string, ApiTask.TaskEntity[]> = {}
       data.forEach((item) => {
@@ -67,6 +74,11 @@ export default defineComponent({
     }
 
     onBeforeMount(initTasks)
+
+    const onSearchOptionsChange = async (val: ApiTask.SearchOptions) => {
+      searchOptions.value = val
+      await initTasks()
+    }
 
     const curGroup = ref<string>('')
 
@@ -233,8 +245,11 @@ export default defineComponent({
     return () => (
       <div class="ws-management-task">
         <div class="task-manage">
-          <HeaderWrapper onChange={onHeaderChange} />
-          {filterOptions.value.activeMode === 'card' ? (
+          <HeaderWrapper
+            onConfigChange={onConfigOptionsChange}
+            onSearchChange={onSearchOptionsChange}
+          />
+          {configOptions.value.activeMode === 'card' ? (
             <section class="task-manage-content card-mode">
               {groups.value.map((column) => (
                 <div key={column.group} class="column">

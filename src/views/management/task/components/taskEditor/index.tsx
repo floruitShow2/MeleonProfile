@@ -110,7 +110,6 @@ export default defineComponent({
         }
       }
 
-      console.log(errorMessage)
       return errorMessage.length === 0
     }
     const handleCreateTask = async () => {

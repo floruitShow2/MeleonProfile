@@ -16,21 +16,25 @@ export enum TypeColorMap {
 export const StaticTags: ApiTask.TagType[] = [
   {
     label: '进展中',
+    code: 'in-progress',
     type: 'primary',
     icon: ''
   },
   {
     label: '设计中',
+    code: 'in-design',
     type: 'primary',
     icon: ''
   },
   {
     label: '规划中',
+    code: 'in-plan',
     type: 'success',
     icon: ''
   },
   {
     label: '问题报警',
+    code: 'error-alert',
     type: 'danger',
     icon: ''
   }
