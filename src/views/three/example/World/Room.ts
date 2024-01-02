@@ -106,6 +106,7 @@ export default class Room {
   setModel() {
     // 重设图层对象
     this.layers = []
+    console.log(this.actualRoom)
     this.generateLayers(this.actualRoom, this.layers)
     const width = 0.5
     const height = 0.7

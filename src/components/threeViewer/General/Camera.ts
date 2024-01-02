@@ -93,14 +93,6 @@ export default class Camera {
     this.controls.enableZoom = true
   }
 
-  // setViewOrbitControls(camera: THREE.Camera, controls: OrbitControls) {
-  //   controls = new OrbitControls(camera, this.canvas)
-  //   controls.enableDamping = false
-  //   controls.enablePan = false
-  //   controls.enableRotate = false
-  //   controls.enableZoom = true
-  // }
-
   resize() {
     const { aspect } = this.sizes
     const { frustrum } = this

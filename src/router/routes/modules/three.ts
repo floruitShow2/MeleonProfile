@@ -41,6 +41,16 @@ const THREE: AppRouteRecordRaw = {
         requiresAuth: true,
         roles: ['*']
       }
+    },
+    {
+      path: 'vr',
+      name: 'three/vr',
+      component: () => import('@/views/three/vr'),
+      meta: {
+        locale: 'menu.three.vr',
+        requiresAuth: true,
+        roles: ['*']
+      }
     }
   ]
 }

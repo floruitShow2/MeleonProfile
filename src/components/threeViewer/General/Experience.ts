@@ -90,7 +90,19 @@ export default class Experience {
     })
   }
 
+  /**
+   * @description 获取当前预览的模型实例
+   * @returns
+   */
   getActualModel() {
     return this.world.models.actualModel
+  }
+
+  /**
+   * @description 获取模型的图层信息
+   * @returns
+   */
+  getModelLayers() {
+    return this.world.models.layers ?? []
   }
 }

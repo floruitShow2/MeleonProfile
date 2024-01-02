@@ -46,7 +46,7 @@ export default class model {
     this.model = this.resource.items[defaultModel]
     this.actualModel = this.model.scene
     this.setModel()
-    // this.setAnimations()
+    this.setAnimations()
   }
 
   generateLayers<T extends RestrictType>(
@@ -83,7 +83,9 @@ export default class model {
   setModel() {
     // 重设图层对象
     this.layers = []
+    console.log(this.actualModel)
     this.generateLayers(this.actualModel, this.layers)
+    // 创建光源
     const width = 0.5
     const height = 0.7
     const intensity = 1

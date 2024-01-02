@@ -1,13 +1,22 @@
-import { defineComponent, reactive, defineAsyncComponent, h, resolveComponent } from 'vue'
+import {
+  defineComponent,
+  reactive,
+  defineAsyncComponent,
+  h,
+  resolveComponent,
+  KeepAlive
+} from 'vue'
 import type { Component } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button, Menu, SubMenu, MenuItem } from '@arco-design/web-vue'
 import './index.less'
 
 const ms: Record<string, () => Promise<Component>> = import.meta.glob('./components/**/**.tsx')
+console.log(ms)
 const modules: Record<string, Component> = {}
 Object.keys(ms).forEach((key) => {
   const marker = key.split('/')[2]
+  console.log(marker)
   modules[marker] = defineAsyncComponent(ms[key])
 })
 
@@ -25,7 +34,6 @@ export default defineComponent({
     })
 
     const handleMenuSkip = (key: string) => {
-      console.log(key)
       menuState.selectedKeys = [key]
     }
 
@@ -76,7 +84,9 @@ export default defineComponent({
               </Menu>
             </div>
             <div class="creator-center-main_main">
-              {h(resolveComponent(menuState.selectedKeys[0]), { onSkip: handleMenuSkip })}
+              <KeepAlive>
+                {h(resolveComponent(menuState.selectedKeys[0]), { onSkip: handleMenuSkip })}
+              </KeepAlive>
             </div>
           </section>
         </div>

@@ -1,16 +1,19 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
 
-.ws-journey {
+.vr {
     position: relative;
     width: 100%;
     height: 100%;
-    &-layers {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 350px;
+    #container {
+        width: 100%;
         height: 100%;
-        overflow: auto;
     }
+}
+
+.point {
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    background-color: aqua;
 }

@@ -17,8 +17,6 @@ export default defineComponent({
     }
   },
   setup(props, { expose }) {
-    // const { width, height } = toRefs(props)
-
     const canvasWrapperRef = ref()
     const canvasRef = ref()
 

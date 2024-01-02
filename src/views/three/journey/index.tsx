@@ -1,6 +1,9 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import * as THREE from 'three'
 import ThreeViewer, { type Experience, type AssetsType } from '@/components/threeViewer'
+import { ConvertToTree } from '@/components/search'
+import type { RestrictType } from '@/components/search'
+import LayersGroup from '../example/components/ThreeLayers/LayerGroup'
 import './index.less'
 
 export default defineComponent({
@@ -64,6 +67,7 @@ export default defineComponent({
       instance.scene.add(lineGroup)
     }
 
+    const layers = ref<RestrictType[]>([])
     onMounted(async () => {
       if (viewerRef.value) {
         experience.value = viewerRef.value.experience
@@ -71,12 +75,16 @@ export default defineComponent({
       if (experience.value) {
         await experience.value.loadModel(assets)
         initLineGroups(experience.value)
+        layers.value = ConvertToTree(experience.value.getModelLayers())
       }
     })
 
     return () => (
       <div class="ws-journey">
         <ThreeViewer ref={viewerRef} />
+        <div class="ws-journey-layers">
+          <LayersGroup totalLayers={layers.value} layers={layers.value} />
+        </div>
       </div>
     )
   }
