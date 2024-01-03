@@ -51,6 +51,16 @@ const THREE: AppRouteRecordRaw = {
         requiresAuth: true,
         roles: ['*']
       }
+    },
+    {
+      path: 'vrHall',
+      name: 'three/vrHall',
+      component: () => import('@/views/three/vrHall'),
+      meta: {
+        locale: 'menu.three.vrHall',
+        requiresAuth: true,
+        roles: ['*']
+      }
     }
   ]
 }

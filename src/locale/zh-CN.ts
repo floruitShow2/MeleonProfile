@@ -40,6 +40,7 @@ export default {
   'menu.three.vector': '基础向量',
   'menu.three.example': '演示案例',
   'menu.three.vr': 'VR',
+  'menu.three.vrHall': 'VR云展厅',
   // 数据中心
   'menu.datacentre': '数据中心',
   'menu.datacentre.overview': '数据预览',

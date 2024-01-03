@@ -40,6 +40,7 @@ export default {
   'menu.three.vector': 'Vector',
   'menu.three.example': 'Example',
   'menu.three.vr': 'VR',
+  'menu.three.vrHall': 'VRHall',
   // Data Center
   'menu.datacentre': 'DataCentre',
   'menu.datacentre.overview': 'Overview',
