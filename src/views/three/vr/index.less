@@ -1,19 +1,132 @@
 @import '@/styles/layout.less';
 @import '@/styles/theme.less';
 
-.vr {
-    position: relative;
+.wrapper {
     width: 100%;
-    height: 100%;
-    #container {
+        height: 100%;
+    .vr {
+        position: relative;
         width: 100%;
         height: 100%;
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    .point {
+        width: 1px;
+        height: 1px;
+        border-radius: 50%;
+        background-color: aqua;
+    }
+
+    .card {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 50px;
+        width: 30%;
+        height: 70%;
+        padding: 0 10px 10px 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        animation: slide-in 0.5s ease;
+        background-color: #D9DBE4;
+        opacity: 0.95;
+        // #color(background-color, --module-bg-color);
+        &-header {
+            width: 100%;
+            height: 60px;
+            #flex(row, center, space-between);
+            .iconfont {
+                width: 28px;
+                height: 28px;
+                text-align: center;
+                line-height: 28px;
+                border-radius: 50%;
+                background-color: #E6E8ED;
+                cursor: pointer;
+                &:hover {
+                    color: #292929;
+                    background-color: #FFFFFF;
+                }
+            }
+            span {
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-size: 14px;
+                color: #555555;
+                background-color: #FFFFFF;
+            }
+        }
+        &-content {
+            width: 100%;
+            height: calc(100% - 60px - 20px);
+            gap: 20px;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            #flex(row, flex-start, flex-start);
+            .detail-card {
+                --bg: #E6E8ED;
+                position: relative;
+                width: 48%;
+                height: 160px;
+                padding: 60px 10px 10px 10px;
+                border-radius: 8px;
+                border: solid 1px #FFFFFF;
+                background-color: var(--bg);
+                opacity: 0.95;
+                box-shadow: 0 0 16px 0 rgba(50, 50, 50, 0.3);
+                transition: all 0.2s ease;
+                header {
+                    position: absolute;
+                    top: -10px;
+                    left: 20px;
+                    width: 70%;
+                    height: 60px;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    background-color: var(--bg);
+                    box-shadow: 0 0 16px 0 rgba(50, 50, 50, 0.3);
+                    .iconfont {
+                        margin-right: 5px;
+                        #color(color, --primary-blue-color);
+                    }
+                    .icon-title {
+                        margin-bottom: 5px;
+                        font-size: 12px;
+                        #flex(row, center, flex-start);
+                        #color(color, --primary-text-color);
+                        span {
+                            white-space: pre-wrap;
+                        }
+                    }
+                    .main-title {
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #292929;
+                    }
+                }
+                section {
+                    width: 100%;
+                    height: calc(100% - 10px);
+                    #flex(row, center, center);
+                }
+            }
+            .detail-card:hover {
+                --bg: #FFFFFF;
+            }
+        }
     }
 }
 
-.point {
-    width: 1px;
-    height: 1px;
-    border-radius: 50%;
-    background-color: aqua;
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%) translateY(-50%);
+    } to {
+        opacity: 1;
+        transform: translateX(0) translateY(-50%);
+    }
 }
