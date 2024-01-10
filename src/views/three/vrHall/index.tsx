@@ -26,7 +26,7 @@ export default defineComponent({
           }
         })
 
-        await vHall.loadDraws(DRAWS_RESOURCE, 0.01)
+        await vHall.loadDraws([], 0.01)
       })
     })
 

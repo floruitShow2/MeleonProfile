@@ -3,7 +3,11 @@
     <div class="left-side">
       <a-space>
         <img alt="logo" src="@/assets/images/Meleon.png" width="32" />
-        <a-typography-title :style="{ margin: 0, fontSize: '18px' }" :heading="5">
+        <a-typography-title
+          v-if="appStore.appDevice !== 'mobile'"
+          :style="{ margin: 0, fontSize: '18px' }"
+          :heading="5"
+        >
           Meleon Profile
         </a-typography-title>
         <icon-menu-fold

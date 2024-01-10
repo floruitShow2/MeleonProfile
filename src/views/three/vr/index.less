@@ -3,7 +3,7 @@
 
 .wrapper {
     width: 100%;
-        height: 100%;
+    height: 100%;
     .vr {
         position: relative;
         width: 100%;
@@ -12,26 +12,57 @@
             width: 100%;
             height: 100%;
         }
+
+        .progress-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            backdrop-filter: blur(5px);
+            #flex(row, center, center);
+            &-container {
+                width: 500px;
+                height: 150px;
+                max-width: 100%;
+                padding: 20px;
+                border-radius: 4px;
+                #flex(column, center, space-around);
+                #color(background-color, --module-bg-color);
+                .progress-header {
+                    width: 100%;
+                    margin-bottom: 10px;
+                    #flex(row, center, space-between);
+                    h4 {
+                        font-size: 18px;
+                        #color(color, --primary-text-color);
+                    }
+                    &-details {
+                        #color(color, --primary-text-color);
+                    }
+                }
+            }
+        }
+
+        .map-wrapper {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     }
     
-    .point {
-        width: 1px;
-        height: 1px;
-        border-radius: 50%;
-        background-color: aqua;
-    }
-
-    .card {
+    .card-wrapper {
         position: fixed;
         top: 50%;
         transform: translateY(-50%);
         right: 50px;
-        width: 30%;
+        width: 600px;
+        max-width: 100%;
         height: 70%;
         padding: 0 10px 10px 10px;
         margin-bottom: 20px;
         border-radius: 5px;
-        animation: slide-in 0.5s ease;
+        animation: card-slide-in 0.5s ease;
         background-color: #D9DBE4;
         opacity: 0.95;
         // #color(background-color, --module-bg-color);
@@ -119,14 +150,75 @@
             }
         }
     }
+
+    .invisible-points {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        ul {
+            position: relative;
+            #flex(column, flex-end, center);
+            .point-marker {
+                width: 120px;
+                height: 30px;
+                margin-bottom: 10px;
+                border: solid 1px;
+                border-radius: 2px;
+                backdrop-filter: blur(5px);
+                transition: all 0.2s ease;
+                // animation: marker-slide-in 0.5s ease;
+                cursor: pointer;
+                #flex(row, center, center);
+                #color(color, --module-bg-color);
+                #color(border-color, --primary-border-color);
+                &:hover {
+                    opacity: 0.95;
+                    backdrop-filter: none;
+                    background-color: #e7e7e7;
+                    #color(color, --primary-blue-color);
+                    #color(border-color, --primary-blue-color);
+                }
+            }
+        }
+    }
+
 }
 
-@keyframes slide-in {
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-leave-active {
+  position: absolute;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translate(100%, 0);
+}
+
+// 详情卡片动画
+@keyframes card-slide-in {
     from {
         opacity: 0;
         transform: translateX(100%) translateY(-50%);
     } to {
         opacity: 1;
         transform: translateX(0) translateY(-50%);
+    }
+}
+
+// 标识卡片动画
+@keyframes marker-slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    } to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
