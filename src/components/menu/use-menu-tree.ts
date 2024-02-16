@@ -14,6 +14,7 @@ export default function useMenuTree() {
     }
     return appClientMenus
   })
+
   const menuTree = computed(() => {
     const copyRouter = cloneDeep(appRoute.value) as RouteRecordNormalized[]
     copyRouter.sort((a: RouteRecordNormalized, b: RouteRecordNormalized) => {
