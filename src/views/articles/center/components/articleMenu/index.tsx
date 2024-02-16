@@ -71,7 +71,7 @@ export default defineComponent({
     const handleArticleClick = (e: MouseEvent, article: ApiArticle.ArticleEntity) => {
       e.preventDefault()
       router.push({
-        path: `/articles/${article.id}`
+        path: `/articles/${article.blogId}`
       })
     }
 
