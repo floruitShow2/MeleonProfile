@@ -25,7 +25,7 @@ enum WORKFLOW_STATUS {
 }
 
 // const filesUploadQueue = ref<File[]>([])
-const requestUrl = ref('http://localhost:8888')
+const requestUrl = ref('http://192.168.124.40:3000/api')
 
 const recordFiles = ref<
   Record<
@@ -80,6 +80,7 @@ const request = <T>({
     xhr.upload.onprogress = onProgress
     xhr.open(method, url)
     // Object.keys(headers).forEach((key) => xhr.setRequestHeader(key, headers[key]))
+    xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(data)
     xhr.onload = (e) => {
       // 将请求成功的 xhr 从列表中删除
@@ -92,7 +93,6 @@ const request = <T>({
       resolve(target ? JSON.parse(target.response).ReturnData : '')
     }
     // 暴露当前 xhr 给外部
-    // export xhr
     requestList?.push(xhr)
   })
 }
@@ -107,13 +107,13 @@ const respondStatus = (type: keyof typeof WORKFLOW_STATUS, filename: string) => 
   })
 }
 
-const VerifyUpload = async (filename: string, hash: string) => {
+const VerifyUpload = async (filename: string, filehash: string) => {
   const res = await request<{ shouldUpload: boolean; uploadedList: string[] }>({
     url: `${requestUrl.value}/file/verify`,
     method: 'post',
     data: JSON.stringify({
       filename,
-      filehash: hash
+      filehash
     })
   })
   return res
@@ -279,15 +279,20 @@ const stopUpload = (filename: string) => {
   recordFiles.value[filename].requestList = []
 }
 
-onmessage = (e) => {
-  const { type } = e.data
-  if (type === 'upload') {
-    const fileList = e.data.file as File[]
+// 策略模式，接收主线程传递的命令
+const strategyMap: Record<string, (data: Record<string, any>) => void> = {
+  url: (data) => {
+    requestUrl.value = data.url as string
+  },
+  pause: (data) => {
+    stopUpload(data.filename as string)
+  },
+  upload: (data) => {
+    const fileList = data.file as File[]
     // filesUploadQueue.value.push(...fileList)
     fileList.forEach((file) => startUpload(file))
-  } else if (type === 'pause') {
-    stopUpload(e.data.filename)
-  } else if (type === 'url') {
-    requestUrl.value = e.data.url
   }
+}
+onmessage = (e) => {
+  strategyMap[e.data.type](e.data)
 }

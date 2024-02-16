@@ -12,13 +12,6 @@ export default class Camera {
 
   canvas!: HTMLCanvasElement
 
-  // 三视图功能
-  frontViewCamera!: THREE.PerspectiveCamera
-
-  leftViewCamera!: THREE.PerspectiveCamera
-
-  TopViewCamera!: THREE.PerspectiveCamera
-
   // 透视相机
   perspectiveCamera!: THREE.PerspectiveCamera
 
@@ -29,12 +22,6 @@ export default class Camera {
   // controls
   controls!: OrbitControls
 
-  // frontViewCameraControl!: OrbitControls
-
-  // leftViewCameraControl!: OrbitControls
-
-  // TopViewCameraControl!: OrbitControls
-
   cameraHelper!: THREE.CameraHelper
 
   constructor() {
@@ -44,13 +31,7 @@ export default class Camera {
     this.scene = scene
     this.canvas = canvas
     // create threejs camera: 分别创建 透视相机 和 正交相机
-    this.perspectiveCamera = this.createPerspectiveCamera(60, 60, 100)
-    this.frontViewCamera = this.createPerspectiveCamera(0, 0, 10)
-    this.leftViewCamera = this.createPerspectiveCamera(15, 0, 0)
-    this.TopViewCamera = this.createPerspectiveCamera(0, 15, 0)
-    // this.setViewOrbitControls(this.frontViewCamera, this.frontViewCameraControl)
-    // this.setViewOrbitControls(this.leftViewCamera, this.leftViewCameraControl)
-    // this.setViewOrbitControls(this.TopViewCamera, this.TopViewCameraControl)
+    this.perspectiveCamera = this.createPerspectiveCamera(10, 10, 100)
 
     this.createOrthographicCamera()
     this.setOrbitControls(this.perspectiveCamera)
@@ -78,13 +59,16 @@ export default class Camera {
       frustrum / 2,
       -frustrum / 2,
       -10,
-      10
+      100
     )
+    this.orthographicCamera.position.y = 8
+    this.orthographicCamera.position.z = 10
+    this.orthographicCamera.rotation.x = -Math.PI / 6
 
     this.scene.add(this.orthographicCamera)
     // 创建相机助手
-    this.cameraHelper = new THREE.CameraHelper(this.orthographicCamera)
-    this.scene.add(this.cameraHelper)
+    // this.cameraHelper = new THREE.CameraHelper(this.orthographicCamera)
+    // this.scene.add(this.cameraHelper)
   }
 
   // 对 perspectiveCamera 添加轨道控制器

@@ -1,0 +1,111 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.article-manage {
+  width: 100%;
+  height: 100%;
+  #color(background-color, --module-bg-color);
+  .arco-input-wrapper {
+    margin-right: 10px;
+  }
+  .iconfont {
+    line-height: 28px;
+  }
+  .arco-tabs {
+    height: 100%;
+    &-content {
+      height: calc(100% - 40px);
+      &-list {
+        height: 100%;
+      }
+      &-item {
+        height: 100%;
+        .arco-tabs-pane {
+          height: 100%;
+        }
+      }
+    }
+  }
+  &_wrapper {
+    &-header {
+      margin-bottom: 20px;
+      padding: 16px 16px 0 16px;
+      #flex(row, center, flex-start);
+      .category-item {
+        padding-right: 24px;
+        margin-right: 24px;
+        font-size: 14px;
+        border-right: solid 1px;
+        cursor: pointer;
+        #color(color, --primary-text-color);
+        #color(border-color, --primary-border-color);
+        &:last-child {
+          border-right: none;
+        }
+        span:first-child {
+          margin-right: 10px;
+        }
+        &:hover {
+          #color(color, --primary-blue-color);
+        }
+      }
+      .is-active {
+        #color(color, --primary-blue-color);
+      }
+    }
+    &-list {
+      width: 100%;
+      padding: 0 16px;
+      #flex(column, center, flex-start);
+      .article-card {
+        width: 100%;
+        padding: 16px 8px;
+        border-bottom: 1px solid;
+        cursor: pointer;
+        #flex(column, flex-start, flex-start);
+        #color(border-bottom-color, --primary-border-color);
+        &:hover {
+          #color(background-color, --lighter-bg-color);
+        }
+        &_header {
+          width: 100%;
+          margin-bottom: 8px;
+          #flex(row, center, space-between);
+          .title {
+            max-width: calc(100% - 40px);
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 24px;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: auto;
+            #color(color, --primary-text-color);
+          }
+        }
+        &_details {
+          width: 100%;
+          font-weight: 400;
+          font-size: 14px;
+          height: 22px;
+          line-height: 22px;
+          display: flex;
+          align-items: center;
+          #flex(row, center, flex-start);
+          #color(color, --lighter-text-color);
+          .split-line {
+            height: 14px;
+            width: 0;
+            margin: 0 16px;
+            border-left: 1px solid;
+            #color(border-color, --lighter-text-color);
+          }
+          .split-dot {
+            margin: 0 6px;
+          }
+        }
+      }
+    }
+  }
+}

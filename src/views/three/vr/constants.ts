@@ -23,12 +23,13 @@ export const POINTS_RESOURCE: PointEntity[] = [
     position: new THREE.Vector3(-0.9, 0, 0),
     title: '信息点3',
     type: 'detail'
+  },
+  {
+    position: new THREE.Vector3(-0.6596540733370381, -0.31157185787764863, -0.2739032669874493),
+    title: '信息点4',
+    targetId: '1',
+    type: 'move'
   }
-  // {
-  //   position: new THREE.Vector3(0, -0.5289598479926403, -0.25811663215060304),
-  //   title: '信息点4',
-  //   type: 'move'
-  // }
 ]
 
 export const SUB_POINTS_RESOURCE: PointEntity[] = [
@@ -48,14 +49,15 @@ export const SUB_POINTS_RESOURCE: PointEntity[] = [
 export const ROOM_0: LoadSphere = {
   id: '0',
   url: '/textures/room2.jpg',
-  anchorPoint: new THREE.Vector3(0.9, 0, 0),
-  position: new THREE.Vector2(120, 50)
+  anchorPoint: new THREE.Vector3(0.1, 0, 0),
+  position: new THREE.Vector2(120, 50),
+  center: new THREE.Vector3(0, 0, 0)
 }
 
 export const ROOM_1: LoadSphere = {
   id: '1',
   url: '/textures/room2.webp',
-  anchorPoint: new THREE.Vector3(-2.9, 0, 0),
+  anchorPoint: new THREE.Vector3(-2.1, 0, 0),
   position: new THREE.Vector2(80, 35),
   center: new THREE.Vector3(-2, 0, 0)
 }

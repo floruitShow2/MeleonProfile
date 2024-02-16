@@ -10,7 +10,9 @@
     .iconfont {
         position: absolute;
         transform-origin: bottom;
-        // filter: blur(1px);
+        transition-property: top, left;
+        transition-duration: 0.5s;
+        transition-timing-function: ease-in-out;
         #color(color, --lighter-blue-color);
     }
 }

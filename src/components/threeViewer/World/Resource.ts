@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import Experience from '../General/Experience'
 import Renderer from '../General/Renderer'
 import type { AssetsType } from '../interface'
@@ -22,6 +23,7 @@ export default class Resource extends EventEmitter {
     gltfLoader: GLTFLoader
     stlLoader: STLLoader
     dracoLoader: DRACOLoader
+    objLoader: OBJLoader
   }
 
   video!: Record<string, HTMLVideoElement>
@@ -42,6 +44,7 @@ export default class Resource extends EventEmitter {
     this.loaders = {
       gltfLoader: new GLTFLoader(),
       stlLoader: new STLLoader(),
+      objLoader: new OBJLoader(),
       dracoLoader: new DRACOLoader()
     }
     this.loaders.dracoLoader.setDecoderPath('/draco/')
@@ -53,6 +56,7 @@ export default class Resource extends EventEmitter {
     for (const asset of assets) {
       const { loader = 'gltf' } = asset
       this.loaders[`${loader}Loader`].load(asset.path, (file) => {
+        console.log(file)
         this.singleAssetLoaded(asset, file)
       })
     }

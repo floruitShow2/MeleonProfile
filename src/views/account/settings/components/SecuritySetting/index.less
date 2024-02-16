@@ -1,0 +1,23 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.security-setting {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    #flex(column, flex-start, flex-start);
+    &-title {
+        margin-bottom: 12px;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 28px;
+        #color(color, --primary-text-color);
+    }
+    &-content {
+        width: 500px;
+        &-tip {
+            font-size: 12px;
+            font-weight: 500;
+            #color(color, --primary-text-color);
+        }
+    }
+}

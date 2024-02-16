@@ -19,6 +19,7 @@ export default defineComponent({
     const experience = ref<null | Experience>(null)
     onMounted(() => {
       experience.value = new Experience(canvasRef.value, canvasWrapperRef.value)
+      // experience.value.renderer.switchViewsModel({ showThreeViews: true })
     })
 
     const isMaterialShow = ref(true)

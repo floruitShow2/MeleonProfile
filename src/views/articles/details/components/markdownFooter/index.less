@@ -1,0 +1,22 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.markdown-footer {
+    width: 100%;
+    padding: 0 20px;
+    #flex(row, center, space-between);
+    &-tags {
+        #flex(row, center, flex-start);
+        .tags-title {
+            margin-right: 16px;
+            font-size: 14px;
+            font-weight: 400;
+            #color(color, --lighter-text-color);
+        }
+        .tags-list {
+            #flex(row, center, flex-start);
+            .arco-tag {
+                margin-right: 16px;
+            }
+        }
+    }
+}

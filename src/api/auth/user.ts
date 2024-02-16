@@ -1,6 +1,5 @@
 import { mockRequest, request } from '@/service'
 import type { RouteRecordNormalized } from 'vue-router'
-import { UserState } from '@/store/modules/user/types'
 
 export interface LoginData {
   username: string
@@ -10,7 +9,10 @@ export interface LoginData {
 const URL = {
   register: '/api/user/signup',
   login: '/api/user/login',
-  getUserInfo: '/api/user/getUserInfo'
+  getUserInfo: '/api/user/getUserInfo',
+  updateUserInfo: '/api/user/updateUserInfo',
+  updateUserAvatar: '/api/user/updateUserAvatar',
+  updatePwd: '/api/user/updatePassword'
 }
 
 export interface LoginRes {
@@ -28,7 +30,19 @@ export function logout() {
 }
 
 export function getUserInfo() {
-  return request.get<UserState>(URL.getUserInfo)
+  return request.get<ApiAuth.UserInfo>(URL.getUserInfo)
+}
+
+export function updateUserInfo(data: Partial<ApiAuth.UserInfo>) {
+  return request.post<{ accessToken: string }>(URL.updateUserInfo, data)
+}
+
+export function updateUserAvatar(data: FormData) {
+  return request.post(URL.updateUserAvatar, data)
+}
+
+export function updatePassword(pwds: ApiAuth.PasswordsType) {
+  return request.post(URL.updatePwd, pwds)
 }
 
 export function getMenuList() {

@@ -16,6 +16,11 @@ import locale500 from '@/views/exception/500/locale/en-US'
 // system management
 import localeManagement from '@/views/management/dept/locale/en-US'
 
+// 个人中心
+import localeProfileSettings from '@/views/account/settings/locale/en-US'
+import localeBasicSettings from '@/views/account/settings/components/BasicSetting/locale/en-US'
+import localeSecuritySettings from '@/views/account/settings/components/SecuritySetting/locale/en-US'
+
 import localeSettings from './en-US/settings'
 
 export default {
@@ -56,12 +61,14 @@ export default {
   'menu.management.task': 'Task',
   'menu.management.dept': 'Dept',
   'menu.management.role': 'Role',
+  // Profile
+  'menu.profile': 'Profile',
+  'menu.profile.settings': 'Settings',
   // Other
   'menu.list': 'List',
   'menu.result': 'Result',
   'menu.exception': 'Exception',
   'menu.form': 'Form',
-  'menu.profile': 'Profile',
   'menu.visualization': 'Data Visualization',
   'menu.user': 'User Center',
   'menu.faq': 'FAQ',
@@ -77,6 +84,10 @@ export default {
   ...localeWorkflow,
 
   ...localeManagement,
+
+  ...localeProfileSettings,
+  ...localeBasicSettings,
+  ...localeSecuritySettings,
 
   ...locale403,
   ...locale404,

@@ -38,22 +38,22 @@ export default defineComponent({
 
     const addDrivingPath = () => {
       // 构造路线导航类
-      AMap.plugin(['AMap.Driving'], () => {
-        const driving = new AMap.Driving({
-          map: map.value
-        })
-        driving.search(
-          new AMap.LngLat(116.379028, 39.865042),
-          new AMap.LngLat(116.427281, 39.903719),
-          function (status, result) {
-            if (status === 'complete') {
-              console.log('绘制驾车路线完成', result)
-            } else {
-              console.error(`获取驾车数据失败：${result}`)
-            }
-          }
-        )
-      })
+      // AMap.plugin(['AMap.Driving'], () => {
+      //   const driving = new AMap.Driving({
+      //     map: map.value
+      //   })
+      //   driving.search(
+      //     new AMap.LngLat(116.379028, 39.865042),
+      //     new AMap.LngLat(116.427281, 39.903719),
+      //     (status, result) => {
+      //       if (status === 'complete') {
+      //         console.log('绘制驾车路线完成', result)
+      //       } else {
+      //         console.error(`获取驾车数据失败：${result}`)
+      //       }
+      //     }
+      //   )
+      // })
     }
 
     onMounted(() => {

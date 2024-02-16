@@ -1,5 +1,7 @@
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import {
+  Avatar,
   RangePicker,
   Select,
   Option,
@@ -10,14 +12,16 @@ import {
   Input,
   Textarea,
   Upload,
-  FileItem
+  FileItem,
+  Message
 } from '@arco-design/web-vue'
 import { useUserStore } from '@/store'
 import { TagColorMap, StaticTags, TypeColorMap } from '@/constants/tag'
-import WsAvatar from '@/components/avatar'
-import WsAvatarGroup from '@/components/avatarGroup'
-import WsFileCard from '@/components/fileCard'
 import { CreateTask } from '@/api/task'
+import { FetchTeamList } from '@/api/team'
+import WsAvatar from '@/components/avatar'
+// import WsAvatarGroup from '@/components/avatarGroup'
+import WsFileCard from '@/components/fileCard'
 import { readFileAsDataurl } from '@/utils/file/parse'
 import { formatToDateTime } from '@/utils/format'
 import './index.less'
@@ -35,8 +39,12 @@ export default defineComponent({
     const userStore = useUserStore()
     const { username, avatar } = userStore.userInfo
 
+    const router = useRouter()
+
+    // 任务实体
     const taskDetails = reactive<ApiTask.TaskEntity>({
       group: '',
+      teamId: '',
       title: '',
       desc: '',
       priority: 1,
@@ -47,19 +55,53 @@ export default defineComponent({
       relatives: [],
       comments: 0
     })
+    // 任务配置项
+    const teamOptions = ref<ApiTeam.TeamEntity[]>([])
+    const initOptions = async () => {
+      const { data } = await FetchTeamList()
+      if (!data) return
+      teamOptions.value = data
+    }
+    const renderTeamOptions = (teams: ApiTeam.TeamEntity[]) => {
+      return teams.map((team) => (
+        <Option value={team.teamId}>
+          <div class="selector-team-option">
+            <Avatar size={32} imageUrl={team.logo}></Avatar>
+            <span>{team.teamName}</span>
+          </div>
+        </Option>
+      ))
+    }
+
+    onMounted(async () => {
+      await initOptions()
+    })
+
     const timeRange = ref<string[]>([])
     const handleTagSelect = (value: unknown) => {
       taskDetails.tags.push(value as ApiTask.TagType)
     }
 
+    /**
+     * @description 用于判断是否已选中该 tag
+     * @param tag
+     * @returns boolean
+     */
     const hasExistingTag = (tag: ApiTask.TagType) => {
       const idx = taskDetails.tags.findIndex((item) => item.label === tag.label)
       return idx !== -1
     }
+    /**
+     * @description 移除选中的 tag
+     * @param tag
+     */
     const handleTagRemove = (tag: string) => {
       taskDetails.tags = taskDetails.tags.filter((item) => item.label !== tag)
     }
 
+    /**
+     * @description 任务封面及附件
+     */
     const coverImageUrl = ref<string>('')
     const uploadCoverage = ref<File>()
     const handleCoverChange = async (fileList: FileItem[]) => {
@@ -80,6 +122,11 @@ export default defineComponent({
       // else uploadAttachments.value.push(newFile)
     }
 
+    /**
+     * @description 校验准备创建的任务信息是否符合要求
+     * @param details 任务实体信息
+     * @returns
+     */
     const validateDetails = (details: ApiTask.TaskEntity) => {
       const { title, startTime, endTime } = details
       const errorMessage: Array<{
@@ -120,7 +167,13 @@ export default defineComponent({
           startTime: formatToDateTime(timeRange.value[0]),
           endTime: formatToDateTime(timeRange.value[1])
         }
-        if (!validateDetails(details)) return
+        if (!validateDetails(details)) {
+          Message.error({
+            content: '数据校验未通过，请填写完整'
+          })
+          reject()
+          return
+        }
 
         const fd = new FormData()
         if (uploadCoverage.value) fd.append('cover', uploadCoverage.value)
@@ -139,6 +192,16 @@ export default defineComponent({
       })
     }
 
+    // 跳转至创建团队页面
+    const goToTeamCreate = () => {
+      router.push({
+        path: '/profile/overview',
+        query: {
+          code: 'teamMenu'
+        }
+      })
+    }
+
     expose({ createTask: handleCreateTask })
 
     return () => (
@@ -150,7 +213,7 @@ export default defineComponent({
             <span>{username}</span>
           </div>
         </div>
-        <div class={[`${prefix}-module`, 'relatives']}>
+        {/* <div class={[`${prefix}-module`, 'relatives']}>
           <h4>关联成员</h4>
           <div class="module-content">
             <WsAvatarGroup maxCount={3}>
@@ -159,6 +222,22 @@ export default defineComponent({
               ))}
             </WsAvatarGroup>
             <i class="iconfont ws-plus ibtn_base ibtn_hover"></i>
+          </div>
+        </div> */}
+        <div class={[`${prefix}-module`, 'team']}>
+          <h4>所属团队(可选)</h4>
+          <div class="module-content">
+            <Select
+              v-model:modelValue={taskDetails.teamId}
+              v-slots={{
+                default: () => renderTeamOptions(teamOptions.value),
+                empty: () => (
+                  <div class="selector-team-empty">
+                    没有团队？<span onClick={goToTeamCreate}>现在去创建</span>
+                  </div>
+                )
+              }}
+            />
           </div>
         </div>
         <div class={[`${prefix}-module`, 'title']}>

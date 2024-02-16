@@ -1,12 +1,7 @@
-node_modules
 .DS_Store
-dist
-dist-ssr
-*.local
-node_modules
-.DS_Store
-dist
-dist-ssr
+/dist
+/node_modules
+/dist-ssr
 *.local
 # public/draco
 # public/models

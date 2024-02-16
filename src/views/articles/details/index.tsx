@@ -1,10 +1,12 @@
-import { defineComponent, ref, onMounted, computed, nextTick } from 'vue'
+import { defineComponent, ref, onMounted, computed, nextTick, watch } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
 import { Drawer } from '@arco-design/web-vue'
 import WsComments from '@/components/comments'
 import { FetchArticleById } from '@/api/articles/center'
 import MlMarkdownView from '@/components/markdownView'
 import MarkdownTools from './components/markdownTools'
+import MarkdownHeader from './components/markdownHeader'
+import MarkdownFooter from './components/markdownFooter'
 import MarkdownAuthor from './components/markdownAuthor'
 import './index.less'
 
@@ -12,13 +14,14 @@ export default defineComponent({
   setup() {
     const route = useRoute()
 
-    // 点击 a 标签不跳转到新页面
+    // 避免点击 a 标签后跳转到新页面
     onBeforeRouteUpdate((to, from, next) => {
       if (to.path !== from.path) next()
     })
 
     // 文章实体
-    const article = ref<ApiArticle.ArticleEntity>()
+    const articleEntity = ref<ApiArticle.ArticleEntity>()
+    const authorEntity = ref<ApiAuth.UserInfo>()
     // 获取文章目录
     const mdRef = ref()
     const headings = computed<
@@ -32,7 +35,7 @@ export default defineComponent({
     const headingsOffset = ref<Record<number, string>>({})
     const updateHeadingsOffset = () => {
       nextTick(() => {
-        activeHeading.value = headings.value[0].content
+        activeHeading.value = headings.value[0]?.content ?? ''
 
         const targetEl = mdRef.value.viewRef
         const headingsEl = Array.from(targetEl.querySelectorAll('h1, h2, h3, h4, h5, h6'))
@@ -42,17 +45,25 @@ export default defineComponent({
       })
     }
 
+    watch(
+      headings,
+      () => {
+        updateHeadingsOffset()
+      },
+      { deep: true }
+    )
+
     const updateArticle = async () => {
       const { id } = route.params
       const { data } = await FetchArticleById(Array.isArray(id) ? id[0] : id)
       if (!data) return
-      article.value = data
+      const { articleInfo, authorInfo } = data
+      articleEntity.value = articleInfo
+      authorEntity.value = authorInfo
     }
 
     onMounted(async () => {
       updateArticle()
-
-      updateHeadingsOffset()
     })
 
     const handleWrapperScroll = (e: UIEvent) => {
@@ -90,20 +101,24 @@ export default defineComponent({
         <div class="details-wrapper" onScroll={handleWrapperScroll}>
           <div class="details-wrapper_tools">
             <MarkdownTools
-              likes={article.value?.likes}
-              liked={article.value?.liked}
-              comments={article.value?.comments}
+              likes={articleEntity.value?.likes}
+              liked={articleEntity.value?.liked}
+              comments={articleEntity.value?.comments}
               show-comments={showCommentsDrawer.value}
               onLike={updateArticle}
               onComment={openCommentsDrawer}
             />
           </div>
-          <div class="details-wrapper_main">
-            <MlMarkdownView ref={mdRef} modelValue={article.value?.content || ''} />
-          </div>
+          {articleEntity.value && authorEntity.value && (
+            <div class="details-wrapper_main">
+              <MarkdownHeader article={articleEntity.value} author={authorEntity.value} />
+              <MlMarkdownView ref={mdRef} modelValue={articleEntity.value?.content || ''} />
+              <MarkdownFooter article={articleEntity.value} />
+            </div>
+          )}
           <div class="details-wrapper_sidebar">
             <div class="details-wrapper_sidebar-author">
-              {article.value && <MarkdownAuthor data={article.value.uploader} />}
+              {authorEntity.value && <MarkdownAuthor author={authorEntity.value} />}
             </div>
             {/* 文章目录 */}
             <div class="details-wrapper_sidebar-menu">
@@ -129,10 +144,10 @@ export default defineComponent({
           footer={false}
           unmountOnClose
           v-slots={{
-            title: () => article.value?.title || ''
+            title: () => articleEntity.value?.title || ''
           }}
         >
-          {article.value?.id && <WsComments target={article.value?.id} />}
+          {articleEntity.value?.blogId && <WsComments target={articleEntity.value?.blogId} />}
         </Drawer>
       </div>
     )

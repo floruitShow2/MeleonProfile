@@ -1,0 +1,42 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.markdown-header {
+    width: 100%;
+    padding: 20px 20px 0 20px;
+    &-title {
+        margin: 0 0 10px;
+        font-size: 28px;
+        font-weight: 600;
+        #color(color, --heavy-text-color);
+    }
+    &-details {
+        width: 100%;
+        #flex(row, center, flex-start);
+        .details-author {
+            margin-right: 16px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 22px;
+            cursor: pointer;
+            #color(color, --heavy-text-color);
+            &:hover {
+                #color(color, --primary-blue-color);
+            }
+        }
+        .details-list {
+            #flex(row, center, flex-start);
+            &-item {
+                margin-right: 16px;
+                font-size: 14px;
+                font-weight: 400;
+                #flex(row, center, flex-start);
+                #color(color, --lighter-text-color);
+                .iconfont {
+                    margin-right: 3px;
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+}

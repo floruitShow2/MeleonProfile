@@ -11,6 +11,8 @@ declare namespace ApiTask {
     group: TaskGroups
     // 任务名
     title: string
+    // 所属团队
+    teamId?: string
     // 任务ID
     taskId?: string
     // 任务描述
@@ -31,7 +33,7 @@ declare namespace ApiTask {
     // 上次更新时间
     lastUpdateTime?: string
     // 关联人
-    relatives: Array<string | ApiAuth.UserInfo>
+    relatives: Array<ApiAuth.UserInfo>
     // 附件
     attachments?: string[]
     // 评论数量
@@ -44,10 +46,7 @@ declare namespace ApiTask {
     likes: number
     alreadyLike: boolean
     publishTime: string
-    publisher: {
-      avatar: string
-      username: string
-    }
+    publisher: Pick<ApiAuth.UserInfo, 'avatar' | 'username'>
     replyId: string | null
     replyUser: string | null
     replies: TaskCommentEntity[]

@@ -17,6 +17,11 @@ import locale500 from '@/views/exception/500/locale/zh-CN'
 // 系统管理
 import localeManagement from '@/views/management/dept/locale/zh-CN'
 
+// 个人中心
+import localeProfileSettings from '@/views/account/settings/locale/zh-CN'
+import localeBasicSettings from '@/views/account/settings/components/BasicSetting/locale/zh-CN'
+import localeSecuritySettings from '@/views/account/settings/components/SecuritySetting/locale/zh-CN'
+
 import localeSettings from './zh-CN/settings'
 
 export default {
@@ -56,12 +61,14 @@ export default {
   'menu.management.task': '任务管理',
   'menu.management.dept': '部门管理',
   'menu.management.role': '角色管理',
+  // 用户管理
+  'menu.profile': '个人管理',
+  'menu.profile.settings': '个人设置',
   // 其他
   'menu.list': '列表页',
   'menu.result': '结果页',
   'menu.exception': '异常页',
   'menu.form': '表单页',
-  'menu.profile': '详情页',
   'menu.visualization': '数据可视化',
   'menu.user': '个人中心',
   'menu.faq': '常见问题',
@@ -77,6 +84,10 @@ export default {
   ...localeWorkflow,
 
   ...localeManagement,
+
+  ...localeProfileSettings,
+  ...localeBasicSettings,
+  ...localeSecuritySettings,
 
   ...locale403,
   ...locale404,

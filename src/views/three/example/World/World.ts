@@ -5,6 +5,7 @@ import Camera from '../General/Camera'
 import Sizes from '../Utils/Sizes'
 import Resource from '../Utils/Resource'
 import Room from './Room'
+import Floor from './Floor'
 import Material from '../Utils/Material'
 import Environment from './Environment'
 import Controller from './Controller'
@@ -25,6 +26,8 @@ export default class World extends EventEmitter {
   sizes!: Sizes
 
   room!: Room
+
+  floor!: Floor
 
   material!: Material
 
@@ -50,6 +53,7 @@ export default class World extends EventEmitter {
     this.helper = new Helper()
     this.resource.on('ready', () => {
       this.room = new Room()
+      this.floor = new Floor()
       this.material = new Material()
       this.controller = new Controller()
       this.raycaster = new Raycaster()
@@ -65,7 +69,7 @@ export default class World extends EventEmitter {
   update() {
     if (this.room) {
       this.room.update()
-      this.controller.update()
+      // this.controller.update()
     }
   }
 }

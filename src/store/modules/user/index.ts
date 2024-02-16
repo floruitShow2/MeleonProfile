@@ -6,22 +6,19 @@ import useAppStore from '../app'
 
 const useUserStore = defineStore('user', {
   state: (): ApiAuth.UserInfo => ({
-    username: undefined,
-    avatar: undefined,
-    job: undefined,
-    organization: undefined,
-    location: undefined,
-    email: undefined,
-    introduction: undefined,
-    personalWebsite: undefined,
-    jobName: undefined,
-    organizationName: undefined,
-    locationName: undefined,
-    phone: undefined,
-    registrationDate: undefined,
-    accountId: undefined,
-    certification: undefined,
-    role: ''
+    userId: '',
+    username: '',
+    avatar: '',
+    introduction: '',
+    email: '',
+    phone: '',
+    location: '',
+    role: '',
+    socialAccounts: [],
+    job: '',
+    organization: '',
+    registrationDate: '',
+    certification: ''
   }),
 
   getters: {

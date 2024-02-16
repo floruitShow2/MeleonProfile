@@ -12,22 +12,30 @@ declare namespace ApiAuth {
   export type Token = string
   /** 返回的用户信息 */
   export interface UserInfo {
-    username?: string
-    avatar?: string
-    job?: string
-    organization?: string
-    location?: string
-    email?: string
-    introduction?: string
-    personalWebsite?: string
-    jobName?: string
-    organizationName?: string
-    locationName?: string
-    phone?: string
-    registrationDate?: string
-    accountId?: string
-    certification?: number
+    // 基本信息
+    userId: string
+    username: string
+    avatar: string
+    introduction: string
     role: RoleType
+    email: string
+    phone: string
+    location: string
+    socialAccounts: string[]
+    job: string
+    organization: string
+    registrationDate: string
+    certification: string
+    // 统计数据
+    blogCount?: number
+    viewCount?: number
+    likeCount?: number
+  }
+
+  export interface PasswordsType {
+    oldPwd: string
+    newPwd: string
+    confirmPwd: string
   }
 }
 

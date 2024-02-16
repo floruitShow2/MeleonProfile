@@ -1,0 +1,59 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.team-wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    #color(background-color, --module-bg-color);
+    &-header {
+        width: 100%;
+        margin-bottom: 20px;
+        #flex(row, center, space-between);
+        h4 {
+            font-size: 16px;
+            font-weight: bold;
+            #color(color, --primary-text-color);
+        }
+    }
+    &-list {
+        width: 100%;
+        #flex(column, center, flex-start);
+        &--filter {
+            width: 100%;
+            margin-bottom: 10px;
+            #flex(row, center, space-between);
+            span {
+                font-size: 14px;
+                font-weight: 400;
+                #color(color, --primary-text-color);
+            }
+            .arco-input-wrapper {
+                width: 200px;
+            }
+        }
+        &--table {
+            width: 100%;
+            .column-cell {
+                #flex(row, center, flex-start);
+                &-avatar {
+                    width: 30px;
+                    height: 30px;
+                    margin-right: 5px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    #color(background-color, --primary-bg-color);
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                span {
+                    font-size: 14px;
+                    font-weight: 400;
+                    white-space: nowrap;
+                    #color(color, --primary-text-color);
+                }
+            }
+        }
+    }
+}

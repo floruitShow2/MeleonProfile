@@ -1,4 +1,4 @@
-import { defineComponent, ref, onMounted, computed, nextTick, TransitionGroup } from 'vue'
+import { defineComponent, ref, onMounted, nextTick, TransitionGroup } from 'vue'
 import * as THREE from 'three'
 import { Progress } from '@arco-design/web-vue'
 import { IconCaretRight } from '@arco-design/web-vue/es/icon'

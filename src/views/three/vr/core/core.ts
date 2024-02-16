@@ -103,7 +103,7 @@ export default class VrRoom extends EventEmitter {
       // })
     }
 
-    window.addEventListener('resize', this.onWindowResize)
+    window.addEventListener('resize', this.onWindowResize.bind(this))
   }
 
   // 实时更新渲染场景
@@ -143,6 +143,10 @@ export default class VrRoom extends EventEmitter {
     this.initSize()
     this.renderer.setSize(this.size.width, this.size.height)
   }
+
+  vertexShader!: string
+
+  fragmentShader!: string
 
   // utils: Look in the direction of the point you clicked on
   lookAtPoint(point: THREE.Vector3, needTransition = true) {
@@ -250,6 +254,7 @@ export default class VrRoom extends EventEmitter {
     const dirz = direction1.z - direction2.z
 
     const angle = (Math.atan2(dirx, dirz) * 180) / Math.PI
+
     return angle
 
     // return (Math.atan2(dirx, dirz) * 180) / Math.PI
@@ -284,6 +289,7 @@ export default class VrRoom extends EventEmitter {
   startPoint!: THREE.Vector2
 
   /**
+   * @description 处理不同类型信息点的点击事件
    * @param data 跳转点实体
    */
   handleJumperEvent(data: PointEntity) {
@@ -294,27 +300,13 @@ export default class VrRoom extends EventEmitter {
 
     /**
      * @type bugFix
-     * @description 切换房间后，camearaPosition 始终为起始点，此时点击详情点会回到起始房间
+     * @description 切换房间后，cameraPosition 始终为起始点，此时点击详情点会回到起始房间
      */
     this.$options.cameraPosition.copy(position)
     this.$options.currentScene = targetId
 
     this.controls.moveTo(position.x, position.y, position.z, true)
 
-    /**
-     * @type bugFix
-     * @description 为材质设置 transparent: true 后，信息点周围可能会出现黑色空缺
-     */
-    // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
-    // GSAP.to(sphereMaterial, {
-    //   transparent: true,
-    //   opacity: 1,
-    //   duration: 0.2,
-    //   onComplete: () => {
-    //     sphereMaterial.transparent = false
-    //     // 手动更新投影矩阵
-    //   }
-    // })
     this.camera.updateProjectionMatrix()
 
     this.emit(EventsMap.oJC, data)
@@ -330,13 +322,86 @@ export default class VrRoom extends EventEmitter {
   }
 
   private handleMoveEvent(data: PointEntity) {
-    if (!data) return
-    const p = data.position
-    this.controls.moveTo(p.x, 0, p.z, true)
+    // 清除场景数据内所有的精灵标签
+    // this.scene.children = this.scene.children.filter((item) => String(item.type) !== 'Sprite')
+    // 储存数组置空
+    // this.poiObjects[this.$options.currentScene].sprites = []
+    // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
+
+    /**
+     * @type bugFix
+     * @description 为材质设置 transparent: true 后，信息点周围可能会出现黑色空缺
+     */
+    // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
+    // const { sphere } = this.spheres[this.$options.currentScene]
+    // GSAP.to(sphere, {
+    //   transparent: true,
+    //   opacity: 1,
+    //   duration: 0.2,
+    //   onComplete: () => {
+    //     if (!data || !data?.targetId) return
+    //     const { targetId } = data
+    //     const { position } = this.spheres[targetId].sphere
+
+    //     /**
+    //      * @type bugFix
+    //      * @description 切换房间后，cameraPosition 始终为起始点，此时点击详情点会回到起始房间
+    //      */
+    //     this.$options.cameraPosition.copy(position)
+    //     this.$options.currentScene = targetId
+    //     ;(sphere.material as THREE.Material).transparent = false
+    //     // this.controls.moveTo(position.x, position.y, position.z, false)
+    //     // // 手动更新投影矩阵
+    //     // this.camera.updateProjectionMatrix()
+    //   }
+    // })
+
+    if (!data || !data?.targetId) return
+    const config = {
+      width: 8,
+      widthSegments: 8,
+      color: 0xff91c2,
+      opacity: 1,
+      range: 0.5,
+      speed: 0.1,
+      seg: 6
+    }
+
+    this.vertexShader = `
+      varying vec2 vUv;
+      void main() { 
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    `
+
+    const sceneOrigin = this.spheres[this.$options.currentScene].sphere
+    const sceneDestination = this.spheres[data.targetId]
+    this.fragmentShader = `
+      uniform float time;
+      uniform float progress;
+      uniform sampler2D sceneDestination;
+      uniform sampler2D sceneOrigin;
+      uniform vec4 resolution;
+      varying vec2 vUv;
+      varying vec3 vPosition;
+      
+      void main(){
+        float progress1 = smoothstep(0.10, 1.0, progress);
+        vec4 sPlanet = texture2D(${sceneOrigin}, vUv);
+        vec4 s360 = texture2D(${sceneDestination}, vUv);
+        float mixer = progress1;
+        gl_FragColor = s360;
+        vec4 finalTexture = mix(sPlanet, s360, mixer);
+        gl_FragColor = finalTexture;
+      }
+    `
+
     this.emit(EventsMap.oMC, data)
     this.emit(EventsMap.oPC, data)
   }
 
+  // 初始化点击事件
   private initEvents() {
     const raycaster = new THREE.Raycaster()
     const pointer = new THREE.Vector2()

@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import GSAP from 'gsap'
 import type { RestrictType } from '@/components/search'
 import Time from '../Utils/Time'
 import Sizes from '../Utils/Sizes'
@@ -33,6 +34,14 @@ export default class Room {
 
   swim!: THREE.AnimationAction
 
+  lerp!: {
+    current: number
+    target: number
+    ease: number
+  }
+
+  rotation!: number
+
   constructor() {
     this.experience = new Experience()
     const { scene, resource, time, sizes, camera } = this.experience
@@ -42,10 +51,18 @@ export default class Room {
     this.camera = camera
     this.resource = resource
     // 所有导入模型中 name 为 room 的模型
-    this.room = this.resource.items.room
+    this.room = this.resource.items?.room
     this.actualRoom = this.room.scene
+
+    this.lerp = {
+      current: 0,
+      target: 0,
+      ease: 0.1
+    }
+
     this.setModel()
     this.setAnimations()
+    this.onMouseMove()
   }
 
   generateLayers<T extends RestrictType>(
@@ -106,7 +123,6 @@ export default class Room {
   setModel() {
     // 重设图层对象
     this.layers = []
-    console.log(this.actualRoom)
     this.generateLayers(this.actualRoom, this.layers)
     const width = 0.5
     const height = 0.7
@@ -115,6 +131,7 @@ export default class Room {
     rectLight.position.set(7.68244, 7, 0.5)
     rectLight.rotation.x = -Math.PI / 2
     rectLight.rotation.z = Math.PI / 4
+    this.actualRoom.scale.set(0.5, 0.5, 0.5)
     this.actualRoom.add(rectLight)
     this.scene.add(this.actualRoom)
   }
@@ -125,11 +142,22 @@ export default class Room {
     this.swim.play()
   }
 
+  onMouseMove() {
+    window.addEventListener('mousemove', (e) => {
+      this.rotation = ((e.clientX - window.innerWidth / 2) * 2) / window.innerWidth
+      this.lerp.target = this.rotation * 0.1
+    })
+  }
+
   resize() {
     console.log(this.room)
   }
 
   update() {
+    this.lerp.current = GSAP.utils.interpolate(this.lerp.current, this.lerp.target, this.lerp.ease)
+
+    this.actualRoom.rotation.y = this.lerp.current
+
     if (this.mixer) this.mixer.update(this.time.delta * 0.0009)
   }
 }

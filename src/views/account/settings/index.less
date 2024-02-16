@@ -1,0 +1,48 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+.settings-view {
+    width: 100%;
+    height: calc(100vh - 60px);
+    padding: 20px;
+    &-wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        #flex(row, flex-start, space-between);
+        #color(background-color, --module-bg-color);
+        &--menu {
+            width: 300px;
+            height: 100%;
+            padding: 20px 5px;
+            border-right: solid 1px;
+            #color(border-color, --primary-border-color);
+            .menu-item {
+                width: 100%;
+                padding: 15px 20px;
+                margin-bottom: 5px;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 500;
+                transition: all 0.2s ease;
+                cursor: pointer;
+                #color(color, --primary-text-color);
+                &:hover {
+                    #color(background-color, --primary-bg-color);
+                }
+                &--active {
+                    #color(color, --primary-blue-color);
+                    #color(background-color, --gray-blue-color);
+                    &:hover {
+                        #color(background-color, --gray-blue-color);
+                    }
+                }
+            }
+        }
+        &--content {
+            width: calc(100% - 300px);
+            min-width: 400px;
+            height: 100%;
+            padding: 20px;
+        }
+    }
+}

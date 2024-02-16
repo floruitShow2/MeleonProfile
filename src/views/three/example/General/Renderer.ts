@@ -45,40 +45,9 @@ export default class Renderer {
   }
 
   // 切换视图模式
-  switchViewsModel(options: { showThreeViews: false }) {
+  switchViewsModel(options: { showThreeViews: boolean }) {
     const { showThreeViews } = options
     this.showThreeViews = showThreeViews
-  }
-
-  setThreeViews() {
-    const { width, height } = this.sizes
-    type TupleType = [x: number, y: number, width: number, height: number]
-    // 顶视图
-    this.renderer.setScissorTest(true)
-    const topViewParams: TupleType = [width - width / 2, 0, width / 2, height / 2]
-    this.renderer.setViewport(...topViewParams)
-    this.renderer.setScissor(...topViewParams)
-    this.renderer.render(this.scene, this.camera.TopViewCamera)
-    this.renderer.setScissorTest(false)
-    // 左视图
-    this.renderer.setScissorTest(true)
-    const leftViewParams: TupleType = [
-      width - width / 2,
-      height - height / 2,
-      width / 2,
-      height / 2
-    ]
-    this.renderer.setViewport(...leftViewParams)
-    this.renderer.setScissor(...leftViewParams)
-    this.renderer.render(this.scene, this.camera.leftViewCamera)
-    this.renderer.setScissorTest(false)
-    // 正视图
-    this.renderer.setScissorTest(true)
-    const frontViewParams: TupleType = [0, height - height / 2, width / 2, height / 2]
-    this.renderer.setViewport(...frontViewParams)
-    this.renderer.setScissor(...frontViewParams)
-    this.renderer.render(this.scene, this.camera.frontViewCamera)
-    this.renderer.setScissorTest(false)
   }
 
   resize() {
@@ -94,11 +63,10 @@ export default class Renderer {
       this.renderer.setViewport(0, 0, width / 2, height / 2)
       this.renderer.render(this.scene, this.camera.perspectiveCamera)
       // three sub screens
-      this.setThreeViews()
     } else {
       // main screen
       this.renderer.setViewport(0, 0, width, height)
-      this.renderer.render(this.scene, this.camera.perspectiveCamera)
+      this.renderer.render(this.scene, this.camera.orthographicCamera)
     }
   }
 }

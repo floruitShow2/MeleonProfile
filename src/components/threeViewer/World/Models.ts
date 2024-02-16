@@ -44,9 +44,9 @@ export default class model {
     // 选择默认渲染的模型
     const defaultModel = Object.keys(this.resource.items)[0]
     this.model = this.resource.items[defaultModel]
-    this.actualModel = this.model.scene
+    this.actualModel = this.model.scene ? this.model.scene : this.model
     this.setModel()
-    this.setAnimations()
+    // this.setAnimations()
   }
 
   generateLayers<T extends RestrictType>(

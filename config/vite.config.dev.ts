@@ -16,6 +16,7 @@ export default mergeConfig(
     },
     plugins: [
       eslint({
+        fix: true,
         cache: false,
         include: ['src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue'],
         exclude: ['node_modules']

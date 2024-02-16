@@ -1,6 +1,6 @@
 declare namespace ApiArticle {
   interface ArticleEntity {
-    id: string
+    blogId: string
     // 文章标题
     title: string
     // 文章简介

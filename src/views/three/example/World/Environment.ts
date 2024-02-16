@@ -31,8 +31,8 @@ export default class Environment {
     position: { x: number; y: number; z: number }
   }) {
     if (!this.sunLight) {
-      this.sunLight = new THREE.DirectionalLight('#ffffff', 3)
-      this.sunLightHelper = new THREE.DirectionalLightHelper(this.sunLight, 5)
+      this.sunLight = new THREE.DirectionalLight('#ffffff', 5)
+      this.sunLightHelper = new THREE.DirectionalLightHelper(this.sunLight, 2)
       this.scene.add(this.sunLight, this.sunLightHelper)
     }
     const { position, showHelper, color, intensity } = options
@@ -49,7 +49,7 @@ export default class Environment {
 
   // 创建环境光
   setAmbientLight() {
-    this.ambientLight = new THREE.AmbientLight('#ffffff', 40)
+    this.ambientLight = new THREE.AmbientLight('#ffffff', 3)
     this.scene.add(this.ambientLight)
   }
 }

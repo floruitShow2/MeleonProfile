@@ -8,7 +8,10 @@ const URLs = {
 }
 
 export const FetchArticleById = (id: string) => {
-  return request.get<ApiArticle.ArticleEntity>(`/api/blog/${id}`)
+  return request.get<{
+    articleInfo: ApiArticle.ArticleEntity
+    authorInfo: ApiAuth.UserInfo
+  }>(`/api/blog/${id}`)
 }
 
 /**
