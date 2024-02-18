@@ -14,7 +14,6 @@ interface ChunkType {
   percentage: number
 }
 
-const SLICE_SIZE = 10 * 1024 * 1024
 enum WORKFLOW_STATUS {
   STANDBY = '准备上传文件',
   CALCULATE_HASH = '正在生成文件Hash',
@@ -23,6 +22,9 @@ enum WORKFLOW_STATUS {
   UPLOADING = '上传中...',
   UPLOAD_OVER = '文件已全部上传'
 }
+
+const SLICE_SIZE = 10 * 1024 * 1024
+const UserToken = ref('')
 
 // const filesUploadQueue = ref<File[]>([])
 const requestUrl = ref('http://192.168.124.40:3000/api')
@@ -81,6 +83,7 @@ const request = <T>({
     xhr.open(method, url)
     // Object.keys(headers).forEach((key) => xhr.setRequestHeader(key, headers[key]))
     xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('user_token', UserToken.value)
     xhr.send(data)
     xhr.onload = (e) => {
       // 将请求成功的 xhr 从列表中删除
@@ -291,6 +294,9 @@ const strategyMap: Record<string, (data: Record<string, any>) => void> = {
     const fileList = data.file as File[]
     // filesUploadQueue.value.push(...fileList)
     fileList.forEach((file) => startUpload(file))
+  },
+  token: (data) => {
+    UserToken.value = data.token
   }
 }
 onmessage = (e) => {

@@ -1,7 +1,8 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import type { Component } from 'vue'
 import WsFileCard from '@/components/fileCard/index'
 import { formatBytes } from '@/utils/file'
+import { localStg } from '@/utils/storage'
 import LargeFileInstance from './instance'
 import './index.less'
 
@@ -40,6 +41,8 @@ export default defineComponent({
     const filesStatus = ref<string[]>([])
     const statusRefs = ref<Array<HTMLElement | Component>>([])
     const statusTimer = ref<NodeJS.Timer>()
+
+    // 更新文件上传状态
     const updateFilesStatus = () => {
       if (filesStatus.value.length === 0) {
         clearInterval(statusTimer.value)
@@ -65,6 +68,14 @@ export default defineComponent({
       )
       filesStatus.value.shift()
     }
+
+    const initWorkerOptions = () => {
+      worker.postMessage({
+        type: 'token',
+        token: localStg.get('token')
+      })
+    }
+    onMounted(initWorkerOptions)
 
     // 监听 worker 发送的请求参数
     worker.onmessage = (e) => {

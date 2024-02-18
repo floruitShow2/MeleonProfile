@@ -1,5 +1,4 @@
 import { defineComponent, toRefs, ref } from 'vue'
-import { FetchOperationLogs } from '@/api/file'
 import { convertToBytes } from '@/utils/file'
 import WsLargeFile from '@/components/largeFile'
 import WsOperationLogs from '../folderLogs'
