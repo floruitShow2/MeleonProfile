@@ -79,8 +79,8 @@ export default defineComponent({
 
     return () =>
       userState.value && (
-        <div class="article-overview">
-          <div class="article-overview-wrapper">
+        <div class="overview-wrapper">
+          <div class="overview-wrapper-wrapper">
             <div class="card profile">
               <img class="profile-avatar" src={userState.value.avatar} alt="" />
               <div class="profile-message">
@@ -116,7 +116,7 @@ export default defineComponent({
               <div class="recent-content">{generateRecentComponent()}</div>
             </div>
           </div>
-          <div class="article-overview-aside">
+          <div class="overview-wrapper-aside">
             <div class="card">
               <div class="card-title">
                 <span>创作话题</span>

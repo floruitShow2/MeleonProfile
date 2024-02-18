@@ -98,7 +98,7 @@ export default defineComponent({
     }
 
     return () => (
-      <div class="article-manage">
+      <div class="article-wrapper">
         <Tabs
           defaultActiveKey={activeKey.value}
           size="medium"
@@ -115,8 +115,8 @@ export default defineComponent({
             )
           }}
         >
-          <TabPane key="article" title="文章" class="article-manage_wrapper">
-            <div class="article-manage_wrapper-header">
+          <TabPane key="article" title="文章" class="article-wrapper_wrapper">
+            <div class="article-wrapper_wrapper-header">
               {articlesCategory.value.map((tab) => {
                 return (
                   <div
@@ -134,7 +134,7 @@ export default defineComponent({
                 )
               })}
             </div>
-            <div class="article-manage_wrapper-list">{genArticlesItem(activeCategory.value)}</div>
+            <div class="article-wrapper_wrapper-list">{genArticlesItem(activeCategory.value)}</div>
           </TabPane>
           <TabPane key="drafts" title="草稿箱">
             aaa

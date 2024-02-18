@@ -67,7 +67,7 @@ export default defineComponent({
     }
 
     return () => (
-      <div class="art-import-container">
+      <div class="import-wrapper">
         {showFilesList.value ? (
           <div class="blog-upload">
             <div class="blog-header">

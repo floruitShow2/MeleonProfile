@@ -1,19 +1,8 @@
 import { defineComponent, onMounted, ref } from 'vue'
-import {
-  Avatar,
-  Button,
-  Input,
-  Table,
-  TableColumn,
-  Modal,
-  Form,
-  FormItem,
-  Message,
-  Upload
-} from '@arco-design/web-vue'
-import type { FileItem, FormInstance } from '@arco-design/web-vue'
-import { IconEdit, IconSearch } from '@arco-design/web-vue/es/icon'
+import { Button, Input, Table, TableColumn, Modal, Message } from '@arco-design/web-vue'
+import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { CreateTeam, FetchTeamList } from '@/api/team'
+import TeamModal from './components/teamModal'
 import './index.less'
 
 export default defineComponent({
@@ -34,42 +23,34 @@ export default defineComponent({
       teamName: '',
       introduction: ''
     })
-    const logoFile = ref<File | null>()
-    const formRef = ref<FormInstance>()
+
+    // 团队创建相关
+    const teamModalRef = ref()
     const showCreateModal = ref<boolean>(false)
     // 开启创建弹窗
     const handleOpenModal = async () => {
       showCreateModal.value = true
-    }
-    // 上传logo
-    const handleLogoUpload = (fileItems: FileItem[]) => {
-      const lastFile = fileItems.at(-1)
-      if (!lastFile) return
-      const { url, file } = lastFile
-      if (!file || !url) return
-      logoFile.value = file
-      teamEntity.value.logo = url
     }
     // 取消创建
     const handleCancel = () => {
       showCreateModal.value = false
     }
     const handleClose = () => {
-      formRef.value?.resetFields()
+      teamModalRef.value.formRef.resetFields()
+      teamModalRef.value.clearLogoFile()
       teamEntity.value = {
         logo: '',
         teamName: '',
         introduction: ''
       }
-      logoFile.value = null
     }
     // 确认创建
     const handleBeforeOk = async () => {
-      const res = await formRef.value?.validate()
+      const res = await teamModalRef.value.formRef.validate()
       if (res) return false
       const { teamName, introduction } = teamEntity.value
       const fd = new FormData()
-      fd.append('file', logoFile.value ?? '')
+      fd.append('file', teamModalRef.value.getLogoFile())
       fd.append('teamName', teamName ?? '')
       fd.append('introduction', introduction ?? '')
       const { data } = await CreateTeam(fd)
@@ -84,14 +65,26 @@ export default defineComponent({
       return true
     }
 
-    onMounted(async () => {
-      await initTeamList()
-    })
-
-    const handleTeamDetail = (teamId: string) => {
+    const curTeam = ref<string>('')
+    const showMemberModal = ref<boolean>(false)
+    const initMembersList = (teamId: string) => {
       console.log(teamId)
     }
 
+    // 团队列表相关
+    onMounted(async () => {
+      await initTeamList()
+    })
+    // 查看团队详情
+    const handleTeamDetail = async (teamId: string) => {
+      try {
+        await initMembersList(teamId)
+        curTeam.value = teamId
+        showMemberModal.value = true
+      } catch (err) {
+        console.log(err)
+      }
+    }
     // 生成表格中 团队名 及 创建者 单元格的内容
     const genTeamOrCreator = (avatar: string, name: string) => {
       return (
@@ -103,7 +96,6 @@ export default defineComponent({
         </div>
       )
     }
-
     // 生成表格中 项目数 及 成员数 单元格的内容
     const genCount = (count: number, label: string) => {
       return (
@@ -112,6 +104,39 @@ export default defineComponent({
         </div>
       )
     }
+    // 列配置
+    const columnConfig: Array<{
+      title: string
+      align?: 'center' | 'left' | 'right'
+      cell: ({ record }: { record: ApiTeam.TeamEntity }) => JSX.Element
+    }> = [
+      {
+        title: '团队名',
+        cell: ({ record }) => genTeamOrCreator(record.logo, record.teamName)
+      },
+      {
+        title: '创建者',
+        cell: ({ record }) =>
+          genTeamOrCreator(record.creator?.avatar || '', record.creator?.username || '')
+      },
+      {
+        title: '项目数',
+        cell: ({ record }) => genCount(record.taskCount || 0, '个项目')
+      },
+      {
+        title: '成员数',
+        cell: ({ record }) => genCount(record.members?.length || 0, '名成员')
+      },
+      {
+        title: '',
+        align: 'center',
+        cell: ({ record }) => (
+          <Button type="text" onClick={() => handleTeamDetail(record.teamId)}>
+            查看详情
+          </Button>
+        )
+      }
+    ]
 
     return () => (
       <div class="team-wrapper">
@@ -141,94 +166,35 @@ export default defineComponent({
             v-slots={{
               columns: () => (
                 <>
-                  <TableColumn
-                    title="团队名"
-                    v-slots={{
-                      cell: ({ record }: { record: ApiTeam.TeamEntity }) =>
-                        genTeamOrCreator(record.logo, record.teamName)
-                    }}
-                  />
-                  <TableColumn
-                    title="创建者"
-                    v-slots={{
-                      cell: ({ record }: { record: ApiTeam.TeamEntity }) =>
-                        genTeamOrCreator(
-                          record.creator?.avatar || '',
-                          record.creator?.username || ''
-                        )
-                    }}
-                  />
-                  <TableColumn
-                    title="项目数"
-                    v-slots={{
-                      cell: ({ record }: { record: ApiTeam.TeamEntity }) =>
-                        genCount(record.taskCount || 0, '个项目')
-                    }}
-                  ></TableColumn>
-                  <TableColumn
-                    title="成员数"
-                    v-slots={{
-                      cell: ({ record }: { record: ApiTeam.TeamEntity }) =>
-                        genCount(record.members?.length || 0, '名成员')
-                    }}
-                  />
-                  <TableColumn
-                    align="center"
-                    v-slots={{
-                      cell: ({ record }: { record: ApiTeam.TeamEntity }) => (
-                        <Button type="text" onClick={() => handleTeamDetail(record.teamId)}>
-                          查看详情
-                        </Button>
-                      )
-                    }}
-                  ></TableColumn>
+                  {columnConfig.map((column) => (
+                    <TableColumn
+                      title={column.title}
+                      align={column.align}
+                      v-slots={{
+                        cell: column.cell
+                      }}
+                    />
+                  ))}
                 </>
               )
             }}
           ></Table>
         </div>
 
+        {/* 创建团队弹窗 */}
         <Modal
           v-model:visible={showCreateModal.value}
-          title="Modal Form"
+          title="创建团队"
           mask-closable={false}
           onCancel={handleCancel}
           onBeforeOk={handleBeforeOk}
           onClose={handleClose}
         >
-          <Form ref={formRef} model={teamEntity} layout="vertical">
-            <FormItem field="logo" label="团队标志(可选)">
-              <Avatar
-                size={72}
-                triggerType="mask"
-                imageUrl={teamEntity.value.logo}
-                v-slots={{
-                  'trigger-icon': () => (
-                    <Upload
-                      accept="jpg,png,jpeg"
-                      showFileList={false}
-                      autoUpload={false}
-                      v-slots={{
-                        'upload-button': () => <IconEdit />
-                      }}
-                      onChange={handleLogoUpload}
-                    ></Upload>
-                  )
-                }}
-              ></Avatar>
-            </FormItem>
-            <FormItem
-              field="teamName"
-              label="团队名(必填)"
-              rules={[{ required: true, message: '团队名不能为空' }]}
-            >
-              <Input v-model:modelValue={teamEntity.value.teamName} placeholder="请输入" />
-            </FormItem>
-            <FormItem field="introduction" label="团队介绍(可选)">
-              <Input v-model:modelValue={teamEntity.value.introduction} placeholder="请输入" />
-            </FormItem>
-          </Form>
+          <TeamModal v-model:team={teamEntity.value} ref={teamModalRef} />
         </Modal>
+
+        {/* 成员管理弹窗 */}
+        <Modal v-model:visible={showMemberModal.value}></Modal>
       </div>
     )
   }

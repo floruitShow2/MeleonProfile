@@ -68,6 +68,10 @@ export default defineComponent({
           {
             code: 'teamMenu',
             label: '我的团队'
+          },
+          {
+            code: 'memberMenu',
+            label: '成员管理'
           }
         ]
       },
