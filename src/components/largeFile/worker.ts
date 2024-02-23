@@ -27,6 +27,7 @@ const SLICE_SIZE = 10 * 1024 * 1024
 const UserToken = ref('')
 
 // const filesUploadQueue = ref<File[]>([])
+// const requestUrl = ref('http://localhost:3333')
 const requestUrl = ref('http://192.168.124.40:3000/api')
 
 const recordFiles = ref<
@@ -67,6 +68,7 @@ const request = <T>({
   url,
   method = 'post',
   data,
+  headers,
   onProgress = (e) => e,
   requestList
 }: {
@@ -81,9 +83,12 @@ const request = <T>({
     const xhr = new XMLHttpRequest()
     xhr.upload.onprogress = onProgress
     xhr.open(method, url)
-    // Object.keys(headers).forEach((key) => xhr.setRequestHeader(key, headers[key]))
-    xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.setRequestHeader('user_token', UserToken.value)
+    for (const key in headers) {
+      if (Reflect.has(headers, key)) {
+        xhr.setRequestHeader(key, headers[key])
+      }
+    }
     xhr.send(data)
     xhr.onload = (e) => {
       // 将请求成功的 xhr 从列表中删除
@@ -110,6 +115,9 @@ const respondStatus = (type: keyof typeof WORKFLOW_STATUS, filename: string) => 
   })
 }
 
+/**
+ * @description 文件上传接口请求
+ */
 const VerifyUpload = async (filename: string, filehash: string) => {
   const res = await request<{ shouldUpload: boolean; uploadedList: string[] }>({
     url: `${requestUrl.value}/file/verify`,
@@ -117,7 +125,10 @@ const VerifyUpload = async (filename: string, filehash: string) => {
     data: JSON.stringify({
       filename,
       filehash
-    })
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   return res
 }
@@ -133,18 +144,6 @@ const UploadFileChunk = (
     onProgress,
     requestList: recordFiles.value[filename].requestList
   })
-  // return new Promise((resolve) => {
-  //   fetch(, {
-  //     method: 'post',
-  //     body: chunk
-  //   })
-  //     .then((res) => {
-  //       console.log(res)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // })
 }
 const MergeRequest = async (fileName: string, fileHash: string) => {
   const res = await request({
@@ -154,7 +153,10 @@ const MergeRequest = async (fileName: string, fileHash: string) => {
       size: SLICE_SIZE,
       filename: fileName,
       filehash: fileHash
-    })
+    }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
   })
   return res
 }

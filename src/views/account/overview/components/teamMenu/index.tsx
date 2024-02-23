@@ -3,6 +3,7 @@ import { Button, Input, Table, TableColumn, Modal, Message } from '@arco-design/
 import { IconSearch } from '@arco-design/web-vue/es/icon'
 import { CreateTeam, FetchTeamList } from '@/api/team'
 import TeamModal from './components/teamModal'
+import MemberModal from './components/memberModal'
 import './index.less'
 
 export default defineComponent({
@@ -65,7 +66,7 @@ export default defineComponent({
       return true
     }
 
-    const curTeam = ref<string>('')
+    const curTeam = ref<ApiTeam.TeamEntity>()
     const showMemberModal = ref<boolean>(false)
     const initMembersList = (teamId: string) => {
       console.log(teamId)
@@ -76,10 +77,10 @@ export default defineComponent({
       await initTeamList()
     })
     // 查看团队详情
-    const handleTeamDetail = async (teamId: string) => {
+    const handleTeamDetail = async (team: ApiTeam.TeamEntity) => {
       try {
-        await initMembersList(teamId)
-        curTeam.value = teamId
+        await initMembersList(team.teamId)
+        curTeam.value = team
         showMemberModal.value = true
       } catch (err) {
         console.log(err)
@@ -104,7 +105,7 @@ export default defineComponent({
         </div>
       )
     }
-    // 列配置
+    // 团队列表列配置
     const columnConfig: Array<{
       title: string
       align?: 'center' | 'left' | 'right'
@@ -131,7 +132,7 @@ export default defineComponent({
         title: '',
         align: 'center',
         cell: ({ record }) => (
-          <Button type="text" onClick={() => handleTeamDetail(record.teamId)}>
+          <Button type="text" onClick={() => handleTeamDetail(record)}>
             查看详情
           </Button>
         )
@@ -194,7 +195,13 @@ export default defineComponent({
         </Modal>
 
         {/* 成员管理弹窗 */}
-        <Modal v-model:visible={showMemberModal.value}></Modal>
+        <Modal
+          title={curTeam.value?.teamName}
+          v-model:visible={showMemberModal.value}
+          mask-closable={false}
+        >
+          <MemberModal team={curTeam.value} />
+        </Modal>
       </div>
     )
   }

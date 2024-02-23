@@ -11,7 +11,7 @@ export default defineComponent({
   setup() {
     const route = useRoute()
 
-    const { id } = route.query
+    // const { id } = route.query
 
     const breadcrumb = ref<string[]>(['全部文件'])
 

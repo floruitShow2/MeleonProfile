@@ -55,7 +55,7 @@ export default defineComponent({
       // startReply.value = true
       replyTarget.value = item
       comment.replyId = item.commentId
-      inputRef.value.focus()
+      inputRef.value?.focus()
     }
 
     const handleSubmitComment = async () => {

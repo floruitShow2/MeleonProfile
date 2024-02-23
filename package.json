@@ -50,6 +50,7 @@
     "markdown-it-anchor": "^8.6.7",
     "mitt": "^3.0.0",
     "nprogress": "^0.2.0",
+    "pdfjs-dist": "^2.16.105",
     "pinia": "^2.0.23",
     "query-string": "^8.0.3",
     "sortablejs": "^1.15.0",
@@ -129,7 +130,7 @@
     "vue-eslint-parser": "^9.4.2"
   },
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china",
