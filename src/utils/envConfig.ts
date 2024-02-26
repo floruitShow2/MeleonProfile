@@ -12,7 +12,7 @@ const serviceEnv: ServiceEnv = {
     url: 'http://localhost:3000'
   },
   prod: {
-    url: 'http://localhost:3000'
+    url: 'http://47.99.102.151:3000'
   }
 }
 

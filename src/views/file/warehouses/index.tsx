@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { useRoute } from 'vue-router'
+// import { useRoute } from 'vue-router'
 import { Button } from '@arco-design/web-vue'
 import { IconFolderAdd } from '@arco-design/web-vue/es/icon'
 import WsFileCard from '@/components/fileCard'
@@ -9,7 +9,7 @@ import './index.less'
 
 export default defineComponent({
   setup() {
-    const route = useRoute()
+    // const route = useRoute()
 
     // const { id } = route.query
 
@@ -62,7 +62,7 @@ export default defineComponent({
                     icon: () => <IconFolderAdd />
                   }}
                 >
-                  Create Folder
+                  New Folder
                 </Button>
                 {/* <Button
                   type="primary"
