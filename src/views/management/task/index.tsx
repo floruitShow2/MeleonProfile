@@ -1,5 +1,5 @@
 import { defineComponent, onBeforeMount, ref, reactive } from 'vue'
-import { FetchAllTasks } from '@/api/task'
+import { FetchAllTasks, UpdateTask } from '@/api/task'
 import Draggable from 'vuedraggable'
 import { Drawer, Message, Tag, Table, TableColumn } from '@arco-design/web-vue'
 import { TagColorMap, TypeColorMap } from '@/constants/tag'
@@ -71,6 +71,19 @@ export default defineComponent({
         group: item.group,
         list: obj[item.group]
       }))
+    }
+
+    const handleTaskMove = async (event: any) => {
+      const { draggedContext, relatedContext } = event
+      const originalTask = draggedContext.element as ApiTask.TaskEntity
+      const targetGroup = relatedContext.component.itemKey as string
+      if (!originalTask.taskId) {
+        Message.error({
+          content: '任务ID缺失，更新失败'
+        })
+        return
+      }
+      await UpdateTask(originalTask.taskId, { group: targetGroup })
     }
 
     onBeforeMount(initTasks)
@@ -272,6 +285,7 @@ export default defineComponent({
                     }}
                     ghost-class="ghost-card"
                     {...draggableOptions}
+                    move={handleTaskMove}
                     v-slots={{
                       item: ({ element }: { element: ApiTask.TaskEntity }) => {
                         return (

@@ -3,6 +3,7 @@ import { mockRequest, request } from '@/service'
 enum URLs {
   'getAll' = '/api/task/getAllTasks',
   'create' = '/api/task/createTask',
+  'update' = '/api/task/updateTask',
   // 任务评论
   'createComment' = '/api/comment/createComment',
   'removeComment' = '/api/comment/removeComment',
@@ -10,14 +11,28 @@ enum URLs {
   'addLikes' = '/api/comment/addLikes'
 }
 
+/**
+ * @description 获取所有任务
+ * @param options
+ * @returns
+ */
 export const FetchAllTasks = (options: ApiTask.SearchOptions) => {
   return request.get<Array<{ group: string; list: ApiTask.TaskEntity[] }>>(URLs.getAll, {
     params: options
   })
 }
 
+/**
+ * @description 创建新任务
+ * @param data
+ * @returns
+ */
 export const CreateTask = (data: FormData) => {
   return request.post(URLs.create, data)
+}
+
+export const UpdateTask = (taskId: string, taskEntity: Partial<ApiTask.TaskEntity>) => {
+  return request.post(URLs.update, { taskId, taskEntity })
 }
 
 export const FetchCommentsById = (targetId: string) => {

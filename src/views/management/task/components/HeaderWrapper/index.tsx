@@ -126,14 +126,14 @@ export default defineComponent({
             <i class="iconfont ws-filter" />
             <span>筛选</span>
           </div>
-          <div class="controller">
+          {/* <div class="controller">
             <i class="iconfont ws-sort" />
             <span>排序</span>
-          </div>
-          <div class="controller">
+          </div> */}
+          {/* <div class="controller">
             <i class="iconfont ws-search" />
             <span>搜索</span>
-          </div>
+          </div> */}
         </header>
         {/* 筛选弹窗 */}
         <Drawer v-model:visible={filterDrawerShow.value} width={500} title="筛选" footer={false}>
