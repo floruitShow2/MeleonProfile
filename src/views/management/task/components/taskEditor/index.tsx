@@ -1,4 +1,4 @@
-import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { PropType, defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   Avatar,
@@ -23,11 +23,12 @@ import WsAvatar from '@/components/avatar'
 // import WsAvatarGroup from '@/components/avatarGroup'
 import WsFileCard from '@/components/fileCard'
 import { readFileAsDataurl } from '@/utils/file/parse'
-import { formatToDateTime } from '@/utils/format'
+import { formatToDateTime, useDeepClone } from '@/utils/format'
 import './index.less'
 
 export default defineComponent({
   props: {
+    // 任务所属分组
     group: {
       type: String,
       required: true
@@ -42,7 +43,7 @@ export default defineComponent({
     const router = useRouter()
 
     // 任务实体
-    const taskDetails = reactive<ApiTask.TaskEntity>({
+    const taskDetails = ref<ApiTask.TaskEntity>({
       group: '',
       teamId: '',
       title: '',
@@ -79,7 +80,7 @@ export default defineComponent({
 
     const timeRange = ref<string[]>([])
     const handleTagSelect = (value: unknown) => {
-      taskDetails.tags.push(value as ApiTask.TagType)
+      taskDetails.value.tags.push(value as ApiTask.TagType)
     }
 
     /**
@@ -88,7 +89,7 @@ export default defineComponent({
      * @returns boolean
      */
     const hasExistingTag = (tag: ApiTask.TagType) => {
-      const idx = taskDetails.tags.findIndex((item) => item.label === tag.label)
+      const idx = taskDetails.value.tags.findIndex((item) => item.label === tag.label)
       return idx !== -1
     }
     /**
@@ -96,7 +97,7 @@ export default defineComponent({
      * @param tag
      */
     const handleTagRemove = (tag: string) => {
-      taskDetails.tags = taskDetails.tags.filter((item) => item.label !== tag)
+      taskDetails.value.tags = taskDetails.value.tags.filter((item) => item.label !== tag)
     }
 
     /**
@@ -109,7 +110,7 @@ export default defineComponent({
       if (!file) return
       uploadCoverage.value = file
       coverImageUrl.value = await readFileAsDataurl(file)
-      taskDetails.coverImage = file.name
+      taskDetails.value.coverImage = file.name
     }
 
     const uploadAttachments = ref<FileItem[]>([])
@@ -162,7 +163,7 @@ export default defineComponent({
     const handleCreateTask = async () => {
       return new Promise((resolve, reject) => {
         const details = {
-          ...taskDetails,
+          ...taskDetails.value,
           group: props.group,
           startTime: formatToDateTime(timeRange.value[0]),
           endTime: formatToDateTime(timeRange.value[1])
@@ -228,7 +229,7 @@ export default defineComponent({
           <h4>所属团队(可选)</h4>
           <div class="module-content">
             <Select
-              v-model:modelValue={taskDetails.teamId}
+              v-model:modelValue={taskDetails.value.teamId}
               v-slots={{
                 default: () => renderTeamOptions(teamOptions.value),
                 empty: () => (
@@ -243,14 +244,18 @@ export default defineComponent({
         <div class={[`${prefix}-module`, 'title']}>
           <h4>标题</h4>
           <div class="module-content">
-            <Input v-model:modelValue={taskDetails.title} size="small" placeholder="请输入"></Input>
+            <Input
+              v-model:modelValue={taskDetails.value.title}
+              size="small"
+              placeholder="请输入"
+            ></Input>
           </div>
         </div>
         <div class={[`${prefix}-module`, 'desc']}>
           <h4>描述信息</h4>
           <div class="module-content">
             <Textarea
-              v-model:modelValue={taskDetails.desc}
+              v-model:modelValue={taskDetails.value.desc}
               maxLength={100}
               show-word-limit
               placeholder="请输入"
@@ -260,13 +265,13 @@ export default defineComponent({
         <div class={[`${prefix}-module`, 'cover']}>
           <h4>上传封面</h4>
           <div class="module-content">
-            {taskDetails.coverImage ? (
+            {taskDetails.value.coverImage ? (
               <div class="cover-image">
                 <div class="tools">
                   <i
                     class="iconfont ws-delete ibtn_base ibtn_hover"
                     onClick={() => {
-                      taskDetails.coverImage = ''
+                      taskDetails.value.coverImage = ''
                     }}
                   ></i>
                 </div>
@@ -289,7 +294,7 @@ export default defineComponent({
           <h4>优先级</h4>
           <div class="module-content">
             <Select
-              v-model:modelValue={taskDetails.priority}
+              v-model:modelValue={taskDetails.value.priority}
               style="width: fit-content"
               size="mini"
               //   bordered={false}
@@ -321,7 +326,7 @@ export default defineComponent({
         <div class={[`${prefix}-module`, 'tags']}>
           <h4>标签</h4>
           <div class="module-content">
-            {taskDetails.tags.map((tag) => (
+            {taskDetails.value.tags.map((tag) => (
               <Tag
                 size="medium"
                 closable

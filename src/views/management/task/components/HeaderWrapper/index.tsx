@@ -1,7 +1,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import { Select, Option, Dropdown, Doption, Drawer } from '@arco-design/web-vue'
 import FilterForm from '../FilterForm'
-import type { HiddenFields } from '../taskCard/interface'
+import type { HiddenFields } from '../TaskCard/interface'
 import type { TaskConfigOptions } from '../../interface'
 import './index.less'
 

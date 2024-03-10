@@ -6,21 +6,23 @@ import { TagColorMap, TypeColorMap } from '@/constants/tag'
 import WsAvatar from '@/components/avatar'
 import WsComments from '@/components/comments'
 import WsAvatarGroup from '@/components/avatarGroup'
-import WsTaskCard from './components/taskCard'
-import WsTaskEditor from './components/taskEditor'
 import HeaderWrapper from './components/HeaderWrapper'
+import WsTaskCard from './components/TaskCard'
+import WsTaskEditor from './components/TaskEditor'
+import WsTaskViewer from './components/TaskViewer'
 import type { TaskConfigOptions } from './interface'
 import 'swiper/css'
 import './index.less'
 
 export default defineComponent({
   setup() {
-    // tasks list
+    // 拖拽选项
     const draggableOptions = {
       animation: 200,
       group: 'task'
     }
 
+    // 视图选项
     const configOptions = ref<TaskConfigOptions>({
       activeMode: 'card'
     })
@@ -71,7 +73,10 @@ export default defineComponent({
         group: item.group,
         list: obj[item.group]
       }))
+
+      console.log(groups.value)
     }
+    onBeforeMount(initTasks)
 
     const handleTaskMove = async (event: any) => {
       const { draggedContext, relatedContext } = event
@@ -86,22 +91,21 @@ export default defineComponent({
       await UpdateTask(originalTask.taskId, { group: targetGroup })
     }
 
-    onBeforeMount(initTasks)
-
     const onSearchOptionsChange = async (val: ApiTask.SearchOptions) => {
       searchOptions.value = val
       await initTasks()
     }
 
+    // 当前分组
     const curGroup = ref<string>('')
-
+    // 当前选中的任务
+    const curTask = ref<ApiTask.TaskEntity>()
     // 是否展示编辑器窗口
-    const showEditDrawer = ref(false)
+    const showCreateDrawer = ref(false)
     const handleCreate = (group: string) => {
-      showEditDrawer.value = true
+      showCreateDrawer.value = true
       curGroup.value = group
     }
-
     const editorRef = ref()
     const handleConfirm = async () => {
       const { data } = await editorRef.value.createTask()
@@ -109,19 +113,41 @@ export default defineComponent({
         Message.error('任务创建失败')
         return false
       }
-      showEditDrawer.value = false
+      showCreateDrawer.value = false
       Message.success('任务创建成功')
       await initTasks()
       return false
     }
-
     // 点击卡片，编辑任务
-    const handleCardClick = () => {
-      console.log('a')
+    const showViewDrawer = ref(false)
+    const handleCardClick = (task: ApiTask.TaskEntity) => {
+      curTask.value = task
+      showViewDrawer.value = true
+    }
+    // 找到指定任务所在分组及索引
+    const findTargetTask = (id: string, group: string) => {
+      const findGroup = groups.value.find((item) => item.group === group)
+      if (!findGroup) return null
+      const findIdx = findGroup.list.findIndex((task) => task.taskId === id)
+      if (findIdx === -1) return null
+      return { findGroup, findIdx }
+    }
+    const handlePrevView = (e: { id: string; group: string }) => {
+      const { id, group } = e
+      const result = findTargetTask(id, group)
+      if (!result) return
+      const { findGroup, findIdx } = result
+      curTask.value = findGroup.list[findIdx === 0 ? findGroup.list.length - 1 : findIdx - 1]
+    }
+    const handleNextView = (e: { id: string; group: string }) => {
+      const { id, group } = e
+      const result = findTargetTask(id, group)
+      if (!result) return
+      const { findGroup, findIdx } = result
+      curTask.value = findGroup.list[findIdx === findGroup.list.length - 1 ? 0 : findIdx + 1]
     }
 
     const showCommentsDrawer = ref<boolean>(false)
-    const curTask = ref<ApiTask.TaskEntity | null>()
     const handleCommentClick = (task: ApiTask.TaskEntity) => {
       showCommentsDrawer.value = true
       curTask.value = task
@@ -308,9 +334,9 @@ export default defineComponent({
             </section>
           )}
         </div>
-        {/* 任务编辑器弹窗 */}
+        {/* 任务创建弹窗 */}
         <Drawer
-          v-model:visible={showEditDrawer.value}
+          v-model:visible={showCreateDrawer.value}
           width={500}
           v-slots={{
             title: () => curGroup.value
@@ -331,6 +357,23 @@ export default defineComponent({
         >
           {curTask.value?.taskId && (
             <WsComments target={curTask.value?.taskId} onUpdate={initTasks} />
+          )}
+        </Drawer>
+        {/* 任务编辑弹窗 */}
+        <Drawer
+          v-model:visible={showViewDrawer.value}
+          width={500}
+          v-slots={{
+            title: () => curTask.value?.title
+          }}
+        >
+          {curTask.value && (
+            <WsTaskViewer
+              task={curTask.value}
+              onPrev={handlePrevView}
+              onNext={handleNextView}
+              onDelete={initTasks}
+            />
           )}
         </Drawer>
       </div>

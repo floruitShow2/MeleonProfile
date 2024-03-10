@@ -4,6 +4,7 @@ import { Tag } from '@arco-design/web-vue'
 import { TagColorMap, TypeColorMap } from '@/constants/tag'
 import WsAvatar from '@/components/avatar'
 import WsAvatarGroup from '@/components/avatarGroup'
+import { useDeepClone } from '@/utils/format'
 import './index.less'
 
 export default defineComponent({
@@ -18,7 +19,7 @@ export default defineComponent({
     const { data } = toRefs(props)
     const handleClick = (e: MouseEvent) => {
       e.preventDefault()
-      emit('click', e)
+      emit('click', useDeepClone(data.value))
     }
 
     const handleAttachmentClick = (e: MouseEvent, attachments: number) => {
