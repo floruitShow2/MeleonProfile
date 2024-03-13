@@ -56,14 +56,15 @@ export default defineComponent({
       relatives: [],
       comments: 0
     })
-    // 任务配置项
+    // 初始化团队列表
     const teamOptions = ref<ApiTeam.TeamEntity[]>([])
     const initOptions = async () => {
       const { data } = await FetchTeamList()
       if (!data) return
       teamOptions.value = data
     }
-    const renderTeamOptions = (teams: ApiTeam.TeamEntity[]) => {
+    // 将团队实体 渲染为 JSX
+    const renderTeamOptions = (teams: ApiTeam.TeamEntity[]): JSX.Element[] => {
       return teams.map((team) => (
         <Option value={team.teamId}>
           <div class="selector-team-option">
@@ -73,16 +74,28 @@ export default defineComponent({
         </Option>
       ))
     }
-
+    // 跳转至创建团队页面
+    const goToTeamCreate = () => {
+      router.push({
+        path: '/profile/overview',
+        query: {
+          code: 'teamMenu'
+        }
+      })
+    }
     onMounted(async () => {
       await initOptions()
     })
 
     const timeRange = ref<string[]>([])
+
+    /**
+     * @description 选中指定 tag
+     * @param value "code" property of tag
+     */
     const handleTagSelect = (value: unknown) => {
       taskDetails.value.tags.push(value as ApiTask.TagType)
     }
-
     /**
      * @description 用于判断是否已选中该 tag
      * @param tag
@@ -100,9 +113,7 @@ export default defineComponent({
       taskDetails.value.tags = taskDetails.value.tags.filter((item) => item.label !== tag)
     }
 
-    /**
-     * @description 任务封面及附件
-     */
+    // 封面
     const coverImageUrl = ref<string>('')
     const uploadCoverage = ref<File>()
     const handleCoverChange = async (fileList: FileItem[]) => {
@@ -113,6 +124,7 @@ export default defineComponent({
       taskDetails.value.coverImage = file.name
     }
 
+    // 附件
     const uploadAttachments = ref<FileItem[]>([])
     const handleAttachmentsChange = (filesList: FileItem[]) => {
       uploadAttachments.value = filesList
@@ -123,11 +135,7 @@ export default defineComponent({
       // else uploadAttachments.value.push(newFile)
     }
 
-    /**
-     * @description 校验准备创建的任务信息是否符合要求
-     * @param details 任务实体信息
-     * @returns
-     */
+    // 校验准备创建的任务信息是否符合要求
     const validateDetails = (details: ApiTask.TaskEntity) => {
       const { title, startTime, endTime } = details
       const errorMessage: Array<{
@@ -190,16 +198,6 @@ export default defineComponent({
           .catch((err) => {
             reject(err)
           })
-      })
-    }
-
-    // 跳转至创建团队页面
-    const goToTeamCreate = () => {
-      router.push({
-        path: '/profile/overview',
-        query: {
-          code: 'teamMenu'
-        }
       })
     }
 

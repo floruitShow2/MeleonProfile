@@ -9,7 +9,7 @@ import WsAvatarGroup from '@/components/avatarGroup'
 import HeaderWrapper from './components/HeaderWrapper'
 import WsTaskCard from './components/TaskCard'
 import WsTaskEditor from './components/TaskEditor'
-import WsTaskViewer from './components/TaskViewer'
+import WsDrawerHeader from './components/DrawerHeader'
 import type { TaskConfigOptions } from './interface'
 import 'swiper/css'
 import './index.less'
@@ -30,6 +30,13 @@ export default defineComponent({
       configOptions.value = val
     }
 
+    // 搜索选项
+    const searchOptions = ref<ApiTask.SearchOptions>({
+      title: '',
+      tags: [],
+      startDate: '',
+      endDate: ''
+    })
     // 任务列表
     const groups = ref<
       Array<{
@@ -54,14 +61,7 @@ export default defineComponent({
         list: []
       }
     ])
-
-    const searchOptions = ref<ApiTask.SearchOptions>({
-      title: '',
-      tags: [],
-      startDate: '',
-      endDate: ''
-    })
-
+    // 初始化任务列表
     const initTasks = async () => {
       const { data } = await FetchAllTasks(searchOptions.value)
       if (!data) return
@@ -76,8 +76,6 @@ export default defineComponent({
 
       console.log(groups.value)
     }
-    onBeforeMount(initTasks)
-
     const handleTaskMove = async (event: any) => {
       const { draggedContext, relatedContext } = event
       const originalTask = draggedContext.element as ApiTask.TaskEntity
@@ -90,6 +88,7 @@ export default defineComponent({
       }
       await UpdateTask(originalTask.taskId, { group: targetGroup })
     }
+    onBeforeMount(initTasks)
 
     const onSearchOptionsChange = async (val: ApiTask.SearchOptions) => {
       searchOptions.value = val
@@ -100,30 +99,31 @@ export default defineComponent({
     const curGroup = ref<string>('')
     // 当前选中的任务
     const curTask = ref<ApiTask.TaskEntity>()
-    // 是否展示编辑器窗口
-    const showCreateDrawer = ref(false)
-    const handleCreate = (group: string) => {
-      showCreateDrawer.value = true
-      curGroup.value = group
-    }
+    // 编辑组件Ref
     const editorRef = ref()
+    // 是否展示编辑器窗口
+    const showEditDrawer = ref(false)
+
+    // 开启创建 | 编辑弹窗
+    const handleEdit = (group: string, task?: ApiTask.TaskEntity) => {
+      curTask.value = task
+      curGroup.value = group
+      showEditDrawer.value = true
+    }
+    // 确认创建 | 更新
     const handleConfirm = async () => {
       const { data } = await editorRef.value.createTask()
       if (!data) {
         Message.error('任务创建失败')
         return false
       }
-      showCreateDrawer.value = false
+      showEditDrawer.value = false
       Message.success('任务创建成功')
       await initTasks()
       return false
     }
-    // 点击卡片，编辑任务
-    const showViewDrawer = ref(false)
-    const handleCardClick = (task: ApiTask.TaskEntity) => {
-      curTask.value = task
-      showViewDrawer.value = true
-    }
+
+    // 上一条 | 下一条
     // 找到指定任务所在分组及索引
     const findTargetTask = (id: string, group: string) => {
       const findGroup = groups.value.find((item) => item.group === group)
@@ -147,13 +147,14 @@ export default defineComponent({
       curTask.value = findGroup.list[findIdx === findGroup.list.length - 1 ? 0 : findIdx + 1]
     }
 
+    // 评论列表
     const showCommentsDrawer = ref<boolean>(false)
     const handleCommentClick = (task: ApiTask.TaskEntity) => {
       showCommentsDrawer.value = true
       curTask.value = task
     }
 
-    // 批量生成表格
+    // 表格视图 —— 批量生成表格
     const tableColumnsSettings = reactive<
       Array<{
         label: string
@@ -248,7 +249,7 @@ export default defineComponent({
               <div class="tools">
                 <i
                   class="iconfont ws-plus ibtn_base ibtn_hover"
-                  onClick={() => handleCreate(column.group)}
+                  onClick={() => handleEdit(column.group)}
                 ></i>
                 <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
               </div>
@@ -297,7 +298,7 @@ export default defineComponent({
                     <div class="tools">
                       <i
                         class="iconfont ws-plus ibtn_base ibtn_hover"
-                        onClick={() => handleCreate(column.group)}
+                        onClick={() => handleEdit(column.group)}
                       ></i>
                       <i class="iconfont ws-more-vertical ibtn_base ibtn_hover"></i>
                     </div>
@@ -318,7 +319,7 @@ export default defineComponent({
                           <WsTaskCard
                             key={element.taskId}
                             data={element}
-                            onClick={handleCardClick}
+                            onClick={(task) => handleEdit(curGroup.value, task)}
                             onCommentClick={() => handleCommentClick(element)}
                           />
                         )
@@ -336,10 +337,18 @@ export default defineComponent({
         </div>
         {/* 任务创建弹窗 */}
         <Drawer
-          v-model:visible={showCreateDrawer.value}
+          v-model:visible={showEditDrawer.value}
           width={500}
+          closable={false}
           v-slots={{
-            title: () => curGroup.value
+            title: () => (
+              <WsDrawerHeader
+                task={curTask.value}
+                onPrev={handlePrevView}
+                onNext={handleNextView}
+                onDelete={initTasks}
+              />
+            )
           }}
           onBeforeOk={handleConfirm}
         >
@@ -357,23 +366,6 @@ export default defineComponent({
         >
           {curTask.value?.taskId && (
             <WsComments target={curTask.value?.taskId} onUpdate={initTasks} />
-          )}
-        </Drawer>
-        {/* 任务编辑弹窗 */}
-        <Drawer
-          v-model:visible={showViewDrawer.value}
-          width={500}
-          v-slots={{
-            title: () => curTask.value?.title
-          }}
-        >
-          {curTask.value && (
-            <WsTaskViewer
-              task={curTask.value}
-              onPrev={handlePrevView}
-              onNext={handleNextView}
-              onDelete={initTasks}
-            />
           )}
         </Drawer>
       </div>
