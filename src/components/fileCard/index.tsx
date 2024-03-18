@@ -1,5 +1,6 @@
 import { PropType, defineComponent, toRefs, ref, computed, watch } from 'vue'
 import { Tooltip, Progress } from '@arco-design/web-vue'
+import { DownloadFile } from '@/api/file'
 import { generateFileIcon, formatBytes } from '@/utils/file'
 import { cs } from '@/utils/property'
 import type { ToolType } from './interface'
@@ -106,7 +107,20 @@ export default defineComponent({
     )
 
     // 响应用户对工具的点击事件
-    const handleToolClick = (type: ToolType['type']) => {
+    const handleToolClick = async (type: ToolType['type']) => {
+      if (type === 'download') {
+        console.log(type)
+        const { data: blob } = await DownloadFile('/meleon/7c70c0a5e8266637ded218cd39bd5be.jpg')
+        if (blob) {
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = '7c70c0a5e8266637ded218cd39bd5be.jpg'
+          document.body.appendChild(a)
+          a.click()
+          window.URL.revokeObjectURL(url)
+        }
+      }
       emit(type, { filename: filename.value, size: filesize.value })
     }
     const mapZhCN = {

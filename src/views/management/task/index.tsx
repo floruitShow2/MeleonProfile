@@ -340,6 +340,7 @@ export default defineComponent({
           v-model:visible={showEditDrawer.value}
           width={500}
           closable={false}
+          unmountOnClose
           v-slots={{
             title: () => (
               <WsDrawerHeader
@@ -352,7 +353,9 @@ export default defineComponent({
           }}
           onBeforeOk={handleConfirm}
         >
-          <WsTaskEditor ref={editorRef} group={curGroup.value} />
+          {showEditDrawer.value && (
+            <WsTaskEditor ref={editorRef} group={curGroup.value} task={curTask.value} />
+          )}
         </Drawer>
         {/* 任务留言弹窗 */}
         <Drawer

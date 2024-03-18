@@ -3,7 +3,8 @@ import { mockRequest, request } from '@/service'
 const URLs = {
   recent: '/api/file/GetRecentFiles',
   logs: '/api/file/GetOperationLogs',
-  stream: '/api/user/hello'
+  stream: '/api/user/hello',
+  download: '/api/file/oss/downloadFile'
 }
 
 /**
@@ -26,4 +27,11 @@ export const FetchOperationLogs = (warehouse: string) => {
 
 export const FetchStreamFile = () => {
   return request.get<Blob>(URLs.stream, { responseType: 'blob' })
+}
+
+export const DownloadFile = (path: string) => {
+  return request.get<Blob>(URLs.download, {
+    params: { path },
+    responseType: 'blob'
+  })
 }

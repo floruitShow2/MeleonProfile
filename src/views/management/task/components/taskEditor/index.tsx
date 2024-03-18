@@ -1,4 +1,4 @@
-import { PropType, defineComponent, onMounted, reactive, ref, toRefs } from 'vue'
+import { PropType, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   Avatar,
@@ -25,6 +25,7 @@ import WsFileCard from '@/components/fileCard'
 import { readFileAsDataurl } from '@/utils/file/parse'
 import { formatToDateTime, useDeepClone } from '@/utils/format'
 import './index.less'
+import { isEmptyObject } from '@/utils/is'
 
 export default defineComponent({
   props: {
@@ -32,10 +33,16 @@ export default defineComponent({
     group: {
       type: String,
       required: true
+    },
+    task: {
+      type: Object as PropType<ApiTask.TaskEntity>,
+      default: () => ({})
     }
   },
   setup(props, { expose }) {
     const prefix = 'task-editor'
+
+    const { task: TaksProps } = toRefs(props)
 
     const userStore = useUserStore()
     const { username, avatar } = userStore.userInfo
@@ -114,14 +121,15 @@ export default defineComponent({
     }
 
     // 封面
-    const coverImageUrl = ref<string>('')
+    // const coverImageUrl = ref<string>('')
     const uploadCoverage = ref<File>()
     const handleCoverChange = async (fileList: FileItem[]) => {
       const { file } = fileList[0]
       if (!file) return
       uploadCoverage.value = file
-      coverImageUrl.value = await readFileAsDataurl(file)
-      taskDetails.value.coverImage = file.name
+      // coverImageUrl.value = await readFileAsDataurl(file)
+      // taskDetails.value.coverImage = file.name
+      taskDetails.value.coverImage = await readFileAsDataurl(file)
     }
 
     // 附件
@@ -201,6 +209,18 @@ export default defineComponent({
       })
     }
 
+    watch(
+      TaksProps,
+      (newVal) => {
+        if (newVal && !isEmptyObject(newVal)) {
+          const { startTime, endTime } = newVal
+          timeRange.value = [startTime, endTime]
+          taskDetails.value = useDeepClone(newVal)
+        }
+      },
+      { deep: true, immediate: true }
+    )
+
     expose({ createTask: handleCreateTask })
 
     return () => (
@@ -273,7 +293,7 @@ export default defineComponent({
                     }}
                   ></i>
                 </div>
-                <img src={coverImageUrl.value} alt="" />
+                <img src={taskDetails.value.coverImage} alt="" />
               </div>
             ) : (
               <Upload
