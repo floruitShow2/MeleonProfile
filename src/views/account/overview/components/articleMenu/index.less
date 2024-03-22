@@ -61,11 +61,15 @@
         width: 100%;
         padding: 16px 8px;
         border-bottom: 1px solid;
+        transition: all 0.2s ease;
         cursor: pointer;
         #flex(column, flex-start, flex-start);
         #color(border-bottom-color, --primary-border-color);
         &:hover {
           #color(background-color, --lighter-bg-color);
+          .article-card_header .title {
+            #color(color, --primary-blue-color);
+          }
         }
         &_header {
           width: 100%;
@@ -74,7 +78,7 @@
           .title {
             max-width: calc(100% - 40px);
             font-weight: 400;
-            font-size: 18px;
+            font-size: 14px;
             line-height: 24px;
             display: inline-block;
             overflow: hidden;

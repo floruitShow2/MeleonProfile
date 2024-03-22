@@ -1,21 +1,24 @@
-import { defineComponent, ref, reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { defineComponent, ref, reactive, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { Message, Form, FormItem, Input, Space, Button, Link, Checkbox } from '@arco-design/web-vue'
 import { IconUser, IconLock } from '@arco-design/web-vue/es/icon'
-import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
+import type { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n'
 import { useStorage } from '@vueuse/core'
 import { useUserStore } from '@/store'
 import useLoading from '@/hooks/loading'
+import { GithubAuth } from '@/api/auth'
 import type { LoginData } from '@/api/auth'
-
 import './index.less'
 
 export default defineComponent({
   name: 'PwdLoginForm',
   emits: ['navigate'],
   setup(props, { emit }) {
+    // 路由
     const router = useRouter()
+    const route = useRoute()
+    // 国际化
     const { t: $t } = useI18n()
     const errorMessage = ref('')
     const { loading, setLoading } = useLoading()
@@ -74,6 +77,27 @@ export default defineComponent({
     const toLoginModule = (key: UnionKey.LoginModule) => {
       emit('navigate', key)
     }
+
+    /**
+     * @description github 账号登录
+     */
+    const toGithubAuth = () => {
+      const clientID = 'Iv1.ff0400a475ff9d94'
+      const clientSecret = 'b7fc9b258294dd6648cd2bd7938a16e00d3a20ac'
+      const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&client_secret=${clientSecret}`
+
+      window.open(url, '_self')
+    }
+    const handleGithubAuth = async (code: string) => {
+      await GithubAuth(code)
+    }
+
+    onMounted(() => {
+      const { query } = useRoute()
+      if (query.code) {
+        handleGithubAuth(query.code as string)
+      }
+    })
 
     return () => (
       <div class="login-form-wrapper">
@@ -140,6 +164,9 @@ export default defineComponent({
             </Button>
           </Space>
         </Form>
+        <div>
+          <Button onClick={toGithubAuth}>Github 登录</Button>
+        </div>
       </div>
     )
   }

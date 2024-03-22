@@ -126,6 +126,11 @@ export default defineComponent({
     // 封面
     // const coverImageUrl = ref<string>('')
     const uploadCoverage = ref<File>()
+    const handlePreviewCover = () => {
+      const cover = taskDetails.value.coverImage ?? ''
+      if (!cover) return
+      console.log('start to preview cover!!')
+    }
     const handleCoverChange = async (fileList: FileItem[]) => {
       const { file } = fileList[0]
       if (!file) return
@@ -300,6 +305,7 @@ export default defineComponent({
           <div class="module-content">
             <Select
               v-model:modelValue={taskDetails.value.teamId}
+              placeholder="无归属团队，请选择"
               v-slots={{
                 default: () => renderTeamOptions(teamOptions.value),
                 empty: () => (
@@ -338,10 +344,8 @@ export default defineComponent({
             {taskDetails.value.coverImage ? (
               <div class="cover-image">
                 <div class="tools">
-                  <i
-                    class="iconfont ws-delete ibtn_base ibtn_hover"
-                    onClick={handleDeleteCover}
-                  ></i>
+                  <i class="iconfont ws-eye ibtn_base ibtn_hover" onClick={handlePreviewCover} />
+                  <i class="iconfont ws-delete ibtn_base ibtn_hover" onClick={handleDeleteCover} />
                 </div>
                 <img src={taskDetails.value.coverImage} alt="" />
               </div>

@@ -12,6 +12,7 @@ export default defineComponent({
   },
   setup(props) {
     const { author } = toRefs(props)
+
     return () => (
       <div class="markdown-author">
         {/* 文章作者基本信息 */}

@@ -80,7 +80,7 @@ export default defineComponent({
         return (
           <div class="article-card" onClick={() => handleArticleClick(article)}>
             <div class="article-card_header">
-              <span>{article.title}</span>
+              <span class="title">{article.title}</span>
               <i class="iconfont ws-more ibtn_mini ibtn_hover"></i>
             </div>
             <div class="article-card_details">
