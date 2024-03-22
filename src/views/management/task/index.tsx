@@ -110,15 +110,32 @@ export default defineComponent({
       curGroup.value = group
       showEditDrawer.value = true
     }
-    // 确认创建 | 更新
-    const handleConfirm = async () => {
-      const { data } = await editorRef.value.createTask()
-      if (!data) {
-        Message.error('任务创建失败')
-        return false
+    // 确认创建 | 更新任务
+    const editStrategy: Record<string, () => void> = {
+      edit: async () => {
+        const { data } = await editorRef.value.updateTask()
+        if (!data) {
+          Message.error('任务更新失败')
+          return
+        }
+        showEditDrawer.value = false
+        Message.success('任务更新成功')
+      },
+      create: async () => {
+        const { data } = await editorRef.value.createTask()
+        if (!data) {
+          Message.error('任务创建失败')
+          return
+        }
+        showEditDrawer.value = false
+        Message.success('任务创建成功')
       }
-      showEditDrawer.value = false
-      Message.success('任务创建成功')
+    }
+    const handleConfirm = async () => {
+      if (!editorRef.value) return false
+
+      await editStrategy[curTask.value ? 'edit' : 'create']()
+
       await initTasks()
       return false
     }
@@ -319,7 +336,7 @@ export default defineComponent({
                           <WsTaskCard
                             key={element.taskId}
                             data={element}
-                            onClick={(task) => handleEdit(curGroup.value, task)}
+                            onClick={(task) => handleEdit(column.group, task)}
                             onCommentClick={() => handleCommentClick(element)}
                           />
                         )

@@ -17,7 +17,6 @@ declare namespace ApiTask {
     taskId?: string
     // 任务描述
     desc: string
-    priority: 0 | 1
     // 封面
     coverImage: string
     // 开始时间
@@ -35,7 +34,7 @@ declare namespace ApiTask {
     // 关联人
     relatives: Array<ApiAuth.UserInfo>
     // 附件
-    attachments?: string[]
+    // attachments?: string[]
     // 评论数量
     comments: number
   }

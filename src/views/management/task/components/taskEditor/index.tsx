@@ -1,4 +1,4 @@
-import { PropType, defineComponent, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { PropType, defineComponent, onMounted, ref, toRefs, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   Avatar,
@@ -17,15 +17,15 @@ import {
 } from '@arco-design/web-vue'
 import { useUserStore } from '@/store'
 import { TagColorMap, StaticTags, TypeColorMap } from '@/constants/tag'
-import { CreateTask } from '@/api/task'
+import { AddCover, CreateTask, DeleteCover, UpdateTask } from '@/api/task'
 import { FetchTeamList } from '@/api/team'
 import WsAvatar from '@/components/avatar'
 // import WsAvatarGroup from '@/components/avatarGroup'
-import WsFileCard from '@/components/fileCard'
+// import WsFileCard from '@/components/fileCard'
 import { readFileAsDataurl } from '@/utils/file/parse'
 import { formatToDateTime, useDeepClone } from '@/utils/format'
-import './index.less'
 import { isEmptyObject } from '@/utils/is'
+import './index.less'
 
 export default defineComponent({
   props: {
@@ -55,7 +55,6 @@ export default defineComponent({
       teamId: '',
       title: '',
       desc: '',
-      priority: 1,
       coverImage: '',
       startTime: '',
       endTime: '',
@@ -117,7 +116,11 @@ export default defineComponent({
      * @param tag
      */
     const handleTagRemove = (tag: string) => {
-      taskDetails.value.tags = taskDetails.value.tags.filter((item) => item.label !== tag)
+      taskDetails.value = {
+        ...taskDetails.value,
+        tags: taskDetails.value.tags.filter((item) => item.label !== tag)
+      }
+      console.log(taskDetails.value.tags)
     }
 
     // 封面
@@ -127,21 +130,42 @@ export default defineComponent({
       const { file } = fileList[0]
       if (!file) return
       uploadCoverage.value = file
-      // coverImageUrl.value = await readFileAsDataurl(file)
-      // taskDetails.value.coverImage = file.name
-      taskDetails.value.coverImage = await readFileAsDataurl(file)
+
+      const { taskId } = taskDetails.value
+      if (taskId) {
+        const fd = new FormData()
+        fd.append('cover', file)
+        fd.append('taskId', taskDetails.value.taskId ?? '')
+        const { data } = await AddCover(fd)
+        taskDetails.value.coverImage = data ?? ''
+      } else {
+        taskDetails.value.coverImage = await readFileAsDataurl(file)
+      }
+    }
+    const handleDeleteCover = async () => {
+      const { taskId } = taskDetails.value
+      if (taskId) {
+        try {
+          await DeleteCover(taskId)
+          taskDetails.value.coverImage = ''
+        } catch (error) {
+          console.log('error =>', error)
+        }
+      } else {
+        taskDetails.value.coverImage = ''
+      }
     }
 
     // 附件
-    const uploadAttachments = ref<FileItem[]>([])
-    const handleAttachmentsChange = (filesList: FileItem[]) => {
-      uploadAttachments.value = filesList
-      // const newFile = filesList.at(-1)
-      // if (!newFile) return
-      // const findIdx = filesList.findIndex((file) => file.name === newFile.name)
-      // if (findIdx !== -1) uploadAttachments.value.splice(findIdx, 1, newFile)
-      // else uploadAttachments.value.push(newFile)
-    }
+    // const uploadAttachments = ref<FileItem[]>([])
+    // const handleAttachmentsChange = (filesList: FileItem[]) => {
+    //   uploadAttachments.value = filesList
+    //   const newFile = filesList.at(-1)
+    //   if (!newFile) return
+    //   const findIdx = filesList.findIndex((file) => file.name === newFile.name)
+    //   if (findIdx !== -1) uploadAttachments.value.splice(findIdx, 1, newFile)
+    //   else uploadAttachments.value.push(newFile)
+    // }
 
     // 校验准备创建的任务信息是否符合要求
     const validateDetails = (details: ApiTask.TaskEntity) => {
@@ -194,12 +218,37 @@ export default defineComponent({
 
         const fd = new FormData()
         if (uploadCoverage.value) fd.append('cover', uploadCoverage.value)
-        uploadAttachments.value.forEach((item) => {
-          if (item.file) fd.append('attachments', item.file)
-        })
+        // uploadAttachments.value.forEach((item) => {
+        //   if (item.file) fd.append('attachments', item.file)
+        // })
 
         fd.append('data', JSON.stringify(details))
         CreateTask(fd)
+          .then((res) => {
+            resolve(res)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    }
+    const handleUpdateTask = () => {
+      console.log('update the task you selected')
+      return new Promise((resolve, reject) => {
+        const details = {
+          ...taskDetails.value,
+          group: props.group,
+          startTime: formatToDateTime(timeRange.value[0]),
+          endTime: formatToDateTime(timeRange.value[1])
+        }
+        if (!validateDetails(details)) {
+          Message.error({
+            content: '数据校验未通过，请填写完整'
+          })
+          reject()
+        }
+        const { taskId, relatives, ...rest } = details
+        UpdateTask(taskId ?? '', rest)
           .then((res) => {
             resolve(res)
           })
@@ -221,7 +270,10 @@ export default defineComponent({
       { deep: true, immediate: true }
     )
 
-    expose({ createTask: handleCreateTask })
+    expose({
+      createTask: handleCreateTask,
+      updateTask: handleUpdateTask
+    })
 
     return () => (
       <div class={prefix}>
@@ -288,9 +340,7 @@ export default defineComponent({
                 <div class="tools">
                   <i
                     class="iconfont ws-delete ibtn_base ibtn_hover"
-                    onClick={() => {
-                      taskDetails.value.coverImage = ''
-                    }}
+                    onClick={handleDeleteCover}
                   ></i>
                 </div>
                 <img src={taskDetails.value.coverImage} alt="" />
@@ -308,14 +358,13 @@ export default defineComponent({
             )}
           </div>
         </div>
-        <div class={[`${prefix}-module`, 'priority']}>
+        {/* <div class={[`${prefix}-module`, 'priority']}>
           <h4>优先级</h4>
           <div class="module-content">
             <Select
               v-model:modelValue={taskDetails.value.priority}
               style="width: fit-content"
               size="mini"
-              //   bordered={false}
               v-slots={{
                 label: ({ data }: { data: { value: number; label: string } }) => (
                   <div class="selected-label">
@@ -340,7 +389,7 @@ export default defineComponent({
               </Option>
             </Select>
           </div>
-        </div>
+        </div> */}
         <div class={[`${prefix}-module`, 'tags']}>
           <h4>标签</h4>
           <div class="module-content">
@@ -348,6 +397,7 @@ export default defineComponent({
               <Tag
                 size="medium"
                 closable
+                key={tag.code}
                 color={TagColorMap[tag.type]}
                 onClose={() => handleTagRemove(tag.label)}
               >
@@ -386,7 +436,8 @@ export default defineComponent({
             />
           </div>
         </div>
-        <div class={[`${prefix}-module`, 'attachments']}>
+        {/* 附件 */}
+        {/* <div class={[`${prefix}-module`, 'attachments']}>
           <div class="module-header">
             <h4>附件</h4>
             <Upload
@@ -409,7 +460,7 @@ export default defineComponent({
               />
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     )
   }

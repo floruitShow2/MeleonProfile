@@ -4,10 +4,14 @@ enum URLs {
   'getAll' = '/api/task/getAllTasks',
   'create' = '/api/task/createTask',
   'update' = '/api/task/updateTask',
+  // 任务封面
+  'addCover' = '/api/task/addCover',
+  'deleteCover' = '/api/task/deleteCover',
   // 任务评论
   'createComment' = '/api/comment/createComment',
   'removeComment' = '/api/comment/removeComment',
   'getComments' = '/api/comment/getCommentsById',
+  // 点赞
   'addLikes' = '/api/comment/addLikes'
 }
 
@@ -31,6 +35,12 @@ export const CreateTask = (data: FormData) => {
   return request.post(URLs.create, data)
 }
 
+/**
+ * @description 更新任务信息
+ * @param taskId 任务ID
+ * @param taskEntity 更新后的任务信息
+ * @returns
+ */
 export const UpdateTask = (taskId: string, taskEntity: Partial<ApiTask.TaskEntity>) => {
   return request.post(URLs.update, { taskId, taskEntity })
 }
@@ -56,6 +66,30 @@ export const RemoveComment = (commentId: string) => {
   return request.post(URLs.removeComment, { commentId })
 }
 
+/**
+ * @description 点赞 或 取消点赞
+ * @param commentId 评论ID
+ * @param type 判断 点赞 或 取消点赞
+ * @returns
+ */
 export const HandleLikes = (commentId: string, type: 'add' | 'sub') => {
   return request.post(URLs.addLikes, { commentId, type })
+}
+
+/**
+ * @description 添加封面
+ * @param data: FormData
+ * @returns
+ */
+export const AddCover = (data: FormData) => {
+  return request.post<string>(URLs.addCover, data)
+}
+
+/**
+ * @description 删除封面
+ * @param taskId 任务ID
+ * @returns
+ */
+export const DeleteCover = (taskId: string) => {
+  return request.post(URLs.deleteCover, { taskId })
 }
