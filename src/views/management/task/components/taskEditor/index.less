@@ -80,6 +80,12 @@
                 background-color: rgba(0, 0, 0, 0.3);
                 gap: 15px;
                 #flex(row, center, center);
+                .iconfont {
+                    #color(color, --module-bg-color);
+                    &:hover {
+                        #color(color, --primary-blue-color);
+                    }
+                }
             }
             &:hover .tools {
                 transform: translateY(0);

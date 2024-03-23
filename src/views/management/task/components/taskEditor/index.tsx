@@ -25,6 +25,7 @@ import WsAvatar from '@/components/avatar'
 import { readFileAsDataurl } from '@/utils/file/parse'
 import { formatToDateTime, useDeepClone } from '@/utils/format'
 import { isEmptyObject } from '@/utils/is'
+import { initImageViewer } from '@/components/NewImageViewer/mount'
 import './index.less'
 
 export default defineComponent({
@@ -130,6 +131,7 @@ export default defineComponent({
       const cover = taskDetails.value.coverImage ?? ''
       if (!cover) return
       console.log('start to preview cover!!')
+      initImageViewer({ images: [cover] })
     }
     const handleCoverChange = async (fileList: FileItem[]) => {
       const { file } = fileList[0]
@@ -344,7 +346,7 @@ export default defineComponent({
             {taskDetails.value.coverImage ? (
               <div class="cover-image">
                 <div class="tools">
-                  <i class="iconfont ws-eye ibtn_base ibtn_hover" onClick={handlePreviewCover} />
+                  <i class="iconfont ws-view ibtn_base ibtn_hover" onClick={handlePreviewCover} />
                   <i class="iconfont ws-delete ibtn_base ibtn_hover" onClick={handleDeleteCover} />
                 </div>
                 <img src={taskDetails.value.coverImage} alt="" />
