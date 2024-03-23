@@ -4,6 +4,7 @@ import { useVirtualScroll } from '@/hooks/list'
 import { Pagination } from '@arco-design/web-vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import WsArtCard from './components/articleCard'
+import ArticleAside from './components/articleAside'
 import './index.less'
 import 'swiper/css'
 
@@ -80,9 +81,8 @@ export default defineComponent({
               </Swiper>
               <i class="iconfont ws-arrow-right" onClick={onSwiperNextClick} />
             </div>
-            <div class="art-favorite-pagination">
+            {/* <div class="art-favorite-pagination">
               <div class="list">
-                <div class="list-header">Favorite</div>
                 <div class="list-content">
                   {articleRankList.value.map((li) => (
                     <WsArtCard
@@ -101,10 +101,10 @@ export default defineComponent({
                 total={25}
                 page-size={paginationConfig.pageSize}
               />
-            </div>
+            </div> */}
           </div>
           <div class="art-category">
-            <div class="art-category-label">
+            <div class="art-category-labels">
               {categoryLabels.value.map((label) => (
                 <div
                   class={{ 'label-capsule': true, 'is-active': activeLabel.value === label }}
@@ -133,7 +133,9 @@ export default defineComponent({
             </div>
           </div>
         </main>
-        <aside class="art-list-aside"></aside>
+        <aside class="art-list-aside">
+          <ArticleAside />
+        </aside>
       </div>
     )
   }

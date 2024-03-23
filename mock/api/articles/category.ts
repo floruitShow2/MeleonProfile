@@ -16,7 +16,7 @@ const createFakeArticles = () => {
           uploadTime: () => faker.date.recent({ days: 10 }),
           views: () => faker.number.int({ max: 300 }),
           likes: () => faker.number.int({ max: 150 }),
-          image: () => faker.image.url()
+          cover: () => faker.image.url()
         }
       ]
     }).items
@@ -37,7 +37,7 @@ const createFakeRankList = () => {
           uploadTime: () => faker.date.recent({ days: 10 }),
           views: () => faker.number.int({ max: 300 }),
           likes: () => faker.number.int({ max: 150 }),
-          image: () => faker.image.url()
+          cover: () => faker.image.url()
         }
       ]
     }).items

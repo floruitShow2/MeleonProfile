@@ -36,7 +36,7 @@ export default {
   'menu.instrument.workflow': '工作流程',
   // 文章管理
   'menu.articles': '文章管理',
-  'menu.articles.overview': '数据看板',
+  'menu.articles.overview': '文章首页',
   'menu.articles.list': '文章列表',
   'menu.articles.editor': '写文章',
   // 三维模型
