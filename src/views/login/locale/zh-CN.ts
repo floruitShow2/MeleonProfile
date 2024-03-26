@@ -8,6 +8,7 @@ export default {
   'login.form.login.success': '欢迎使用',
   'login.form.userName.placeholder': '请输入用户名',
   'login.form.password.placeholder': '请输入密码',
+  'login.form.confirm.placeholder': '请确认密码',
   'login.form.rememberPassword': '记住密码',
   'login.form.forgetPassword': '忘记密码',
   'login.form.login': '登录',

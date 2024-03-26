@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-  import useLoading from '@/hooks/loading'
+  import { useLoading } from '@/hooks'
   import useChartOption from '@/hooks/chart-option'
 
   const { loading } = useLoading()

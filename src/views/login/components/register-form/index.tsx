@@ -3,7 +3,7 @@ import { Message, Form, FormItem, Input, Space, Button } from '@arco-design/web-
 import { IconUser, IconLock } from '@arco-design/web-vue/es/icon'
 import { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n'
-import useLoading from '@/hooks/loading'
+import { useLoading } from '@/hooks'
 import { register } from '@/api/auth'
 import type { LoginData } from '@/api/auth'
 import './index.less'

@@ -1,6 +1,6 @@
 export default {
   // login
-  'login.form.title': 'Login to Arco Design Pro',
+  'login.form.title': 'Login to Meleon Profile',
   'login.form.subTitle': 'You can log in with the default account',
   'login.form.userName.errMsg': 'Username cannot be empty',
   'login.form.password.errMsg': 'Password cannot be empty',
@@ -8,13 +8,14 @@ export default {
   'login.form.login.success': 'welcome to use',
   'login.form.userName.placeholder': 'Please input your username',
   'login.form.password.placeholder': 'Please input your password',
+  'login.form.confirm.placeholder': 'Please confirm your password',
   'login.form.rememberPassword': 'Remember password',
   'login.form.forgetPassword': 'Forgot password',
   'login.form.login': 'login',
   'login.form.register': 'register account',
   'login.banner.slogan1': 'Welcome to Meleon Profile!',
   'login.banner.subSlogan1':
-    'Based on arco-design-pro development of personal works display project, welcome to experience and make your valuable suggestions',
+    'For the personal works display project developed with arco-design-pro, you are welcome to experience it and make your valuable suggestions.',
   'login.banner.slogan2': 'Built-in solutions to common problems',
   'login.banner.subSlogan2':
     'Internationalization, routing configuration, state management everything',

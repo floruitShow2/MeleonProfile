@@ -7,23 +7,22 @@ import {
   h,
   defineAsyncComponent
 } from 'vue'
-
-import type { Component } from 'vue'
 import Meleon from '@/assets/images/Meleon.png'
 import LoginBanner from './components/banner.vue'
 import './index.less'
 
-const ms: Record<string, () => Promise<Component>> = import.meta.glob('./components/**/**.tsx')
-const modules: Record<string, Component> = {}
-Object.keys(ms).forEach((key) => {
-  const marker = key.split('/')[2]
-  modules[marker] = defineAsyncComponent(ms[key])
-})
+// const ms: Record<string, () => Promise<Component>> = import.meta.glob('./components/**/**.tsx')
+// const modules: Record<string, Component> = {}
+// Object.keys(ms).forEach((key) => {
+//   const marker = key.split('/')[2]
+//   modules[marker] = defineAsyncComponent(ms[key])
+// })
 
 export default defineComponent({
   components: {
     PwdLoginForm: defineAsyncComponent(() => import('./components/pwd-login-form')),
-    RegisterForm: defineAsyncComponent(() => import('./components/register-form'))
+    RegisterForm: defineAsyncComponent(() => import('./components/register-form')),
+    PwdSettleForm: defineAsyncComponent(() => import('./components/pwd-settle-form'))
   },
   setup() {
     // interface LoginModule {

@@ -12,7 +12,8 @@ const URL = {
   getUserInfo: '/api/user/getUserInfo',
   updateUserInfo: '/api/user/updateUserInfo',
   updateUserAvatar: '/api/user/updateUserAvatar',
-  updatePwd: '/api/user/updatePassword'
+  updatePwd: '/api/user/updatePassword',
+  fillPwd: '/api/user/fillPassword'
 }
 
 export interface LoginRes {
@@ -43,6 +44,10 @@ export function updateUserAvatar(data: FormData) {
 
 export function updatePassword(pwds: ApiAuth.PasswordsType) {
   return request.post(URL.updatePwd, pwds)
+}
+
+export function fillPassword(userId: string, password: string) {
+  return request.post<{ accessToken: string }>(URL.fillPwd, { userId, password })
 }
 
 export function getMenuList() {

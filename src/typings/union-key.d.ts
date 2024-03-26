@@ -15,12 +15,10 @@ declare namespace UnionKey {
   /**
    * 登录模块
    * - pwd-login: 账密登录
-   * - code-login: 手机验证码登录
    * - register: 注册
-   * - reset-pwd: 重置密码
-   * - bind-wechat: 微信绑定
+   * - pwd-settle: 仅设置密码【OAuth授权创建用户时，补全用户密码】
    */
-  type LoginModule = 'pwd-login' | 'code-login' | 'register' | 'reset-pwd' | 'bind-wechat'
+  type LoginModule = 'pwd-login' | 'register' | 'pwd-settle'
 
   /**
    * 布局模式

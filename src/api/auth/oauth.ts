@@ -8,5 +8,5 @@ enum URLs {
 }
 
 export const GithubAuth = (code: string) => {
-  return request.get(URLs.github, { params: { code } })
+  return request.get<{ accessToken?: string; userId?: string }>(URLs.github, { params: { code } })
 }

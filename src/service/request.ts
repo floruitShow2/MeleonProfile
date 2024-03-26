@@ -137,10 +137,10 @@ export function createHookRequest(
    * - axiosConfig: axios配置
    */
   function useRequest<T>(param: RequestParam): RequestResultHook<T> {
-    const { loading, startLoading, endLoading } = useLoading()
+    const { loading, setLoading } = useLoading()
     const { bool: network, setBool: setNetwork } = useBoolean(window.navigator.onLine)
 
-    startLoading()
+    setLoading(true)
     const data = ref<T | null>(null) as Ref<T | null>
     const error = ref<Service.RequestError | null>(null)
 
@@ -148,7 +148,7 @@ export function createHookRequest(
       const res = response as Service.RequestResult<T>
       data.value = res.data
       error.value = res.error
-      endLoading()
+      setLoading(false)
       setNetwork(window.navigator.onLine)
     }
 

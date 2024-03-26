@@ -6,9 +6,11 @@ import type { ValidatedError } from '@arco-design/web-vue/es/form/interface'
 import { useI18n } from 'vue-i18n'
 import { useStorage } from '@vueuse/core'
 import { useUserStore } from '@/store'
-import useLoading from '@/hooks/loading'
 import { GithubAuth } from '@/api/auth'
 import type { LoginData } from '@/api/auth'
+import { useBus } from '@/utils/common'
+import { localStg } from '@/utils/storage'
+import { useLoading } from '@/hooks'
 import './index.less'
 
 export default defineComponent({
@@ -17,9 +19,9 @@ export default defineComponent({
   setup(props, { emit }) {
     // 路由
     const router = useRouter()
-    const route = useRoute()
     // 国际化
     const { t: $t } = useI18n()
+    const $bus = useBus()
     const errorMessage = ref('')
     const { loading, setLoading } = useLoading()
     const userStore = useUserStore()
@@ -33,6 +35,20 @@ export default defineComponent({
       username: loginConfig.value.username,
       password: loginConfig.value.password
     })
+
+    const handleAfterLogin = () => {
+      Message.success($t('login.form.login.success'))
+
+      const { redirect, ...othersQuery } = router.currentRoute.value.query
+
+      router.push({
+        name: (redirect as string) || 'workplace',
+        query: {
+          ...othersQuery
+        },
+        replace: true
+      })
+    }
 
     const handleSubmit = async ({
       errors,
@@ -52,17 +68,7 @@ export default defineComponent({
           // The actual production environment requires encrypted storage.
           loginConfig.value.username = rememberPassword ? username : ''
           loginConfig.value.password = rememberPassword ? password : ''
-          Message.success($t('login.form.login.success'))
-
-          const { redirect, ...othersQuery } = router.currentRoute.value.query
-
-          router.push({
-            name: (redirect as string) || 'workplace',
-            query: {
-              ...othersQuery
-            },
-            replace: true
-          })
+          handleAfterLogin()
         } catch (err) {
           errorMessage.value = (err as Error).message
         } finally {
@@ -82,14 +88,28 @@ export default defineComponent({
      * @description github 账号登录
      */
     const toGithubAuth = () => {
-      const clientID = 'Iv1.ff0400a475ff9d94'
-      const clientSecret = 'b7fc9b258294dd6648cd2bd7938a16e00d3a20ac'
-      const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&client_secret=${clientSecret}`
+      const clientID = 'a21788e757ea3ad9aed4'
+      const clientSecret = '324f0c65a35772ddfdb713ee02223d7f32063723'
+      const url = `https://github.com/login/oauth/authorize?client_id=${clientID}&client_secret=${clientSecret}&scope=user:email`
 
       window.open(url, '_self')
     }
     const handleGithubAuth = async (code: string) => {
-      await GithubAuth(code)
+      try {
+        const { data } = await GithubAuth(code)
+        if (!data) return
+        if (data.accessToken) {
+          // 用户已授权，可直接登录
+          localStg.set('token', data.accessToken)
+          handleAfterLogin()
+        } else if (data.userId) {
+          // 授权成功，用户信息已创建，跳转密码设置页面
+          $bus.emit('onUserIdReceived', data.userId)
+          emit('navigate', 'pwd-settle')
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     onMounted(() => {
