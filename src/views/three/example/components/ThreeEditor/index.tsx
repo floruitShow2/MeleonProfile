@@ -1,6 +1,6 @@
 import { ref, h, defineAsyncComponent, defineComponent, onMounted, resolveComponent } from 'vue'
 import type { Component } from 'vue'
-import { useBus } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { EditorEvents } from '@/views/three/example/type'
 import './index.less'
 

@@ -1,12 +1,12 @@
 import { defineComponent, nextTick, onMounted, ref } from 'vue'
-import { useBus } from '@/utils/global'
+import { Skeleton, SkeletonLine, SkeletonShape } from '@arco-design/web-vue'
+import { useBus } from '@/utils/common'
 import WsSearch, {
   ConvertToTree,
   ConvertToSearchFuzzyList,
   RestrictType,
   FuzzyResultType
 } from '@/components/search'
-import { Skeleton, SkeletonLine, SkeletonShape } from '@arco-design/web-vue'
 import LayersGroup from './LayerGroup'
 import Experience from '../../General/Experience'
 import './index.less'

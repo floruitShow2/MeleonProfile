@@ -39,7 +39,7 @@ export default {
   'menu.articles.overview': 'Overview',
   'menu.articles.list': 'List',
   'menu.articles.editor': 'Editor',
-  // threejs
+  // Threejs
   'menu.three': 'Three',
   'menu.three.object': 'Object',
   'menu.three.vector': 'Vector',

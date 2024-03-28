@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue'
-import { useBus } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { EditorEvents } from '@/views/three/example/type'
 import MaterialCard from '../Card'
 import './index.less'

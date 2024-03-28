@@ -1,6 +1,6 @@
 import { defineComponent, inject, toRefs, computed } from 'vue'
 import type { PropType } from 'vue'
-import { useBus } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { messageInjectionKey } from '../../ChatBody/context'
 import './index.less'
 

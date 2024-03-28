@@ -1,4 +1,5 @@
 import { defineComponent, onBeforeMount, ref, reactive } from 'vue'
+import * as THREE from 'three'
 import { FetchAllTasks, UpdateTask } from '@/api/task'
 import Draggable from 'vuedraggable'
 import { Drawer, Message, Tag, Table, TableColumn } from '@arco-design/web-vue'

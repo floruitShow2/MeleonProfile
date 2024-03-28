@@ -1,7 +1,6 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { FetchCategory, FetchArticlesByCategory, FetchArticleRankList } from '@/api/articles'
 import { useVirtualScroll } from '@/hooks/list'
-import { Pagination } from '@arco-design/web-vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import WsArtCard from './components/articleCard'
 import ArticleAside from './components/articleAside'

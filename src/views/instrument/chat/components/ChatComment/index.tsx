@@ -1,6 +1,6 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import useUserStore from '@/store/modules/user'
-import { useBus } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { formatToDateTime } from '@/utils/format'
 import WsLargeFile from '@/components/largeFile'
 import WsChatInput from '@/components/chatInput/index'

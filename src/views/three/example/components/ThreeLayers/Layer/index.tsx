@@ -1,6 +1,6 @@
 import { computed, defineComponent, ref, toRefs } from 'vue'
 import type { PropType } from 'vue'
-import { useBus } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { cs } from '@/utils/property'
 import './index.less'
 

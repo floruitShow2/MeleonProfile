@@ -20,7 +20,7 @@ export default class Helper {
     this.experience = new Experience()
     const { scene } = this.experience
     this.scene = scene
-    // this.createGridHelper(DEFAULT_GRID)
+    this.createGridHelper(DEFAULT_GRID)
   }
 
   createGridHelper(options: {

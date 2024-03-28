@@ -56,12 +56,10 @@ export default defineComponent({
         </div>
         <div class="ws-task-card-footer">
           <div class="counts-container">
-            <div
-              class="count-item"
-              onClick={(e) => handleAttachmentClick(e, data.value.attachments?.length ?? 0)}
-            >
+            <div class="count-item" onClick={(e) => handleAttachmentClick(e, 0)}>
               <i class="iconfont ws-link"></i>
-              <span>{data.value.attachments?.length}</span>
+              {/* <span>{data.value.attachments?.length}</span> */}
+              <span>0</span>
             </div>
             <div class="count-item" onClick={handleCommentClick}>
               <i class="iconfont ws-message"></i>

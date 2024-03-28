@@ -1,5 +1,6 @@
 import { defineComponent, ref, reactive, onMounted } from 'vue'
-import { useBus, useAvatar } from '@/utils/global'
+import { useAvatar } from '@/utils/global'
+import { useBus } from '@/utils/common'
 import { GetNotes } from '@/api/instrument/chat'
 import { formatToDateTime } from '@/utils/format'
 import { AccountStatus, SelfAccount } from '../../constant'
