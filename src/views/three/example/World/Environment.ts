@@ -31,15 +31,15 @@ export default class Environment {
     position: { x: number; y: number; z: number }
   }) {
     if (!this.sunLight) {
-      this.sunLight = new THREE.DirectionalLight('#ffffff', 5)
-      this.sunLightHelper = new THREE.DirectionalLightHelper(this.sunLight, 2)
+      this.sunLight = new THREE.DirectionalLight('#ffffff', 1)
+      this.sunLightHelper = new THREE.DirectionalLightHelper(this.sunLight, 1)
       this.scene.add(this.sunLight, this.sunLightHelper)
     }
     const { position, showHelper, color, intensity } = options
     this.sunLightHelper.visible = showHelper
     const { x, y, z } = position
     this.sunLight.castShadow = true
-    this.sunLight.shadow.camera.far = 20
+    this.sunLight.shadow.camera.far = 10
     this.sunLight.shadow.mapSize.set(2048, 2048)
     this.sunLight.shadow.normalBias = 0.05
     this.sunLight.color.set(color)

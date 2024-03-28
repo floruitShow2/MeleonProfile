@@ -1,0 +1,3 @@
+banner
+search
+theme viewmore => 

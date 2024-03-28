@@ -1,0 +1,86 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.article-swiper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-right: 20px;
+    .swiper {
+        width: 100%;
+        height: 100%;
+        .swiper-slide {
+            #flex(row, center, center);
+            #color(background-color, --primary-bg-color);
+            &-item {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(43, 43, 43, 0.4);
+                    transition: all 0.3s ease;
+                }
+                &:hover::after {
+                    background-color: rgba(43, 43, 43, 0.7);
+                }
+                &--msg {
+                    position: absolute;
+                    left: 30px;
+                    bottom: 30px;
+                    z-index: 5;
+                    #flex(column, flex-start, center);
+                    h4 {
+                        font-size: 24px;
+                        font-weight: 700;
+                        color: #FFFFFF;
+                        line-height: 40px;
+                    }
+                    p {
+                        margin-bottom: 25px;
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: rgba(255, 255, 255, 0.8);
+                    }
+                    .count-list {
+                        color: #FFFFFF;
+                        gap: 16px;
+                        #flex(row, center, flex-start);
+                        i {
+                            margin-right: 6px;
+                        }
+                        span {
+                            margin-right: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .ws-arrow-right {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        border: solid 5px;
+        border-radius: 50%;
+        color: #ffffff;
+        z-index: 2;
+        cursor: pointer;
+        transform: translate(50%, -50%);
+        transition: background-color 0.2s ease;
+        #flex(row, center, center);
+        #color(border-color, --module-bg-color);
+        #color(background-color, --primary-blue-color);
+    }
+    .ws-arrow-right:hover {
+        #color(background-color, --heavy-blue-color);
+    }
+}

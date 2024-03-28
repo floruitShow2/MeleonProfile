@@ -29,7 +29,7 @@ const THREE: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.three.object',
         requiresAuth: true,
-        roles: ['*']
+        roles: ['admin']
       }
     },
     {
@@ -39,7 +39,7 @@ const THREE: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.three.vector',
         requiresAuth: true,
-        roles: ['*']
+        roles: ['admin']
       }
     },
     {
@@ -59,7 +59,7 @@ const THREE: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.three.vrHall',
         requiresAuth: true,
-        roles: ['*']
+        roles: ['admin']
       }
     }
   ]

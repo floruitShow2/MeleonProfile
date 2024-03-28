@@ -3,6 +3,7 @@ import { useUserStore } from '@/store'
 
 export default function usePermission() {
   const userStore = useUserStore()
+
   return {
     accessRouter(route: RouteLocationNormalized | RouteRecordRaw) {
       return (

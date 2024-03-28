@@ -131,6 +131,24 @@ export default defineComponent({
         icon: 'ws-audio',
         enTitle: 'Video Transfer',
         content: '详细信息3'
+      },
+      {
+        title: '线上签字',
+        icon: 'ws-edit',
+        enTitle: 'Electronic Signature',
+        content: '详细信息1'
+      },
+      {
+        title: '线上缴费',
+        icon: 'ws-career',
+        enTitle: 'Online Payment',
+        content: '详细信息2'
+      },
+      {
+        title: '视频过户',
+        icon: 'ws-audio',
+        enTitle: 'Video Transfer',
+        content: '详细信息3'
       }
     ])
     const genDetailCard = (data: CardItem) => {

@@ -10,6 +10,18 @@ declare namespace DevResTemplate {
 /** 后端返回的用户权益相关类型 */
 declare namespace ApiAuth {
   export type Token = string
+
+  /**
+    * 用户角色类型(前端静态路由用角色类型进行路由权限的控制)
+    * - super: 超级管理员(该权限具有所有路由数据)
+    * - admin: 管理员
+    * - user: 用户
+    */
+  export type RoleType =
+   | 'super'
+   | 'admin'
+   | 'user'
+  
   /** 返回的用户信息 */
   export interface UserInfo {
     // 基本信息
@@ -17,7 +29,7 @@ declare namespace ApiAuth {
     username: string
     avatar: string
     introduction: string
-    role: RoleType
+    role: RoleType | ''
     email: string
     phone: string
     location: string

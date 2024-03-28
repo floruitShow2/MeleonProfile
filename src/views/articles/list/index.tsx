@@ -1,20 +1,15 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
+import { Select, Option } from '@arco-design/web-vue'
+import { IconDown } from '@arco-design/web-vue/es/icon'
 import { FetchCategory, FetchArticlesByCategory, FetchArticleRankList } from '@/api/articles'
 import { useVirtualScroll } from '@/hooks/list'
-import { Swiper, SwiperSlide } from 'swiper/vue'
 import WsArtCard from './components/articleCard'
+import ArticleSwiper from './components/articleSwiper'
 import ArticleAside from './components/articleAside'
 import './index.less'
-import 'swiper/css'
 
 export default defineComponent({
   setup() {
-    // swiper
-    const swiperList = ref<string[]>(['slide1', 'slide2', 'slide3'])
-    const swiperRef = ref()
-    const onSwiperNextClick = () => {
-      swiperRef.value.$el.swiper.slideNext()
-    }
     // favorites
     const rankCondition = ref('day')
     const paginationConfig = reactive({
@@ -58,6 +53,22 @@ export default defineComponent({
       await fetchArticles(label)
     }
 
+    const curSort = ref<string>('publishTime-ast')
+    const sortOptions = [
+      {
+        field: 'publishTime',
+        code: 'publishTime-ast',
+        label: 'Recent',
+        order: 'ast'
+      },
+      {
+        field: 'views',
+        code: 'views-ast',
+        label: 'Popular',
+        order: 'ast'
+      }
+    ]
+
     const wrapperRef = ref()
 
     onMounted(async () => {
@@ -72,46 +83,33 @@ export default defineComponent({
       <div class="art-list">
         <main class="art-list-main">
           <div class="art-favorite">
-            <div class="art-favorite-swiper">
-              <Swiper ref={swiperRef} slides-per-view={1} space-between={50}>
-                {swiperList.value.map((slide) => (
-                  <SwiperSlide>{slide}</SwiperSlide>
-                ))}
-              </Swiper>
-              <i class="iconfont ws-arrow-right" onClick={onSwiperNextClick} />
-            </div>
-            {/* <div class="art-favorite-pagination">
-              <div class="list">
-                <div class="list-content">
-                  {articleRankList.value.map((li) => (
-                    <WsArtCard
-                      type="horizontal"
-                      key={li.title}
-                      details={li}
-                      v-slots={{
-                        image: () => <img src={li.cover} />
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <Pagination
-                v-model:current={paginationConfig.page}
-                total={25}
-                page-size={paginationConfig.pageSize}
-              />
-            </div> */}
+            <ArticleSwiper />
           </div>
           <div class="art-category">
-            <div class="art-category-labels">
-              {categoryLabels.value.map((label) => (
-                <div
-                  class={{ 'label-capsule': true, 'is-active': activeLabel.value === label }}
-                  onClick={() => onCategoryLabelChange(label)}
-                >
-                  {label}
-                </div>
-              ))}
+            <div class="art-category-header">
+              <ul class="header-labels">
+                {categoryLabels.value.map((label) => (
+                  <div
+                    class={{ 'label-capsule': true, 'is-active': activeLabel.value === label }}
+                    onClick={() => onCategoryLabelChange(label)}
+                  >
+                    {label}
+                  </div>
+                ))}
+              </ul>
+              <Select
+                v-model:modelValue={curSort.value}
+                class="header-sort"
+                v-slots={{
+                  default: () => (
+                    <>
+                      {sortOptions.map((option) => (
+                        <Option value={option.code} label={option.label}></Option>
+                      ))}
+                    </>
+                  )
+                }}
+              ></Select>
             </div>
             <div class="art-category-panel" ref={wrapperRef}>
               {!isLoadingArticles.value

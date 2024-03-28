@@ -76,7 +76,7 @@ export default defineComponent({
         </div>
         {/* articles rank */}
         <div class="article-aside_rank">
-          <h4>ARTICLES RANK</h4>
+          {/* <h4>ARTICLES RANK</h4> */}
           <div class="article-aside_rank-header">
             <div class="header-item">
               <img src={IconArtRank} alt="" />
