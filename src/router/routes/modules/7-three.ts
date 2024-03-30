@@ -24,7 +24,7 @@ const THREE: AppRouteRecordRaw = {
     },
     {
       path: 'object',
-      name: 'three/object',
+      name: 'menu.three.object',
       component: () => import('@/views/three/object/index'),
       meta: {
         locale: 'menu.three.object',
@@ -34,7 +34,7 @@ const THREE: AppRouteRecordRaw = {
     },
     {
       path: 'vector',
-      name: 'three/vector',
+      name: 'menu.three.vector',
       component: () => import('@/views/three/journey/index'),
       meta: {
         locale: 'menu.three.vector',
@@ -44,7 +44,7 @@ const THREE: AppRouteRecordRaw = {
     },
     {
       path: 'vr',
-      name: 'three/vr',
+      name: 'menu.three.vr',
       component: () => import('@/views/three/vr/index'),
       meta: {
         locale: 'menu.three.vr',
@@ -54,12 +54,22 @@ const THREE: AppRouteRecordRaw = {
     },
     {
       path: 'vrHall',
-      name: 'three/vrHall',
+      name: 'menu.three.vrHall',
       component: () => import('@/views/three/vrHall/index'),
       meta: {
         locale: 'menu.three.vrHall',
         requiresAuth: true,
         roles: ['admin']
+      }
+    },
+    {
+      path: 'showroom',
+      name: 'menu.three.showroom',
+      component: () => import('@/views/three/showroom/index'),
+      meta: {
+        locale: 'menu.three.showroom',
+        requiresAuth: true,
+        roles: ['*']
       }
     }
   ]

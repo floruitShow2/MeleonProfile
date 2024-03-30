@@ -1,9 +1,10 @@
 import * as THREE from 'three'
-// import GSAP from 'gsap'
+import GSAP from 'gsap'
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls'
 import CameraControls from 'camera-controls'
 import EventEmitter from 'events'
+import { useDeepClone } from '@/utils/format'
 import { EventsMap } from './events'
 import type { LoadPoints, LoadSphere, PointEntity, VrRoomOptions } from './interface'
 
@@ -119,8 +120,8 @@ export default class VrRoom extends EventEmitter {
     }
     if (this.controls) this.controls.update(this.clock.getDelta())
 
-    if (this.currentSphere) {
-      const { anchorPoint } = this.currentSphere
+    if (this.currentSphere.currentScene) {
+      const { anchorPoint } = this.currentSphere.currentScene
       this.emit(EventsMap.oPeC, this.computeRotation(anchorPoint))
     }
   }
@@ -273,8 +274,8 @@ export default class VrRoom extends EventEmitter {
   }
 
   private getInVisiblePoints() {
-    const { currentScene } = this.$options
-    return (this.poiObjects[currentScene].sprites ?? [])
+    const { currentSceneID } = this.$options
+    return (this.poiObjects[currentSceneID].sprites ?? [])
       .filter((point) => {
         // 只考虑 jumper 类型的信息点
         if ((point.userData as PointEntity).type !== 'jumper') return false
@@ -296,14 +297,14 @@ export default class VrRoom extends EventEmitter {
     if (!data || !data?.targetId) return
 
     const { targetId } = data
-    const { position } = this.spheres[targetId].sphere
+    const position = new THREE.Vector3(0, 0, 0)
 
     /**
      * @type bugFix
      * @description 切换房间后，cameraPosition 始终为起始点，此时点击详情点会回到起始房间
      */
     this.$options.cameraPosition.copy(position)
-    this.$options.currentScene = targetId
+    this.$options.currentSceneID = targetId
 
     this.controls.moveTo(position.x, position.y, position.z, true)
 
@@ -321,84 +322,38 @@ export default class VrRoom extends EventEmitter {
     this.emit(EventsMap.oPC, data)
   }
 
-  private handleMoveEvent(data: PointEntity) {
+  private async handleMoveEvent(data: PointEntity) {
+    if (!data || !data.targetId) return
     // 清除场景数据内所有的精灵标签
-    // this.scene.children = this.scene.children.filter((item) => String(item.type) !== 'Sprite')
-    // 储存数组置空
-    // this.poiObjects[this.$options.currentScene].sprites = []
+    this.scene.children = this.scene.children.filter((item) => String(item.type) !== 'Sprite')
     // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
-
-    /**
-     * @type bugFix
-     * @description 为材质设置 transparent: true 后，信息点周围可能会出现黑色空缺
-     */
-    // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
-    // const { sphere } = this.spheres[this.$options.currentScene]
-    // GSAP.to(sphere, {
-    //   transparent: true,
-    //   opacity: 1,
-    //   duration: 0.2,
-    //   onComplete: () => {
-    //     if (!data || !data?.targetId) return
-    //     const { targetId } = data
-    //     const { position } = this.spheres[targetId].sphere
-
-    //     /**
-    //      * @type bugFix
-    //      * @description 切换房间后，cameraPosition 始终为起始点，此时点击详情点会回到起始房间
-    //      */
-    //     this.$options.cameraPosition.copy(position)
-    //     this.$options.currentScene = targetId
-    //     ;(sphere.material as THREE.Material).transparent = false
-    //     // this.controls.moveTo(position.x, position.y, position.z, false)
-    //     // // 手动更新投影矩阵
-    //     // this.camera.updateProjectionMatrix()
-    //   }
-    // })
-
-    if (!data || !data?.targetId) return
-    const config = {
-      width: 8,
-      widthSegments: 8,
-      color: 0xff91c2,
-      opacity: 1,
-      range: 0.5,
-      speed: 0.1,
-      seg: 6
+    const { targetId } = data
+    const targetScene = this.findTargetSceneById(targetId)
+    if (!targetScene) {
+      console.warn('no matched scene!!!')
+      return
     }
-
-    this.vertexShader = `
-      varying vec2 vUv;
-      void main() { 
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    const texture = await this.createTexture(targetScene)
+    const sphereMaterial = new THREE.MeshStandardMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 0
+    })
+    this.sphere.material = sphereMaterial
+    GSAP.to(sphereMaterial, {
+      transparent: true,
+      opacity: 1,
+      duration: 2,
+      onComplete: () => {
+        this.$options.currentSceneID = targetId
+        this.loadPoints(targetScene)
+        ;(this.sphere.material as THREE.Material).transparent = false
+        // 手动更新投影矩阵
+        this.camera.updateProjectionMatrix()
+        this.emit(EventsMap.oMC, data)
+        this.emit(EventsMap.oPC, data)
       }
-    `
-
-    const sceneOrigin = this.spheres[this.$options.currentScene].sphere
-    const sceneDestination = this.spheres[data.targetId]
-    this.fragmentShader = `
-      uniform float time;
-      uniform float progress;
-      uniform sampler2D sceneDestination;
-      uniform sampler2D sceneOrigin;
-      uniform vec4 resolution;
-      varying vec2 vUv;
-      varying vec3 vPosition;
-      
-      void main(){
-        float progress1 = smoothstep(0.10, 1.0, progress);
-        vec4 sPlanet = texture2D(${sceneOrigin}, vUv);
-        vec4 s360 = texture2D(${sceneDestination}, vUv);
-        float mixer = progress1;
-        gl_FragColor = s360;
-        vec4 finalTexture = mix(sPlanet, s360, mixer);
-        gl_FragColor = finalTexture;
-      }
-    `
-
-    this.emit(EventsMap.oMC, data)
-    this.emit(EventsMap.oPC, data)
+    })
   }
 
   // 初始化点击事件
@@ -435,16 +390,14 @@ export default class VrRoom extends EventEmitter {
         if (this.$options.debugger) {
           this.transformControls.attach(target.object)
         } else {
-          const d = target.object?.userData as PointEntity
-          switch (d.type) {
-            case 'jumper':
-              this.handleJumperEvent(d)
-              break
+          const dot = target.object?.userData as PointEntity
+          switch (dot.type) {
             case 'detail':
-              this.handleDetailEvent(d)
+              this.handleDetailEvent(dot)
               break
+            case 'jumper':
             case 'move':
-              this.handleMoveEvent(d)
+              this.handleMoveEvent(dot)
               break
             default:
               break
@@ -454,45 +407,86 @@ export default class VrRoom extends EventEmitter {
     })
   }
 
-  spheres!: Record<string, LoadSphere & { sphere: THREE.Mesh }>
+  // spheres!: Record<string, LoadSphere & { sphere: THREE.Mesh }>
+  sphere!: THREE.Mesh
 
-  get currentSphere() {
-    const { currentScene } = this.$options
-    return this.spheres[currentScene]
+  textures!: Record<string, LoadSphere & { texture: THREE.Texture }>
+
+  findTargetSceneById(id: string): LoadSphere {
+    const findScene = this.$options.scenes.find((scene) => scene.id === id)
+    return findScene!
   }
 
-  loadSphere(options: LoadSphere) {
-    if (!this.spheres) this.spheres = {}
+  get currentSphere() {
+    const { currentSceneID: id } = this.$options
+
+    return {
+      currentScene: this.findTargetSceneById(id),
+      currentTexture: this.textures[id].texture,
+      currentPoints: this.poiObjects[id]
+    }
+  }
+
+  createTexture(options: LoadSphere): THREE.Texture {
+    if (!this.textures) this.textures = {}
 
     const { id, url } = options
-    const centerPoint = options.center ?? new THREE.Vector3(0, 0, 0)
 
-    const sphereGeometry = new THREE.SphereGeometry(1, 250, 250)
+    if (this.textures[id]) return this.textures[id].texture
+
     const texture = this.textureLoader.load(url)
     texture.minFilter = THREE.LinearFilter
     texture.magFilter = THREE.LinearFilter
     texture.format = THREE.RGBAFormat
-    const sphereMaterial = new THREE.MeshStandardMaterial({ map: texture })
-    this.spheres[id] = { ...options, sphere: new THREE.Mesh(sphereGeometry, sphereMaterial) }
-    this.spheres[id].sphere.position.copy(centerPoint)
-    this.spheres[id].sphere.geometry.scale(1, 1, -1)
 
-    // On load complete add the panoramic sphere to the scene
-    this.scene.add(this.spheres[id].sphere)
+    this.textures[id] = { ...options, texture }
+
+    return texture
   }
 
-  poiObjects!: Record<string, LoadPoints & { sprites: THREE.Sprite[] }>
+  loadSphere() {
+    // 初始化 贴图 和 信息点
+    this.$options.scenes.forEach((option) => {
+      this.createTexture(option)
+      // this.loadPoints(option)
+    })
+
+    const { currentScene, currentTexture } = this.currentSphere
+
+    const sphereGeometry = new THREE.SphereGeometry(1, 250, 250)
+    const sphereMaterial = new THREE.MeshStandardMaterial({ map: currentTexture })
+
+    this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+    this.sphere.position.copy(new THREE.Vector3(0, 0, 0))
+    this.sphere.geometry.scale(1, 1, -1)
+
+    // On load complete add the panoramic sphere to the scene
+    this.scene.add(this.sphere)
+
+    this.loadPoints(currentScene)
+  }
+
+  poiObjects: Record<string, LoadPoints & { sprites: THREE.Sprite[] }> = {}
 
   /**
    * @type remark
    * @description 计算得到当前场景中的信息点精灵图列表
    */
   get poisForRaycaster() {
-    return this.poiObjects[this.$options.currentScene].sprites ?? []
+    return this.poiObjects[this.$options.currentSceneID]?.sprites ?? []
   }
 
   loadPoints(options: LoadPoints) {
     const { id, points } = options
+
+    console.log(id, this.poiObjects[id])
+    if (this.poiObjects[id] && this.poiObjects[id].sprites && this.poiObjects[id].sprites.length) {
+      this.poiObjects[id].sprites.forEach((sprite) => {
+        this.scene.add(sprite)
+      })
+
+      return
+    }
 
     const defaultPointsMap: Record<PointEntity['type'], string> = {
       move: '/textures/circle.png',
@@ -520,5 +514,7 @@ export default class VrRoom extends EventEmitter {
 
       this.scene.add(sprite)
     }
+
+    console.log(this.scene)
   }
 }

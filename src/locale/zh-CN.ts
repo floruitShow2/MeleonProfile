@@ -46,6 +46,7 @@ export default {
   'menu.three.example': '演示案例',
   'menu.three.vr': 'VR看房',
   'menu.three.vrHall': 'VR云展厅',
+  'menu.three.showroom': '楼宇展厅',
   // 数据中心
   'menu.datacentre': '数据中心',
   'menu.datacentre.overview': '数据预览',

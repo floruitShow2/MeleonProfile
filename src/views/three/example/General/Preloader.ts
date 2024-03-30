@@ -1,6 +1,6 @@
 import EventEmitter from 'events'
+import { Sizes } from '@/utils/three'
 import Experience from './Experience'
-import Sizes from '../Utils/Sizes'
 import Resource from '../Utils/Resource'
 import Camera from './Camera'
 import World from '../World/World'

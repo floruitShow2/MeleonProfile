@@ -1,9 +1,8 @@
 import * as THREE from 'three'
 import type { RestrictType } from '@/components/search'
+import { Sizes, Time } from '@/utils/three'
 import Experience from '../General/Experience'
 import Camera from '../General/Camera'
-import Time from '../Utils/Time'
-import Sizes from '../Utils/Sizes'
 import Resource from './Resource'
 
 export default class model {

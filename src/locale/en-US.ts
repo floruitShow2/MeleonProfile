@@ -46,6 +46,7 @@ export default {
   'menu.three.example': 'Example',
   'menu.three.vr': 'VR',
   'menu.three.vrHall': 'VRHall',
+  'menu.three.showroom': 'ShowRoom',
   // Data Center
   'menu.datacentre': 'DataCentre',
   'menu.datacentre.overview': 'Overview',

@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { Progress } from '@arco-design/web-vue'
 import { IconCaretRight } from '@arco-design/web-vue/es/icon'
 import VrRoom, { EventsMap, type PointEntity, type LoadingProgressEntity } from './core'
-import { ROOM_0, POINTS_RESOURCE, ROOM_1, SUB_POINTS_RESOURCE } from './constants'
+import { ROOM_0, ROOM_1 } from './constants'
 import TinyMap from './components/tinyMap'
 import './index.less'
 
@@ -36,7 +36,8 @@ export default defineComponent({
       nextTick(() => {
         vrRoom.value = new VrRoom({
           container: containerRef.value,
-          currentScene: '0',
+          scenes: [ROOM_0, ROOM_1],
+          currentSceneID: '0',
           debugger: false,
           cameraLookAt: new THREE.Vector3(0.5, 0, 0),
           cameraPosition: new THREE.Vector3(0, 0, 0)
@@ -69,7 +70,7 @@ export default defineComponent({
           }
 
           if (vrRoom.value && data.targetId) {
-            curPosition.value = vrRoom.value.spheres[data.targetId].position
+            curPosition.value = vrRoom.value.currentSphere.currentScene.position
           }
         })
 
@@ -82,14 +83,8 @@ export default defineComponent({
         })
 
         // 初始化球体
-        vrRoom.value.loadSphere(ROOM_0)
+        vrRoom.value.loadSphere()
         curPosition.value = ROOM_0.position
-        // 导入信息点
-        vrRoom.value.loadPoints({ id: '0', points: POINTS_RESOURCE })
-        // 初始化球体
-        vrRoom.value.loadSphere(ROOM_1)
-        // 导入信息点
-        vrRoom.value.loadPoints({ id: '1', points: SUB_POINTS_RESOURCE })
       })
     })
 

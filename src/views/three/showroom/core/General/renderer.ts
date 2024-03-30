@@ -1,10 +1,10 @@
 import * as THREE from 'three'
-import { Sizes } from '@/utils/three'
-import Experience from './Experience'
-import Camera from './Camera'
+import Sizes from '@/utils/three/sizes'
+import Instance from '../instance'
+import Camera from './camera'
 
 export default class Renderer {
-  experience!: Experience
+  Instance!: Instance
 
   sizes!: Sizes
 
@@ -19,8 +19,8 @@ export default class Renderer {
   showThreeViews = false
 
   constructor() {
-    this.experience = new Experience()
-    const { scene, sizes, canvas, camera } = this.experience
+    this.Instance = new Instance()
+    const { scene, sizes, canvas, camera } = this.Instance
     this.sizes = sizes
     this.scene = scene
     this.canvas = canvas
@@ -40,14 +40,9 @@ export default class Renderer {
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
     const { width, height, pixelRatio } = this.sizes
+    console.log(width, height)
     this.renderer.setSize(width, height)
     this.renderer.setPixelRatio(pixelRatio)
-  }
-
-  // 切换视图模式
-  switchViewsModel(options: { showThreeViews: boolean }) {
-    const { showThreeViews } = options
-    this.showThreeViews = showThreeViews
   }
 
   resize() {
@@ -57,16 +52,6 @@ export default class Renderer {
   }
 
   update() {
-    const { width, height } = this.sizes
-    if (this.showThreeViews) {
-      // main screen
-      this.renderer.setViewport(0, 0, width / 2, height / 2)
-      this.renderer.render(this.scene, this.camera.perspectiveCamera)
-      // three sub screens
-    } else {
-      // main screen
-      this.renderer.setViewport(0, 0, width, height)
-      this.renderer.render(this.scene, this.camera.orthographicCamera)
-    }
+    this.renderer.render(this.scene, this.camera.perspectiveCamera)
   }
 }

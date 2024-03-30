@@ -25,8 +25,8 @@ export const POINTS_RESOURCE: PointEntity[] = [
     type: 'detail'
   },
   {
-    position: new THREE.Vector3(-0.6596540733370381, -0.31157185787764863, -0.2739032669874493),
-    title: '信息点4',
+    position: new THREE.Vector3(0.6491931650918973, -0.30068038930581054, 0.6446038327644302),
+    title: '移动点',
     targetId: '1',
     type: 'move'
   }
@@ -34,13 +34,13 @@ export const POINTS_RESOURCE: PointEntity[] = [
 
 export const SUB_POINTS_RESOURCE: PointEntity[] = [
   {
-    position: new THREE.Vector3(-1.2993116085838226, 0.030611924951833763, 0.6791617323100382),
+    position: new THREE.Vector3(-0.6596540733370381, -0.31157185787764863, -0.2739032669874493),
     title: '另一个房间1',
     type: 'jumper',
     targetId: '0'
   },
   {
-    position: new THREE.Vector3(-1.4287847491418886, 0.0013737592832263447, -0.026770955146551922),
+    position: new THREE.Vector3(-0.9, 0, 0),
     title: '另一个房间2',
     type: 'detail'
   }
@@ -48,16 +48,16 @@ export const SUB_POINTS_RESOURCE: PointEntity[] = [
 
 export const ROOM_0: LoadSphere = {
   id: '0',
-  url: '/textures/room2.jpg',
+  url: 'https://dragonir.github.io/panorama-advanced/assets/map_living_room-10de3e48.jpg',
   anchorPoint: new THREE.Vector3(0.1, 0, 0),
   position: new THREE.Vector2(120, 50),
-  center: new THREE.Vector3(0, 0, 0)
+  points: POINTS_RESOURCE
 }
 
 export const ROOM_1: LoadSphere = {
   id: '1',
-  url: '/textures/room2.webp',
+  url: 'https://dragonir.github.io/panorama-advanced/assets/map_living_room_out-7720bdad.jpg',
   anchorPoint: new THREE.Vector3(-2.1, 0, 0),
   position: new THREE.Vector2(80, 35),
-  center: new THREE.Vector3(-2, 0, 0)
+  points: SUB_POINTS_RESOURCE
 }

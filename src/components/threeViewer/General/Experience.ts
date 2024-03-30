@@ -1,9 +1,8 @@
 import * as THREE from 'three'
+import { Sizes, Time } from '@/utils/three'
 import Camera from './Camera'
 import Renderer from './Renderer'
 import Resource from '../World/Resource'
-import Sizes from '../Utils/Sizes'
-import Time from '../Utils/Time'
 import type { AssetsType } from '../interface'
 import World from '../World/World'
 

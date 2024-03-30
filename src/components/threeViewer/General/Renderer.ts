@@ -1,6 +1,6 @@
 import * as THREE from 'three'
+import { Sizes } from '@/utils/three'
 import Experience from './Experience'
-import Sizes from '../Utils/Sizes'
 import Camera from './Camera'
 
 export default class Renderer {

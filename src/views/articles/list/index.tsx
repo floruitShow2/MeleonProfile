@@ -1,6 +1,5 @@
 import { defineComponent, onMounted, reactive, ref } from 'vue'
 import { Select, Option } from '@arco-design/web-vue'
-import { IconDown } from '@arco-design/web-vue/es/icon'
 import { FetchCategory, FetchArticlesByCategory, FetchArticleRankList } from '@/api/articles'
 import { useVirtualScroll } from '@/hooks/list'
 import WsArtCard from './components/articleCard'

@@ -3,8 +3,8 @@
 /node_modules
 /dist-ssr
 *.local
-# public/draco
-# public/models
-# public/textures
+public/draco
+public/models
+public/textures
 
 .vercel
