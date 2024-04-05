@@ -1,0 +1,43 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.article-block {
+    width: 100%;
+    padding: 20px 0 15px 0;
+    border-radius: 4px;
+    #flex(column, center, flex-start);
+    #color(background-color, --module-bg-color);
+    &-header {
+        width: 100%;
+        padding: 0 20px;
+        padding-bottom: 10px;
+        border-bottom: solid 1px;
+        #flex(row, center, space-between);
+        #color(border-color, --primary-border-color);
+        .header-item {
+            #flex(row, center, center);
+            #color(color, --primary-text-color);
+            i {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+    &-content {
+        width: 100%;
+        padding: 10px;
+        border-bottom: solid 1px;
+        #color(border-color, --primary-border-color);
+    }
+    &-footer {
+        width: 100%;
+        padding-top: 15px;
+        transition: color 0.2s ease;
+        cursor: pointer;
+        #flex(row, center, center);
+        #color(color, --primary-text-color);
+        &:hover {
+            #color(color, --primary-blue-color);
+        }
+    }
+}

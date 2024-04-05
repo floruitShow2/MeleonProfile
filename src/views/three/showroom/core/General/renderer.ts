@@ -39,13 +39,14 @@ export default class Renderer {
     this.renderer.toneMappingExposure = 0.5
     this.renderer.shadowMap.enabled = true
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    if (!this.sizes) return
     const { width, height, pixelRatio } = this.sizes
-    console.log(width, height)
     this.renderer.setSize(width, height)
     this.renderer.setPixelRatio(pixelRatio)
   }
 
   resize() {
+    if (!this.sizes) return
     const { width, height, pixelRatio } = this.sizes
     this.renderer.setSize(width, height)
     this.renderer.setPixelRatio(pixelRatio)

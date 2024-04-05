@@ -76,6 +76,59 @@
             #color(background-color, --primary-bg-color);
         }
     }
+    &_authors {
+        &-list {
+            width: 100%;
+            #flex(column, center, flex-start);
+            li {
+                width: 100%;
+                padding: 10px;
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                #flex(row, center, space-between);
+                .author-details {
+                    width: calc(100% - 80px);
+                    #flex(row, center, flex-start);
+                    .arco-avatar {
+                        margin-right: 8px;
+                    }
+                    &-msg {
+                        width: calc(100% - 28px - 8px);
+                        #flex(column, flex-start, center);
+                        .title {
+                            margin-bottom: 3px;
+                            font-size: 14px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            word-break: break-all;
+                            #color(color, --primary-text-color);
+                        }
+                        .description {
+                            width: 90%;
+                            font-size: 12px;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            word-break: break-all;
+                            #color(color, --lighter-text-color);
+                        }
+                    }
+                }
+                .author-follow {
+                    width: 80px;
+                    text-align: right;
+                    font-size: 14px;
+                    #color(color, --primary-blue-color);
+                }
+                &:hover {
+                    #color(background-color, --lighter-bg-color);
+                }
+            }
+        }
+    }
     &_topics {
         #title-color();
         ul {
@@ -103,37 +156,23 @@
         }
     }
     &_rank {
-        #title-color();
-        padding-bottom: 15px;
-        &-header {
-            width: 100%;
-            padding-bottom: 10px;
-            border-bottom: solid 1px;
-            #flex(row, center, space-between);
-            #color(border-color, --primary-border-color);
-            .header-item {
-                #flex(row, center, center);
-                #color(color, --primary-text-color);
-                img {
-                    width: 20px;
-                    height: 20px;
-                    margin-right: 4px;
-                }
-                i {
-                    width: 20px;
-                    height: 20px;
-                }
+        &-title {
+            #flex(row, center, center);
+            #color(color, --primary-text-color);
+            img {
+                width: 20px;
+                height: 20px;
+                margin-right: 6px;
             }
         }
         &-list {
             width: 100%;
-            padding: 5px 0 10px 0;
-            border-bottom: solid 1px;
+            height: 100%;
             #flex(column, center, flex-start);
-            #color(border-color, --primary-border-color);
             li {
                 width: 100%;
-                padding: 14px 4px 14px 8px;
+                padding: 14px 10px 14px 10px;
+                border-radius: 4px;
                 gap: 16px;
                 font-size: 14px;
                 font-weight: 500;
@@ -142,7 +181,7 @@
                 #color(color, --primary-text-color);
                 &:hover {
                     #color(color, --primary-blue-color);
-                    #color(background-color, --primary-bg-color);
+                    #color(background-color, --lighter-bg-color);
                 }
                 span:last-child {
                     display: block;
@@ -151,17 +190,6 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
-            }
-        }
-        &-footer {
-            width: 100%;
-            padding-top: 15px;
-            transition: color 0.2s ease;
-            cursor: pointer;
-            #flex(row, center, center);
-            #color(color, --primary-text-color);
-            &:hover {
-                #color(color, --primary-blue-color);
             }
         }
     }

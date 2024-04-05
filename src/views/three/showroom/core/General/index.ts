@@ -1,6 +1,7 @@
+import Light from './light'
 import Camera from './camera'
 import Renderer from './renderer'
 import Controller from './controller'
-import Light from './light'
+import { Raycaster } from './raycaster'
 
-export { Camera, Renderer, Controller, Light }
+export { Camera, Renderer, Controller, Light, Raycaster }

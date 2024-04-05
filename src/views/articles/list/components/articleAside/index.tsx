@@ -1,16 +1,43 @@
-import { defineComponent, ref, onMounted, computed } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import { Avatar } from '@arco-design/web-vue'
-import { useUserStore } from '@/store'
 import IconArtRank from '@/assets/images/articles/icon-art-rank.png'
+import IconArtAuthor from '@/assets/images/articles/icon-art-author.png'
+import ArticleBlock from '../articleBlock'
 import type { TopicType } from './interface'
 import './index.less'
 
 export default defineComponent({
   setup() {
-    const userStore = useUserStore()
-    const userInfo = computed(() => userStore.userInfo)
+    // authors
+    const authors = ref([
+      {
+        avatar: 'http://127.0.0.1:3000/static/files/meleon/avatar/kanban method-rafiki.png',
+        username: 'meleon',
+        introduction: 'this is my personal introduction'
+      },
+      {
+        avatar: 'http://127.0.0.1:3000/static/files/meleon/avatar/kanban method-rafiki.png',
+        username: 'meleon',
+        introduction: 'this is my personal introduction'
+      },
+      {
+        avatar: 'http://127.0.0.1:3000/static/files/meleon/avatar/kanban method-rafiki.png',
+        username: 'meleon',
+        introduction: 'this is my personal introduction'
+      },
+      {
+        avatar: 'http://127.0.0.1:3000/static/files/meleon/avatar/kanban method-rafiki.png',
+        username: 'meleon',
+        introduction: 'this is my personal introduction'
+      },
+      {
+        avatar: 'http://127.0.0.1:3000/static/files/meleon/avatar/kanban method-rafiki.png',
+        username: 'meleon',
+        introduction: 'this is my personal introduction'
+      }
+    ])
 
-    // topics
+    // categories
     const formattedTopics = ref<TopicType[]>([])
     const initTopics = (topics: string[]) => {
       formattedTopics.value = topics.map((item) => ({
@@ -34,29 +61,39 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      const topics = ['Coding', 'NFT', 'Web 3.0', 'Crypto', 'Design']
+      const topics = ['Coding', 'NFT', 'Web 3.0', 'Crypto', 'Design', 'Vue', 'React']
       initTopics(topics)
     })
 
     return () => (
       <div class="article-aside">
-        {/* user info */}
-        <div class="article-aside_info">
-          <div class="article-aside_info-wrapper">
-            <Avatar size={55} imageUrl={userInfo.value.avatar}></Avatar>
-            <div class="article-aside_info-wrapper-details">
-              <h4>{userInfo.value.username}</h4>
-              <p>
-                <span>{userInfo.value.job}</span>
-                <span>{userInfo.value.introduction}</span>
-              </p>
-            </div>
-          </div>
-          <p class="article-aside_info-intro">
-            Let me help you integrate into the “New World” and show you cool features that you may
-            not know. I love to write about Programming, Productivity and Web 3.0
-          </p>
-        </div>
+        {/* recommand topics */}
+        <ArticleBlock
+          class="article-aside_authors"
+          v-slots={{
+            title: () => (
+              <div class="article-aside_rank-title">
+                <img src={IconArtAuthor} alt="" />
+                <span>文章榜</span>
+              </div>
+            )
+          }}
+        >
+          <ul class="article-aside_authors-list">
+            {authors.value.map((author) => (
+              <li>
+                <div class="author-details">
+                  <Avatar imageUrl={author.avatar} size={28}></Avatar>
+                  <div class="author-details-msg">
+                    <span class="title">{author.username}</span>
+                    <span class="description">{author.introduction}</span>
+                  </div>
+                </div>
+                <span class="author-follow">关注+</span>
+              </li>
+            ))}
+          </ul>
+        </ArticleBlock>
         {/* top categories */}
         <div class="article-aside_topics">
           <h4>TOP CATEGORIES</h4>
@@ -75,18 +112,17 @@ export default defineComponent({
           </ul>
         </div>
         {/* articles rank */}
-        <div class="article-aside_rank">
-          {/* <h4>ARTICLES RANK</h4> */}
-          <div class="article-aside_rank-header">
-            <div class="header-item">
-              <img src={IconArtRank} alt="" />
-              <span>文章榜</span>
-            </div>
-            <div class="header-item">
-              <i class="iconfont ws-reset"></i>
-              <span>换一换</span>
-            </div>
-          </div>
+        <ArticleBlock
+          class="article-aside_rank"
+          v-slots={{
+            title: () => (
+              <div class="article-aside_rank-title">
+                <img src={IconArtRank} alt="" />
+                <span>文章榜</span>
+              </div>
+            )
+          }}
+        >
           <ul class="article-aside_rank-list">
             {articlesRank.value.map((item, index) => (
               <li>
@@ -95,11 +131,7 @@ export default defineComponent({
               </li>
             ))}
           </ul>
-          <div class="article-aside_rank-footer">
-            <span>查看更多</span>
-            <i class="iconfont ws-arrow-right"></i>
-          </div>
-        </div>
+        </ArticleBlock>
       </div>
     )
   }

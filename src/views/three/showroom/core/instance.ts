@@ -1,12 +1,14 @@
 import * as THREE from 'three'
 import { Sizes, Time } from '@/utils/three'
-import { Camera, Renderer, Controller, Light } from './General'
+import { Camera, Renderer, Controller, Light, Raycaster } from './General'
 import { Models } from './Resources'
 import type { InstanceOptions } from './interface'
 
 export default class Instance {
   // eslint-disable-next-line
   static instance: Instance
+
+  $option!: InstanceOptions
 
   canvas!: HTMLCanvasElement
 
@@ -19,6 +21,8 @@ export default class Instance {
   controller!: Controller
 
   light!: Light
+
+  raycaster!: Raycaster
 
   // 资源
   models!: Models
@@ -33,6 +37,9 @@ export default class Instance {
       return Instance.instance
     }
     Instance.instance = this
+
+    this.$option = options
+
     const { canvas, wrapper } = options
     this.canvas = canvas
     this.sizes = new Sizes(canvas, wrapper)
@@ -45,6 +52,7 @@ export default class Instance {
     this.renderer = new Renderer()
     this.controller = new Controller()
     this.light = new Light()
+    this.raycaster = new Raycaster()
 
     this.models = new Models()
 
@@ -68,6 +76,14 @@ export default class Instance {
     this.scene.add(sunlight)
   }
 
+  changeCameraLocation(position: THREE.Vector3) {
+    this.$option.cameraOptions?.cameraAt.copy(position)
+    this.camera.changeCameraAt(position)
+    this.controller.changeControlsTarget(
+      new THREE.Vector3(position.x, position.y - 1, position.z + 10)
+    )
+  }
+
   resize() {
     this.camera.resize()
     this.renderer.resize()
@@ -75,6 +91,7 @@ export default class Instance {
 
   update() {
     // this.camera.update()
+    this.models.update()
     this.renderer.update()
     this.controller.update()
   }

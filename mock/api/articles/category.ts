@@ -2,7 +2,7 @@ import Mock from 'mockjs'
 import { faker } from '@faker-js/faker'
 import type { MockMethod } from 'vite-plugin-mock'
 
-const fakeCategory: string[] = ['label01', 'label02', 'label03', 'label04']
+const fakeCategory: string[] = ['recommand', 'recent']
 
 const createFakeArticles = () => {
   const obj: Record<string, ApiArticle.ArticleEntity[]> = {}

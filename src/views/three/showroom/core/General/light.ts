@@ -22,6 +22,7 @@ export default class Light {
 
     this.initDirectLights()
     this.initSpotLight()
+    this.createLightRay()
   }
 
   initDirectLights() {
@@ -66,7 +67,6 @@ export default class Light {
     this.spotLight2.angle = 0.5
     this.spotLight2.penumbra = 0.7 // 边缘软化
     this.spotLight2.castShadow = true
-    this.scene.add(this.spotLight2)
 
     // 添加聚光灯3
     this.spotLight3 = new THREE.SpotLight(0xffffff, 9)
@@ -74,8 +74,47 @@ export default class Light {
     // 朝下照射
     this.spotLight3.target.position.set(-6.989796332110297, 0, 3.2954104003906264)
     this.spotLight3.castShadow = true
-    this.scene.add(this.spotLight3)
 
     this.scene.add(this.spotLight1, this.spotLight2, this.spotLight3)
+  }
+
+  createLightRay() {
+    const textureLoader = new THREE.TextureLoader()
+    const figureTexture = textureLoader.load('/textures/showroom/lightRay.png')
+
+    const figureMaterial = new THREE.MeshLambertMaterial({
+      side: THREE.DoubleSide,
+      map: figureTexture,
+      transparent: true,
+      opacity: 0.5
+    })
+
+    // 第一个面的光束
+    const geometry = new THREE.PlaneGeometry(2, 4)
+    const plane = new THREE.Mesh(geometry, figureMaterial)
+
+    plane.position.set(1.8843670113338225, 2.6, 1.2)
+    plane.rotateZ(-35 * (Math.PI / 180))
+
+    const plane2 = plane.clone()
+    plane2.position.x += 1.8
+
+    const plane3 = plane.clone()
+    plane3.position.x += 1
+    plane3.position.y += 0.5
+
+    // 第二个面的光束
+    const plane4 = plane.clone()
+    plane4.position.x -= 3.4
+    plane4.position.y -= 0.5
+
+    const plane5 = plane.clone()
+    plane5.position.x -= 4.7
+
+    const plane6 = plane.clone()
+    plane6.position.x -= 5.2
+    plane6.position.z -= 2
+
+    this.scene.add(plane, plane2, plane3, plane4, plane5, plane6)
   }
 }
