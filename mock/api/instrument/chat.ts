@@ -15,26 +15,16 @@ export function createFakeContactNotes(): ApiChat.NoteType[] {
     ]
   }).items
 }
-export function createFakeComments(): ApiChat.RoomType {
+export function createFakeComments(): ChatRoom.RoomEntity {
   return {
     roomId: (Math.random() * 5).toString(),
     roomName: faker.person.jobDescriptor(),
-    roomAvatar: faker.image.avatar(),
-    roomCreateTime: faker.date.recent({ days: 30 }),
+    roomCover: faker.image.avatar(),
+    createTime: faker.date.recent({ days: 30 }),
     isPinned: faker.helpers.arrayElement([true, false]),
-    relativeUserId: faker.helpers.arrayElements(['admin', 'meleon', 'visitor']),
-    unreadCount: faker.number.int(15),
-    messageList: Mock.mock({
-      'items|20': [
-        {
-          'commentId|+1': 1,
-          commentContent: '@sentence(10, 20)',
-          commentPublisher: () => faker.helpers.arrayElement(['meleon', 'admin']),
-          commentPublishTime: () => faker.date.recent({ days: 10 }),
-          commnetReceiver: () => faker.helpers.arrayElement(['meleon', 'admin'])
-        }
-      ]
-    }).items
+    noDisturbing: false,
+    members: faker.helpers.arrayElements(['admin', 'meleon', 'visitor']),
+    message: []
   }
 }
 
@@ -81,12 +71,12 @@ export default [
     url: '/mock/api/contact/GetComments',
     timeout: 1,
     method: 'get',
-    response: (): Service.MockServiceResult<ApiChat.CommentType[]> => {
+    response: (): Service.MockServiceResult<ApiChat.MessageEntity[]> => {
       // 根据前端传来的两个用户id查询到对应的 roomid 及其中记载的聊天记录
       return {
         Code: 1,
         Message: 'ok',
-        ReturnData: createFakeComments().messageList
+        ReturnData: createFakeComments().message
       }
     }
   },

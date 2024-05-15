@@ -47,6 +47,7 @@ declare namespace ApiChat {
   export interface MsgType {
     // 消息类型枚举
     type: MsgEnum
+    content: string
     // 消息体
     body: TextBody | FileBody | ImageBody | any
   }
@@ -62,18 +63,5 @@ declare namespace ApiChat {
     publishTime: string | number | Date
     // 加载中
     loading?: boolean
-  }
-
-  export interface RoomType {
-    roomId: string
-    roomName: string
-    roomAvatar: string
-    roomCreateTime: Date
-    // 是否置顶
-    isPinned: boolean
-    relativeUserId: string[]
-    // message list
-    unreadCount: number
-    messageList: CommentType[]
   }
 }

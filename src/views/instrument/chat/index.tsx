@@ -1,5 +1,5 @@
 import { defineComponent, onBeforeMount, ref, computed, watch } from 'vue'
-import { GetRooms } from '@/api/instrument/chat'
+import { FetchRooms } from '@/api/chat'
 import { useAppStore } from '@/store'
 import { Drawer } from '@arco-design/web-vue'
 import { WsRoomList, WsChatHeader, WsChatBody, WsChatComment, WsUserBoard } from './components'
@@ -10,17 +10,17 @@ export default defineComponent({
     const appStore = useAppStore()
     const hideMenu = computed(() => appStore.hideMenu)
     // _rooms
-    const rooms = ref<ApiChat.RoomType[]>([])
+    const rooms = ref<ChatRoom.RoomEntity[]>([])
     const activeRoomId = ref<string>('')
 
     const updateRooms = async () => {
-      const { data } = await GetRooms()
+      const { data } = await FetchRooms()
       if (!data) return
       rooms.value = data
       activeRoomId.value = data[0].roomId
     }
 
-    const getRoomById = (id: string): ApiChat.RoomType | null => {
+    const getRoomById = (id: string): ChatRoom.RoomEntity | null => {
       const findRoom = rooms.value.find((room) => room.roomId === id)
       return findRoom || null
     }

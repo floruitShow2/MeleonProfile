@@ -2,49 +2,55 @@
 @import '@/styles/theme.less';
 .ws-room-item {
   width: 100%;
+  height: 60px;
   padding: 10px 20px;
   transition: all 0.2s ease;
   cursor: pointer;
-  #flex(row, flex-start, flex-start);
+  #flex(row, center, flex-start);
   #color(background-color, --module-bg-color);
-  .img-list {
+  &_cover {
     width: 40px;
     height: 40px;
     margin-right: 10px;
     border-radius: 5px;
-    flex-wrap: wrap;
-    overflow: hidden;
     #flex(row, center, center);
     img {
       width: 100%;
       height: 100%;
-      margin-right: 0;
     }
   }
-  .room-detail {
-    width: 300px;
-    margin-bottom: 5px;
-    font-size: 14px;
-    #flex(row, center, space-between);
-    #color(color, --heavy-text-color);
-  }
-  .room-message {
-    width: 300px;
-    #color(color, --primary-text-color);
-    #flex(row, center, space-between);
-    &-last {
-      width: 150px;
-      overflow: hidden;
+  &_content {
+    height: 100%;
+    #flex(column, center, space-around);
+    .room-detail {
+      width: 300px;
       font-size: 12px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      #flex(row, center, space-between);
+      #color(color, --heavy-text-color);
+      span:first-child {
+        font-size: 14px;
+        font-weight: bold;
+        #color(color, --primary-text-color);
+      }
     }
-    &-new {
-      padding: 2px 5px;
-      border-radius: 3px;
-      color: #ffffff;
-      font-size: 12px;
-      #color(background-color, --primary-red-color);
+    .room-message {
+      width: 300px;
+      #color(color, --primary-text-color);
+      #flex(row, flex-end, space-between);
+      &-last {
+        width: 150px;
+        overflow: hidden;
+        font-size: 12px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      &-new {
+        padding: 2px 5px;
+        border-radius: 3px;
+        color: #ffffff;
+        font-size: 12px;
+        #color(background-color, --primary-red-color);
+      }
     }
   }
 }

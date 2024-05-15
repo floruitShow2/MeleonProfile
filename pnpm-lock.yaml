@@ -8005,7 +8005,7 @@ packages:
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@8.4.21)
     dev: true
 
   /postcss-html@1.5.0:
@@ -8026,7 +8026,7 @@ packages:
     dependencies:
       '@babel/core': 7.21.4
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@8.4.21)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8045,7 +8045,7 @@ packages:
       postcss-syntax: '>=0.36.0'
     dependencies:
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@8.4.21)
       remark: 10.0.1
       unist-util-find-all-after: 1.0.5
     dev: true
@@ -8140,7 +8140,7 @@ packages:
       postcss: 8.4.21
     dev: true
 
-  /postcss-syntax@0.36.2(postcss-html@1.5.0)(postcss@7.0.39):
+  /postcss-syntax@0.36.2(postcss-html@1.5.0)(postcss@8.4.21):
     resolution: {integrity: sha512-nBRg/i7E3SOHWxF3PpF5WnJM/jQ1YpY9000OaVXlAQj6Zp/kIqJxEDWIZ67tAd7NLuk7zqN4yqe9nc0oNAOs1w==}
     peerDependencies:
       postcss: '>=5.0.0'
@@ -8161,7 +8161,7 @@ packages:
       postcss-scss:
         optional: true
     dependencies:
-      postcss: 7.0.39
+      postcss: 8.4.21
       postcss-html: 1.5.0
     dev: true
 
@@ -9440,7 +9440,7 @@ packages:
       postcss-sass: 0.3.5
       postcss-scss: 2.1.1
       postcss-selector-parser: 3.1.2
-      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@1.5.0)(postcss@8.4.21)
       postcss-value-parser: 3.3.1
       resolve-from: 4.0.0
       signal-exit: 3.0.7
