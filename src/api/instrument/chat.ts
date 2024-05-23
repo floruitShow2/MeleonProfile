@@ -20,7 +20,7 @@ export function GetNotes() {
  * @returns
  */
 export function GetRooms() {
-  return mockRequest.get<ApiChat.RoomType[]>(URL.rooms)
+  return mockRequest.get<ChatRoom.RoomEntity[]>(URL.rooms)
 }
 
 /**

@@ -32,6 +32,7 @@
   "dependencies": {
     "@amap/amap-jsapi-types": "^0.0.13",
     "@arco-design/web-vue": "^2.44.7",
+    "@meleon/lock": "^1.0.10",
     "@vue-flow/core": "^1.22.2",
     "@vueuse/core": "^9.3.0",
     "arco-design-pro-vue": "^2.7.2",
@@ -61,7 +62,7 @@
     "vite-plugin-markdown": "^2.1.0",
     "vite-plugin-mock": "^2.9.8",
     "vite-svg-loader": "^3.6.0",
-    "vue": "^3.2.40",
+    "vue": "^3.4.27",
     "vue-echarts": "^6.2.3",
     "vue-grid-layout": "3.0.0-beta1",
     "vue-i18n": "^9.2.2",

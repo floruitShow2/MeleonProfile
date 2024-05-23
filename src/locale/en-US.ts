@@ -73,6 +73,9 @@ export default {
   'menu.visualization': 'Data Visualization',
   'menu.user': 'User Center',
   'menu.faq': 'FAQ',
+  // Test
+  'menu.test': 'Test',
+  'menu.test.index': 'Lib-test',
   'navbar.docs': 'Docs',
   'navbar.action.locale': 'Switch to English',
   ...localeSettings,

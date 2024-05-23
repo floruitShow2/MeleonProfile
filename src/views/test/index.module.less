@@ -1,0 +1,23 @@
+@import '@/styles/layout.less';
+@import '@/styles/theme.less';
+
+.test-wrapper {
+    width: 100%;
+    height: 100%;
+    #color(background-color, --primary-bg-color);
+    &-frame {
+        width: 100%;
+        height: 100%;
+        padding: 30px 80px;
+        background-color: rgba(0, 0, 0, 0.75);
+        #flex(column, center, flex-start);
+        &-title {
+            width: 100%;
+            height: 80px;
+        }
+        &-content {
+            width: 100%;
+            height: calc(100% - 80px);
+        }
+    }
+}

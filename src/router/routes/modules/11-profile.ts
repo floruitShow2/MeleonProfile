@@ -1,7 +1,7 @@
 import { DEFAULT_LAYOUT } from '../base'
 import { AppRouteRecordRaw } from '../types'
 
-const MAP: AppRouteRecordRaw = {
+const Profile: AppRouteRecordRaw = {
   path: '/profile',
   name: 'profile',
   component: DEFAULT_LAYOUT,
@@ -35,4 +35,4 @@ const MAP: AppRouteRecordRaw = {
   ]
 }
 
-export default MAP
+export default Profile

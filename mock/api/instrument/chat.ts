@@ -24,7 +24,7 @@ export function createFakeComments(): ChatRoom.RoomEntity {
     isPinned: faker.helpers.arrayElement([true, false]),
     noDisturbing: false,
     members: faker.helpers.arrayElements(['admin', 'meleon', 'visitor']),
-    message: []
+    messages: []
   }
 }
 
@@ -76,7 +76,7 @@ export default [
       return {
         Code: 1,
         Message: 'ok',
-        ReturnData: createFakeComments().message
+        ReturnData: createFakeComments().messages
       }
     }
   },
