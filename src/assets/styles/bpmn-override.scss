@@ -1,0 +1,124 @@
+// 重置 bpmn-js 相关的样式
+.djs-container {
+  .djs-minimap .toggle {
+    display: none;
+  }
+  .bts-toggle-mode {
+    display: none;
+  }
+}
+
+.bjs-container .djs-palette {
+  top: 10px;
+  left: 10px;
+}
+
+.djs-minimap {
+  left: 10px;
+  bottom: 10px;
+  top: unset;
+  right: unset;
+}
+
+.djs-palette.open {
+  opacity: 0.4;
+  transition: all ease 0.2s;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* bpmn popup menu */
+.djs-popup.bpmn-append .djs-popup-group,
+.djs-popup.bpmn-create .djs-popup-group {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  .entry[data-id="append-user-task"],
+  .entry[data-id="create-user-task"] {
+    order: 0
+  }
+  .entry[data-id="append-copy-service-task"],
+  .entry[data-id="create-copy-service-task"] {
+    order: 1
+  }
+  .entry[data-id="append-sc-service-task"],
+  .entry[data-id="create-sc-service-task"] {
+    order: 2
+  }
+  .entry[data-id="append-service-task"],
+  .entry[data-id="create-service-task"] {
+    order: 3
+  }
+  .entry[data-id="append-dmn-service-task"],
+  .entry[data-id="create-dmn-service-task"] {
+    order: 4
+  }
+  .entry[data-id="append-mq-service-task"],
+  .entry[data-id="create-mq-service-task"] {
+    order: 5
+  }
+  .entry[data-id="append-call-activity"],
+  .entry[data-id="create-call-activity"] {
+    order: 6
+  }
+  .entry[data-id="append-rest-service-task"],
+  .entry[data-id="create-rest-service-task"] {
+    order: 7
+  }
+  .entry[data-id="append-http-service-task"],
+  .entry[data-id="create-http-service-task"] {
+    order: 8
+  }
+  .entry[data-id="append-mail-service-task"],
+  .entry[data-id="create-mail-service-task"] {
+    order: 9
+  }
+  .entry[data-id="append-script-task"],
+  .entry[data-id="create-script-task"] {
+    order: 10
+  }
+  .entry[data-id="append-send-task"],
+  .entry[data-id="create-send-task"] {
+    order: 11
+  }
+  .entry[data-id="append-receive-task"],
+  .entry[data-id="create-receive-task"] {
+    order: 12
+  }
+  .entry[data-id="append-manual-task"],
+  .entry[data-id="create-manual-task"] {
+    order: 13
+  }
+  .entry[data-id="append-camel-service-task"],
+  .entry[data-id="create-camel-service-task"] {
+    order: 14
+  }
+}
+
+/* bpmn lint */
+.djs-element.djs-shape.lint_has-error .djs-visual rect,
+.djs-element.djs-shape.lint_has-error .djs-visual polygon,
+.djs-element.djs-shape.lint_has-error .djs-visual circle,
+.djs-element.djs-shape.lint_has-error .djs-visual path {
+  stroke: var(--color-red-360-100-45) !important;
+  fill: var(--color-red-360-100-92) !important;
+  animation: lint-error-flashing infinite 1s;
+}
+.djs-element.djs-connection.lint_has-error .djs-visual path {
+  stroke: var(--color-red-360-100-45) !important;
+  animation: lint-error-flashing infinite 1s;
+}
+.djs-element.lint_has-error .djs-visual .custom-node-marker path {
+  animation: unset;
+}
+
+@keyframes lint-error-flashing {
+  0%,
+  100% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}

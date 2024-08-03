@@ -53,6 +53,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 1,
     '@typescript-eslint/no-empty-function': 1,
     '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,
     'import/extensions': [
       2,
       'ignorePackages',
@@ -80,5 +81,10 @@ module.exports = {
     'prefer-destructuring': 'off',
     'prefer-regex-literals': 0,
     'import/no-extraneous-dependencies': 0,
+    // for flowable: Add extra rules
+    'vue/custom-event-name-casing': 0,
+    'camelcase': 0,
+    'no-template-curly-in-string': 0,
+    'symbol-description': 0
   }
 }

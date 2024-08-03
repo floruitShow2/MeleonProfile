@@ -9,7 +9,8 @@ export interface PointEntity {
 export interface LoadSphere {
   readonly id: string
   url: string
-  position: THREE.Vector2
+  name: string
+  position?: THREE.Vector2
   anchorPoint: THREE.Vector3
   center?: THREE.Vector3
   points: PointEntity[]
@@ -23,6 +24,10 @@ export interface VrRoomOptions {
   cameraPosition: THREE.Vector3
   cameraLookAt: THREE.Vector3
   debugger?: boolean
+  // 缩放配置
+  allowScale?: boolean
+  minScale?: number
+  maxScale?: number
 }
 
 export interface LoadingProgressEntity {

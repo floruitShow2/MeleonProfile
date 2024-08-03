@@ -1,0 +1,331 @@
+@import 'bpmn-js/dist/assets/diagram-js.css';
+@import 'bpmn-js/dist/assets/bpmn-js.css';
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn.css'; // 节点基础图标
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css'; // 节点完整图标
+@import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'; // 节点完整图标
+
+// 小地图
+@import 'diagram-js-minimap/assets/diagram-js-minimap.css';
+// 模拟
+@import 'bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css';
+// 校验
+@import 'bpmn-js-bpmnlint/dist/assets/css/bpmn-js-bpmnlint.css';
+
+@import './fontello.css';
+@import './ant-design-override.scss';
+@import './bpmn-override';
+
+body,
+html,
+#app {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  display: grid;
+  grid-template-areas:
+    'header panel'
+    'canvas panel';
+  grid-template-columns: 1fr auto;
+  grid-template-rows: minmax(36px, max-content) 1fr;
+  align-items: center;
+  overflow: hidden;
+}
+
+.bpmn-toolbar {
+  grid-area: header;
+}
+.bpmn-designer {
+  grid-area: canvas;
+  position: relative;
+}
+.bpmn-toolbar,
+.bpmn-designer,
+.bpmn-properties-panel {
+  width: 100%;
+  height: 100%;
+}
+
+.bpmn-toolbar {
+  width: 100%;
+  height: min-content;
+  box-sizing: border-box;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+
+  .arco-btn {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .arco-btn.arco-btn-size-mini {
+    padding: 2px 10px;
+    height: auto;
+    line-height: 22px;
+  }
+
+  .arco-btn.arco-btn-size-mini > svg {
+    height: 22px;
+  }
+
+  .arco-btn.is-unable svg {
+    color: #ff5900;
+  }
+}
+
+.bpmn-linter {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 120;
+  width: 360px;
+
+  .toggle-btn {
+    width: 64px;
+    height: 18px;
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    background-color: #fff;
+    box-shadow: 0 -2px 6px 0 #ececec;;
+    text-align: center;
+    line-height: 18px;
+    .arco-icon {
+      transition: all ease 0.24s;
+    }
+  }
+  .arco-card {
+    .arco-collapse-item-header-extra {
+      display: flex;
+      align-items: center;
+    }
+    .arco-tag + .arco-tag {
+      margin-left: 8px;
+    }
+    .arco-icon {
+      stroke-width: 4;
+      stroke: #ffffff;
+    }
+  }
+  .bpmn-linter__location {
+    height: 20px;
+    margin-left: 8px;
+  }
+
+  .arco-card-body {
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all ease 0.24s;
+  }
+
+  &.open {
+    .toggle-btn .arco-icon {
+      transform: rotate(180deg);
+    }
+    .arco-card-body {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+  }
+}
+
+.bpmn-properties-panel {
+  grid-area: panel;
+  flex-shrink: 0;
+  width: 0;
+  position: relative;
+  border-left: 4px #ececec solid;
+  box-sizing: border-box;
+  z-index: 1;
+  transition: all ease 0.24s;
+  &.open {
+    width: 32vw;
+    min-width: 400px;
+    .toggle-btn .arco-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  .toggle-btn {
+    width: 18px;
+    height: 64px;
+    position: absolute;
+    z-index: 10;
+    left: -4px;
+    top: 50%;
+    transform: translate(-100%, -50%);
+    cursor: pointer;
+    border-radius: 8px 0 0 8px;
+    background-color: #fff;
+    box-shadow: -2px 0 6px 0 #ececec;
+    text-align: center;
+    line-height: 64px;
+    .arco-icon {
+      transition: all ease 0.24s;
+    }
+  }
+  .properties-penal_header,
+  .properties-penal_content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .properties-penal_header {
+    top: 0;
+    height: 50px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 30px auto;
+    grid-column-gap: 12px;
+    align-items: center;
+    background: #f5f5f7;
+    z-index: 20;
+    box-sizing: border-box;
+    padding: 0 16px;
+    .bpmn-icon {
+      width: 30px;
+      height: 30px;
+    }
+    p {
+      margin: 0;
+      padding: 0;
+      font-size: 18px;
+      font-weight: bolder;
+    }
+  }
+  .properties-penal_content {
+    top: 50px;
+    bottom: 0;
+    overflow-y: auto;
+
+    .arco-collapse-item-content {
+      background-color: #ffffff;
+    }
+    .arco-collapse-item-header-title {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .arco-picker,
+    .arco-input-group {
+      width: 100%;
+    }
+
+    .inline-large-button {
+      margin-top: 12px;
+    }
+  }
+}
+.panel-table-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-bottom: 12px;
+}
+.table-header_text {
+  flex: 1;
+}
+
+.button-list_column {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 8px;
+  padding: 8px 0;
+}
+
+.preview-model {
+  height: 64vh;
+  overflow-y: auto;
+  word-wrap: normal;
+  pre {
+    white-space: pre-wrap;
+    margin: 0;
+  }
+}
+
+.custom-node-marker {
+  width: 20px;
+  height: 20px;
+  transform: translate(2px, 2px);
+}
+
+.arco-input-tag.arco-input-tag-readonly {
+  border: 1px dashed var(--color-neutral-3);
+  background-color: transparent;
+}
+.arco-checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+.tag-input-flex {
+  height: 100%;
+  min-width: 800px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.header-tags {
+  flex-shrink: 0;
+  min-height: 40px;
+  grid-area: header;
+  border: 1px solid var(--color-neutral-1);
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.header-tags_tip {
+  flex-shrink: 0;
+}
+.tag-input-grid {
+  flex: 1;
+  flex-shrink: 0;
+  min-width: 800px;
+  display: grid;
+  grid-template-areas: 'org table';
+  grid-template-columns: var(--columns);
+  overflow: hidden;
+}
+.tag-input-special-grid {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  grid-template-areas: 'org table';
+  overflow: hidden;
+}
+.left-org-tree,
+.right-table {
+  border: 1px solid var(--color-neutral-1);
+  box-sizing: border-box;
+  padding: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tree-content,
+.table-content {
+  flex: 1;
+  overflow-y: auto;
+}
+.left-org-tree {
+  grid-area: org;
+}
+.right-table {
+  grid-area: table;
+}

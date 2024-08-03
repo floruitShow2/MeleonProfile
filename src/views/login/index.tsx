@@ -62,7 +62,7 @@ export default defineComponent({
         </div>
         <LoginBanner />
         <div class="content">
-          <div class="content-inner">
+          <div class="content-inner w-full h-full">
             <div class="pt-5">
               <Transition name="fade-slide" mode="out-in" appear>
                 <KeepAlive>

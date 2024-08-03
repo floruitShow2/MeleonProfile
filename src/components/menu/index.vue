@@ -117,7 +117,7 @@
       }
 
       return () => (
-        <a-menu
+        <arco-menu
           mode={topMenu.value ? 'horizontal' : 'vertical'}
           v-model:collapsed={collapsed.value}
           v-model:open-keys={openKeys.value}
@@ -130,7 +130,7 @@
           onCollapse={setCollapse}
         >
           {renderSubMenu()}
-        </a-menu>
+        </arco-menu>
       )
     }
   })

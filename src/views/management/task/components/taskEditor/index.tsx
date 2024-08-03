@@ -1,4 +1,5 @@
 import { PropType, defineComponent, onMounted, ref, toRefs, watch } from 'vue'
+import type { JSX } from 'vue/jsx-runtime'
 import { useRouter } from 'vue-router'
 import {
   Avatar,

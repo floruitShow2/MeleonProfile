@@ -1,0 +1,15 @@
+{
+  "name": "@flowable-designer/shared",
+  "version": "1.0.1",
+  "description": "",
+  "type": "module",
+  "files": ["hooks", "utils", "components"],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/lwj/flowable-designer.git"
+  },
+  "private": true
+}
