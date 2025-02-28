@@ -507,7 +507,11 @@ export default class VrRoom extends EventEmitter {
   async loadRoom(targetId: string) {
     if (!targetId) return
     // 清除场景数据内所有的精灵标签
-    this.scene.children = this.scene.children.filter((item) => String(item.type) !== 'Sprite')
+    this.scene.children.forEach((item) => {
+      if (String(item.type) === 'Sprite') {
+        this.scene.remove(item)
+      }
+    })
     // 重新加载贴图，这边应用gasp做一个简单的过渡动画，将透明度从0 ~ 1
     const targetScene = this.findTargetSceneById(targetId)
     if (!targetScene) {
@@ -520,42 +524,7 @@ export default class VrRoom extends EventEmitter {
       transparent: true,
       opacity: 0
     })
-
-    // 测试下 shader
-    const shaderMaterial = new THREE.ShaderMaterial({
-      fragmentShader: `
-        #ifdef GL_ES
-        precision mediump float;
-        #endif
-        
-        uniform vec2 u_resolution;
-        uniform vec2 u_mouse;
-        uniform float u_time;
-        
-        // Plot a line on Y using a value between 0.0-1.0
-        float plot(vec2 st) {    
-            return smoothstep(0.02, 0.0, abs(st.y - st.x));
-        }
-        
-        void main() {
-          vec2 st = gl_FragCoord.xy/u_resolution;
-        
-          float y = st.x;
-        
-          vec3 color = vec3(y);
-        
-          // Plot a line
-          float pct = plot(st);
-          color = (1.0-pct)*color+pct*vec3(0.0,1.0,0.0);
-        
-          gl_FragColor = vec4(color,1.0);
-        }
-      `
-    })
-    shaderMaterial.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight)
-    shaderMaterial.uniforms.u_mouse.value.set(0.5, 0.5) // 初始化鼠标位置
-    shaderMaterial.uniforms.u_time.value = 0 // 初始化时间
-    this.sphere.material = shaderMaterial
+    this.sphere.material = sphereMaterial
     this.setCameraFov(90)
     GSAP.to(sphereMaterial, {
       transparent: true,

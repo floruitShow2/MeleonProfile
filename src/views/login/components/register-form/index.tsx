@@ -54,7 +54,7 @@ export default defineComponent({
       <div class="login-form-wrapper">
         <div class="login-form-title">{$t('register.form.title')}</div>
         <div class="login-form-sub-title">{$t('register.form.subTitle')}</div>
-        <div class="login-form-error-msg">{errorMessage}</div>
+        <div class="login-form-error-msg">{errorMessage.value}</div>
         <Form
           ref="loginForm"
           model={userInfo}

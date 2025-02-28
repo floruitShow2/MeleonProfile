@@ -48,6 +48,7 @@ export const SUB_POINTS_RESOURCE: PointEntity[] = [
 
 export const ROOM_0: LoadSphere = {
   id: '0',
+  name: '房间1',
   url: 'https://dragonir.github.io/panorama-advanced/assets/map_living_room-10de3e48.jpg',
   anchorPoint: new THREE.Vector3(0.1, 0, 0),
   position: new THREE.Vector2(120, 50),
@@ -56,6 +57,7 @@ export const ROOM_0: LoadSphere = {
 
 export const ROOM_1: LoadSphere = {
   id: '1',
+  name: '房间2',
   url: 'https://dragonir.github.io/panorama-advanced/assets/map_living_room_out-7720bdad.jpg',
   anchorPoint: new THREE.Vector3(-2.1, 0, 0),
   position: new THREE.Vector2(80, 35),

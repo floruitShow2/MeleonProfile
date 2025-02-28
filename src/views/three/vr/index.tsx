@@ -29,7 +29,7 @@ export default defineComponent({
     })
 
     // tiny map
-    const curPosition = ref<THREE.Vector2>(new THREE.Vector2(0, 0))
+    const curPosition = ref<THREE.Vector2 | undefined>(new THREE.Vector2(0, 0))
     const curRotation = ref<number>(0)
 
     onMounted(() => {
@@ -70,7 +70,7 @@ export default defineComponent({
           }
 
           if (vrRoom.value && data.targetId) {
-            curPosition.value = vrRoom.value.currentSphere.currentScene.position
+            curPosition.value = vrRoom.value.currentSphere.currentScene?.position
           }
         })
 
@@ -162,9 +162,9 @@ export default defineComponent({
     }
 
     const handleFloatPointClick = (point: PointEntity) => {
-      if (!vrRoom.value) return
+      if (!vrRoom.value || !point.targetId) return
 
-      vrRoom.value.handleJumperEvent(point)
+      vrRoom.value.loadRoom(point.targetId)
     }
 
     return () => (

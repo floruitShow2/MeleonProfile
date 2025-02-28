@@ -1,7 +1,7 @@
 <template>
   <div class="markdown-editor-wrapper">
     <div class="markdown-tools">
-      <div class="tools-title">维思编辑器</div>
+      <div class="tools-title">我的编辑器</div>
       <div class="tools-list">
         <div class="tools-list-item">
           <span>重置</span>
